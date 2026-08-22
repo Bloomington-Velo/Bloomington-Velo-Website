@@ -30,6 +30,30 @@ export function decodeEntities(s) {
     .trim();
 }
 
+// Some bios (e.g. Blayne Roeder's) are authored as a run of sibling <div>s
+// (dated achievements, a fundraising total, an embedded photo) inside the
+// tmm_desc container, so a lazy `<div ...>([\s\S]*?)<\/div>` stops at the
+// FIRST </div> it meets and silently truncates everything after it. This
+// scans forward from just after the opening tag, counting nested <div>
+// opens/closes, and returns the inner HTML at the point depth returns to
+// zero — i.e. the container's true closing tag. Returns null if no
+// balancing close tag is found.
+function extractBalancedDiv(html, afterOpenTagIndex) {
+  const tagRe = /<div\b[^>]*>|<\/div>/gi;
+  tagRe.lastIndex = afterOpenTagIndex;
+  let depth = 1;
+  let match;
+  while ((match = tagRe.exec(html))) {
+    if (match[0][1] === '/') {
+      depth--;
+      if (depth === 0) return html.slice(afterOpenTagIndex, match.index);
+    } else {
+      depth++;
+    }
+  }
+  return null;
+}
+
 export function parseRoster(html) {
   const blocks = html.split(/<div class="tmm_member"/).slice(1);
   return blocks.map((block) => {
@@ -37,7 +61,8 @@ export function parseRoster(html) {
     const last = block.match(/<span class="tmm_lname">([^<]*)<\/span>/)?.[1] ?? '';
     const rawPhoto = block.match(/background:\s*url\(([^)]*)\)/)?.[1]?.trim() ?? '';
     const photo = rawPhoto.startsWith('http') ? `/assets/img/team/${basename(new URL(rawPhoto).pathname)}` : null;
-    const desc = block.match(/<div class="tmm_desc"[^>]*>([\s\S]*?)<\/div>/)?.[1]?.trim();
+    const descOpen = block.match(/<div class="tmm_desc"[^>]*>/);
+    const desc = descOpen ? extractBalancedDiv(block, descOpen.index + descOpen[0].length)?.trim() : null;
     return {
       first: decodeEntities(first),
       last: decodeEntities(last),
@@ -46,6 +71,22 @@ export function parseRoster(html) {
       photoSource: rawPhoto.startsWith('http') ? rawPhoto : null,
     };
   });
+}
+
+// Fail-loud safety net: the EXPECTED.bios count only asserts bio PRESENCE,
+// which does not catch a bio whose HTML got truncated mid-tag. Every
+// extracted bioHtml must have balanced <div> open/close counts; if not,
+// name the affected member and stop rather than committing broken markup.
+export function assertBalancedBios(roster) {
+  for (const m of roster) {
+    if (!m.bioHtml) continue;
+    const opens = (m.bioHtml.match(/<div\b/gi) || []).length;
+    const closes = (m.bioHtml.match(/<\/div>/gi) || []).length;
+    if (opens !== closes) {
+      throw new Error(`Unbalanced <div> tags in bio for ${m.first} ${m.last}: ${opens} open vs ${closes} close. ` +
+        'The source page changed — re-check before continuing.');
+    }
+  }
 }
 
 // Only strava.com / ridewithgps.com links are real routes. The live "30 – 44
@@ -99,6 +140,7 @@ async function main() {
   mkdirSync('assets/img/team', { recursive: true });
 
   const roster = parseRoster(await get(TEAM_URL));
+  assertBalancedBios(roster);
   assertEqual(roster.length, EXPECTED.members, 'roster members');
   assertEqual(roster.filter((m) => m.bioHtml).length, EXPECTED.bios, 'roster bios');
   assertEqual(roster.filter((m) => m.photo).length, EXPECTED.photos, 'roster photos');
