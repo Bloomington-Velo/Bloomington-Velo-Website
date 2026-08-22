@@ -62,8 +62,15 @@ nothing to build or upload manually.
 
 ## Google Calendar API key
 
-The Google Calendar API key used to embed the club calendar is stored in
-Hostinger's environment/site configuration, not in this repository. To
-rotate it, generate a new key in the Google Cloud Console for the project
-backing the calendar embed, update the value in Hostinger, and confirm the
-`/ride/calendar/` page still loads events.
+The Google Calendar API key used to embed the club calendar lives in
+`assets/js/config.js`, committed directly into this repository. It is a
+public key by design — what makes that safe is that it is restricted in
+Google Cloud to the Calendar API and to the HTTP referrers
+`bloomingtonvelo.org/*` and `dev.bloomingtonvelo.org/*`, so it cannot be used
+from any other site.
+
+To rotate it: create a new restricted key (same API and referrer
+restrictions) in the Google Cloud project, replace the value in
+`assets/js/config.js`, commit, and push — deploy is automatic. Once the new
+key is confirmed working on `/ride/calendar/`, delete the old key in Google
+Cloud.

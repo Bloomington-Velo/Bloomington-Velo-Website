@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { checkDocument } from '../tools/verify.mjs';
+import { checkDocument, checkInternalLinks, expectedCanonical } from '../tools/verify.mjs';
 
 const GOOD = `<!doctype html>
 <html lang="en"><head>
@@ -69,4 +69,25 @@ test('an external link without rel=noopener is an error', () => {
   const bad = GOOD.replace('</main>', '<a href="https://www.strava.com/clubs/329602" target="_blank">Strava</a></main>');
   const { errors } = checkDocument(bad, { path: 'x.html' });
   assert.ok(errors.some((e) => e.includes('noopener')));
+});
+
+test('a canonical pointing at a different path is an error', () => {
+  const bad = GOOD.replace(
+    'https://bloomingtonvelo.org/team/',
+    'https://bloomingtonvelo.org/contact/',
+  );
+  const { errors } = checkDocument(bad, { path: 'team/index.html' });
+  assert.ok(errors.some((e) => e.includes('canonical')));
+});
+
+test('expectedCanonical maps file paths to site URLs', () => {
+  assert.equal(expectedCanonical('index.html'), '/');
+  assert.equal(expectedCanonical('team/index.html'), '/team/');
+  assert.equal(expectedCanonical('team/ride-library/index.html'), '/team/ride-library/');
+  assert.equal(expectedCanonical('404.html'), '/404.html');
+});
+
+test('an internal link without a trailing slash is an error', () => {
+  const errors = checkInternalLinks('<a href="/team">Team</a>', { path: 'x.html', rootDir: '.' });
+  assert.ok(errors.some((e) => e.includes('trailing slash')));
 });

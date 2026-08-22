@@ -4,7 +4,7 @@
 import { readdirSync, statSync, readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve, relative } from 'node:path';
 
-const SKIP_DIRS = new Set(['.git', 'node_modules', 'docs', 'tools', 'tests', '_design']);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'docs', 'tools', 'tests', '_design', '.superpowers']);
 
 export function collectHtmlFiles(rootDir) {
   const out = [];
@@ -19,6 +19,14 @@ export function collectHtmlFiles(rootDir) {
   return out.sort();
 }
 
+export function expectedCanonical(path) {
+  const p = path.split('\\').join('/');
+  if (p === 'index.html') return '/';
+  if (p === '404.html') return '/404.html';
+  if (p.endsWith('/index.html')) return '/' + p.slice(0, -'index.html'.length);
+  return '/' + p;
+}
+
 export function checkDocument(html, { path }) {
   const errors = [];
   const need = (cond, msg) => { if (!cond) errors.push(msg); };
@@ -30,8 +38,17 @@ export function checkDocument(html, { path }) {
   need(/<title>[^<]{5,70}<\/title>/i.test(html), 'missing or bad-length <title> (5-70 chars)');
   need(/<meta name="description" content="[^"]{50,160}"/i.test(html),
        'missing meta description, or not 50-160 chars');
-  need(/<link rel="canonical" href="https:\/\/bloomingtonvelo\.org/i.test(html),
-       'missing absolute canonical link');
+
+  const canonicalMatch = html.match(/<link rel="canonical" href="([^"]*)"/i);
+  if (!canonicalMatch) {
+    errors.push('missing canonical link');
+  } else {
+    const expected = `https://bloomingtonvelo.org${expectedCanonical(path)}`;
+    if (canonicalMatch[1] !== expected) {
+      errors.push(`canonical link is ${canonicalMatch[1]}, expected ${expected}`);
+    }
+  }
+
   need(/<meta property="og:title"/i.test(html), 'missing og:title');
   need(/<meta property="og:image"/i.test(html), 'missing og:image');
 
@@ -60,6 +77,10 @@ export function checkInternalLinks(html, { path, rootDir }) {
   const errors = [];
   const hrefs = [...html.matchAll(/(?:href|src)="(\/[^"#?]*)"/g)].map((m) => m[1]);
   for (const href of new Set(hrefs)) {
+    if (!/\.[a-zA-Z0-9]{2,5}$/.test(href) && !href.endsWith('/')) {
+      errors.push(`internal link ${href} must end with a trailing slash`);
+      continue;
+    }
     const target = href.endsWith('/') ? join(rootDir, href, 'index.html') : join(rootDir, href);
     if (!existsSync(target)) errors.push(`broken internal link ${href} (expected ${relative(rootDir, target)})`);
   }
