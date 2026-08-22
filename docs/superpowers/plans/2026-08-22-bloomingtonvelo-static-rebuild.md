@@ -57,7 +57,7 @@ const GOOD = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Team | Bloomington Velo</title>
-<meta name="description" content="Meet the riders of Bloomington Velo.">
+<meta name="description" content="Meet the riders of Bloomington Velo, a cycling club in Bloomington, Indiana.">
 <link rel="canonical" href="https://bloomingtonvelo.org/team/">
 <meta property="og:title" content="Team | Bloomington Velo">
 <meta property="og:image" content="https://bloomingtonvelo.org/assets/img/og-default.jpg">
@@ -124,7 +124,7 @@ test('an external link without rel=noopener is an error', () => {
 
 - [ ] **Step 2: Run the test to verify it fails**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: FAIL — `Cannot find module '../tools/verify.mjs'`.
 
 - [ ] **Step 3: Write `tools/verify.mjs`**
@@ -230,7 +230,7 @@ if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith
 
 - [ ] **Step 4: Run the test to verify it passes**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: PASS, 11 tests.
 
 - [ ] **Step 5: Create the scaffold files**
@@ -276,7 +276,7 @@ Must contain, at minimum:
 
 - What this repo is and that **it has no build step** — files are served exactly as committed.
 - Local preview: `npx --yes serve .` then open `http://localhost:3000`. Explain that `file://` will not work because `fetch` and root-absolute paths need a real origin.
-- Verify: `node tools/verify.mjs` and `node --test tests/`.
+- Verify: `node tools/verify.mjs` and `node --test`.
 - **"Adding a page" checklist:** copy `docs/page-template.html` (created in Task 5), fill every `<!-- SLOT: ... -->` marker, add the URL to `sitemap.xml`, add a nav link to all 8 existing pages, run `node tools/verify.mjs`.
 - **"Adding a roster member" checklist:** copy an existing `<article class="roster-card">` block in `team/index.html`, fill it in, add the photo to `assets/img/team/`.
 - **"Adding a sponsor" checklist:** copy the sponsor block in `sponsors/index.html`.
@@ -285,7 +285,7 @@ Must contain, at minimum:
 
 - [ ] **Step 7: Run the full verification**
 
-Run: `node --test tests/ && node tools/verify.mjs`
+Run: `node --test && node tools/verify.mjs`
 Expected: tests PASS; verify prints `ok   index.html` and `1 file(s) checked, 0 failing`.
 
 - [ ] **Step 8: Commit**
@@ -805,7 +805,7 @@ Expected: PASS, 14 tests.
 
 - [ ] **Step 5: Run the whole suite**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: PASS, 36 tests total across three files.
 
 - [ ] **Step 6: Commit**
@@ -1000,7 +1000,7 @@ Copy `docs/page-template.html` to `index.html`, fill the slots (canonical `/`), 
 
 - [ ] **Step 5: Verify**
 
-Run: `node tools/verify.mjs && node --test tests/`
+Run: `node tools/verify.mjs && node --test`
 Expected: `1 file(s) checked, 0 failing`; all tests pass.
 
 - [ ] **Step 6: Manual accessibility check**
@@ -1151,7 +1151,7 @@ Each must leave the two static rides visible:
 
 - [ ] **Step 7: Run the checks**
 
-Run: `node tools/verify.mjs && node --test tests/`
+Run: `node tools/verify.mjs && node --test`
 Expected: `0 failing`.
 
 - [ ] **Step 8: Commit**
@@ -1652,7 +1652,7 @@ Expected: PASS, 6 tests. Fix any duplicate title, description, or canonical it r
 
 - [ ] **Step 7: Run everything**
 
-Run: `node --test tests/ && node tools/verify.mjs`
+Run: `node --test && node tools/verify.mjs`
 Expected: all pass, `9 file(s) checked, 0 failing`.
 
 - [ ] **Step 8: Commit**
@@ -1765,7 +1765,7 @@ Expected: no output. Anything listed is either a CSP violation waiting to happen
 
 - [ ] **Step 4: Verify**
 
-Run: `node --test tests/ && node tools/verify.mjs`
+Run: `node --test && node tools/verify.mjs`
 Expected: all pass.
 
 - [ ] **Step 5: Commit**
