@@ -13,7 +13,7 @@ Replace the WordPress site at bloomingtonvelo.org with a hand-written static sit
 - No framework, no build step, no npm dependencies at runtime or build time.
 - Responsive down to 320px, tested on real phones.
 - Preserve the live Google Calendar and Strava club integrations.
-- Preserve the team roster and the 54-route Route Library.
+- Preserve the team roster and the 51-route Route Library.
 - Equal or better SEO than the current Yoast-managed WordPress site.
 - Deploy by pushing to `main`.
 
@@ -34,7 +34,7 @@ Replace the WordPress site at bloomingtonvelo.org with a hand-written static sit
 | Posts | 387 news posts, 2007–2022, dormant |
 | Calendar | Google Calendar iframe, calendar ID `r5lf3al9blontcsjnedbr2f2u0@group.calendar.google.com`, public |
 | Strava | Official Strava club widget, club 329602, token `ae47281f0af190641e17e6240c59a40c124d670c` |
-| Roster | ~40 members, alphabetical, inconsistent bio lengths, one photo |
+| Roster | 34 members (`tmm_member` markup), 17 with bios, 13 with photos |
 | Contact | Five officers, all mailto `bloomingtonvelocycling@gmail.com`. No form. |
 | Sponsors | Dumonde Tech only |
 | Brand | Navy `#132856`, square BV logo (`BV-2020-Logo-Square-Compressed.png`) |
@@ -117,7 +117,7 @@ bloomingtonvelo/
 
 ### 5.4 Route Library (`/team/ride-library/`)
 
-- All 54 routes in the four existing groups: Team Favorites (3), 30–44 Miles (10), 45–64 Miles (36), 65+ Miles (8).
+- All 51 routes in the four existing groups: Team Favorites (3), 30–44 Miles (9), 45–64 Miles (31), 65+ Miles (8).
 - Per route: name linked to Strava or RideWithGPS, plus its one-line description.
 - External links carry `rel="noopener noreferrer"` and open in a new tab.
 - Static markup. No filtering or search.
@@ -125,7 +125,7 @@ bloomingtonvelo/
 ### 5.5 Team (`/team/`)
 
 - Intro paragraph inviting prospective members to make contact.
-- ~40 roster cards. Bios verbatim from the current site. Consistent card markup so the layout is uniform even where content length is not.
+- 34 roster cards (17 have bios, 13 have photos). Bios verbatim from the current site. Consistent card markup so the layout is uniform even where content length is not.
 - Fields per member, all optional except name: name, role (officer titles flagged), photo, bio, residence, education, occupation.
 - Cards use a CSS grid that reflows to a single column on narrow screens.
 
@@ -304,7 +304,7 @@ Full WordPress backup taken before the swap. Reverting is a `git revert` plus re
 | 3 | Home: hero, Next Rides, Strava widget |
 | 4 | Ride and Calendar pages |
 | 5 | Team roster, bios verbatim |
-| 6 | Route Library, 54 routes |
+| 6 | Route Library, 51 routes |
 | 7 | Sponsors, Contact, Privacy Policy, 404 |
 | 8 | SEO pass: meta, JSON-LD, sitemap, robots, OG image |
 | 9 | Redirects, caching, security headers, Lighthouse and validation pass |
