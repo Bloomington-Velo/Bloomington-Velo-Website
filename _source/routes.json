@@ -1,0 +1,277 @@
+[
+  {
+    "group": "Team Favorites",
+    "routes": [
+      {
+        "name": "Oliver TT",
+        "url": "https://www.strava.com/routes/24665993",
+        "description": "A nice flat Time Trial to go really fast"
+      },
+      {
+        "name": "Harstad Flat Smashfest",
+        "url": "https://www.strava.com/segments/20391088",
+        "description": "For if you want to be done and tired in 1:15"
+      },
+      {
+        "name": "Isaac’s West is Best",
+        "url": "https://www.strava.com/routes/2738014567283918702",
+        "description": "North-West side Climb Bonanza"
+      }
+    ]
+  },
+  {
+    "group": "30 – 44 Miles",
+    "routes": [
+      {
+        "name": "H-Ville, E-Ville, Bottom Road",
+        "url": "https://www.strava.com/routes/2780278170227300434",
+        "description": "Short tour of the West"
+      },
+      {
+        "name": "Vernal-Kirksville-The Alps",
+        "url": "https://www.strava.com/routes/2729160898044132048",
+        "description": "2,000 ft per hour"
+      },
+      {
+        "name": "Paragon",
+        "url": "https://www.strava.com/routes/2726664994242171628",
+        "description": "Can you make it in 2 hrs?"
+      },
+      {
+        "name": "Forest, 2 Shores,4 Creeks",
+        "url": "https://www.strava.com/routes/2723916469781808014",
+        "description": "7 hills, 200 ft at a time"
+      },
+      {
+        "name": "(Not Williams) Ride",
+        "url": "https://www.strava.com/routes/2719230454939750190",
+        "description": "If you can’t make it to the bridge"
+      },
+      {
+        "name": "45/N. Shore/Bottom",
+        "url": "https://www.strava.com/routes/2719232003409090350",
+        "description": "You may be able to see the lake from up there"
+      },
+      {
+        "name": "B’town’s Greatest Hits(not really)",
+        "url": "https://www.strava.com/routes/2713958708295525036",
+        "description": "It means what it means"
+      },
+      {
+        "name": "Kerr, Brummetts Creek, 45, South shore, Robinson",
+        "url": "https://www.strava.com/routes/2711585649669942028",
+        "description": "Unionville"
+      },
+      {
+        "name": "45, Tunnel, Shilo, Old 37, Chambers, Bottom",
+        "url": "https://www.strava.com/routes/2709058117370675384",
+        "description": "Stay close, go fast"
+      }
+    ]
+  },
+  {
+    "group": "45 – 64 Miles",
+    "routes": [
+      {
+        "name": "446 Flashers",
+        "url": "https://www.strava.com/routes/2775009208777121092",
+        "description": "Out and back to highway 50, and fast"
+      },
+      {
+        "name": "M&M(cw)",
+        "url": "https://www.strava.com/routes/2780275883093094482",
+        "description": "Just a few climbs through Martinsville and Morgantown"
+      },
+      {
+        "name": "Solsberry-Newark-McVille(cw)",
+        "url": "https://www.strava.com/routes/2752013920244682940",
+        "description": "Fifty Miles of Ups and Downs"
+      },
+      {
+        "name": "Bartlettsville (cw)",
+        "url": "https://www.strava.com/routes/2777695600796191942",
+        "description": "South across the causeway with flat segments"
+      },
+      {
+        "name": "3 Creeks, a Forest & the Groves",
+        "url": "https://www.strava.com/routes/2739284283245387698",
+        "description": "Due north, 4 big climbs"
+      },
+      {
+        "name": "Dolan, E’ville,Airport & beyond",
+        "url": "https://www.strava.com/routes/2714122208184638124",
+        "description": "North to south on the west side"
+      },
+      {
+        "name": "Owl, Lick,Carmel,Robinson",
+        "url": "https://www.strava.com/routes/2708869523865827490",
+        "description": "Almost to Nashville"
+      },
+      {
+        "name": "Stanford-Hobbieville-",
+        "url": "https://www.strava.com/routes/2769791863478727940",
+        "description": ""
+      },
+      {
+        "name": "Springville",
+        "url": "https://www.strava.com/routes/2769791863478727940",
+        "description": "Southside Rollers+"
+      },
+      {
+        "name": "Freedom",
+        "url": "https://www.strava.com/routes/2723918329066548638",
+        "description": "All the way out west"
+      },
+      {
+        "name": "Northwest Passage",
+        "url": "https://www.strava.com/routes/2767085504203727378",
+        "description": "Up old 37, to Gosport and back"
+      },
+      {
+        "name": "Rockport/Judah/Lake Monroe",
+        "url": "https://www.strava.com/routes/2764857299890227334",
+        "description": "A shorter way to take the lake"
+      },
+      {
+        "name": "Popcorn with Butter",
+        "url": "https://www.strava.com/routes/2708351282122106038",
+        "description": "Southwest to the town of Popcorn, IN (CCW)"
+      },
+      {
+        "name": "Buttered",
+        "url": "https://www.strava.com/routes/2759630324309341696",
+        "description": ""
+      },
+      {
+        "name": "Popcorn",
+        "url": "https://www.strava.com/routes/2759630324309341696",
+        "description": "Southwest to the town of Popcorn, IN (CW)"
+      },
+      {
+        "name": "Nashville",
+        "url": "https://www.strava.com/routes/2759631849124866770",
+        "description": "Bear Wallow will break you"
+      },
+      {
+        "name": "North Shore-South Shore-Swartz Ridge",
+        "url": "https://www.strava.com/routes/2757239053368525258",
+        "description": "Around Lake Lemon"
+      },
+      {
+        "name": "Solsberry-Springville",
+        "url": "https://www.strava.com/routes/2757240193400281710",
+        "description": "If you’r on Spencer Pike, you’ve gone too far"
+      },
+      {
+        "name": "Trifecta",
+        "url": "https://www.strava.com/routes/2754325541830619908",
+        "description": "West, then South, then East"
+      },
+      {
+        "name": "New Hope-Spencer",
+        "url": "https://www.strava.com/routes/2752020087363761340",
+        "description": "To the White River"
+      },
+      {
+        "name": "Owl-Grandma-Morrison",
+        "url": "https://www.strava.com/routes/2749474062037745364",
+        "description": "To the Bill Monroe Music Park"
+      },
+      {
+        "name": "Railroad-Morgantown-LowGap",
+        "url": "https://www.strava.com/routes/2746923629450153640",
+        "description": "Lots of little climbs up north"
+      },
+      {
+        "name": "Paragon-BryantsCK-Fish-THE House",
+        "url": "https://www.strava.com/routes/2745035658662838622",
+        "description": "Up Boltinghouse, at the end"
+      },
+      {
+        "name": "Bartlettsville²",
+        "url": "https://www.strava.com/routes/2741843074233322112",
+        "description": "A little climby appendix"
+      },
+      {
+        "name": "“Round” Here",
+        "url": "https://www.strava.com/routes/2736765689541687414",
+        "description": "Trip around B-Town"
+      },
+      {
+        "name": "Diogo’s Parting Party",
+        "url": "https://www.strava.com/routes/2734085576587111012",
+        "description": "Some of D’s favorite roads"
+      },
+      {
+        "name": "Nashville +",
+        "url": "https://www.strava.com/routes/2731704383294408332",
+        "description": "Greasy Creek"
+      },
+      {
+        "name": "Martinsville/Low Gap (Griffey)",
+        "url": "https://www.strava.com/routes/2729156639305393582",
+        "description": "Not too much climbing in this one"
+      },
+      {
+        "name": "Ripoffthebandaid",
+        "url": "https://www.strava.com/routes/2721224229421300662",
+        "description": "Some nice climbs close to home"
+      },
+      {
+        "name": "Carmel Ridge, M-Ville, Old 37",
+        "url": "https://www.strava.com/routes/2714119131393533416",
+        "description": "It’s sorta flat"
+      },
+      {
+        "name": "Shuffle,Shiloh,LowGap,Mville",
+        "url": "https://www.strava.com/routes/28626826",
+        "description": "Switchbacks on Shiloh"
+      }
+    ]
+  },
+  {
+    "group": "65 + Miles",
+    "routes": [
+      {
+        "name": "Old Hoosier Hills Route",
+        "url": "https://www.strava.com/routes/2749470227513380326",
+        "description": "Only 5,600 feet of climbing"
+      },
+      {
+        "name": "Tulip Trestle-Bloomfield",
+        "url": "https://www.strava.com/routes/2744398695100135936",
+        "description": "Billy Bob still loves Charlene"
+      },
+      {
+        "name": "Nashville 90",
+        "url": "https://www.strava.com/routes/28292592",
+        "description": "Oh, it’s going to hurt"
+      },
+      {
+        "name": "Bloomfield-Owensburg-Springville",
+        "url": "https://www.strava.com/routes/2731333543166286218",
+        "description": "Out to Bloomfield"
+      },
+      {
+        "name": "Cataract Falls",
+        "url": "https://www.strava.com/routes/2726264042764051016",
+        "description": "Up to the falls, and back"
+      },
+      {
+        "name": "Spencer/Solsberry/Springville",
+        "url": "https://www.strava.com/routes/2721219443646254006",
+        "description": "Way up north and way down south"
+      },
+      {
+        "name": "Williams Covered Bridge",
+        "url": "https://www.strava.com/routes/2719227512416319252",
+        "description": "Road Trip!"
+      },
+      {
+        "name": "WTF?!(CW)",
+        "url": "https://www.strava.com/routes/28558373",
+        "description": "Special Saddle Sore Century"
+      }
+    ]
+  }
+]
