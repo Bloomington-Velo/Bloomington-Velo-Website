@@ -64,12 +64,11 @@ Eight pages. Every URL is byte-identical to the current live URL, so no page tha
 ```
 bloomingtonvelo/
 ├── index.html                     → /
-├── team/
-│   ├── index.html                 → /team/
-│   └── ride-library/index.html    → /team/ride-library/
+├── team/index.html                → /team/
 ├── ride/
 │   ├── index.html                 → /ride/
-│   └── calendar/index.html        → /ride/calendar/
+│   ├── calendar/index.html        → /ride/calendar/
+│   └── routes/index.html          → /ride/routes/
 ├── sponsors/index.html            → /sponsors/
 ├── contact/index.html             → /contact/
 ├── privacy-policy/index.html      → /privacy-policy/
@@ -87,7 +86,7 @@ bloomingtonvelo/
 └── README.md
 ```
 
-`/team/ride-library/` keeps its awkward nesting under `/team/` deliberately: the URL is live today and preserving it costs nothing.
+The Route Library moves from its current `/team/ride-library/` to `/ride/routes/`, where it belongs alongside the other riding pages. This is the one URL that changes, so it gets an explicit 301 (see §8) rather than relying on the catch-all.
 
 **Navigation:** Team · Ride (Calendar, Route Library) · Sponsors · Contact
 
@@ -108,14 +107,14 @@ bloomingtonvelo/
 - Pace expectations, group ride etiquette, what to bring, who the rides suit.
 - Next Rides agenda (same component as Home).
 - Strava club widget, `show_rides=true` (recent rides).
-- Links to `/ride/calendar/` and `/team/ride-library/`.
+- Links to `/ride/calendar/` and `/ride/routes/`.
 
 ### 5.3 Calendar (`/ride/calendar/`)
 
 - Full-month Google Calendar iframe, `loading="lazy"`, `title` attribute set, responsive wrapper.
 - "Add this calendar to your own" links (Google, iCal/ICS).
 
-### 5.4 Route Library (`/team/ride-library/`)
+### 5.4 Route Library (`/ride/routes/`)
 
 - All 51 routes in the four existing groups: Team Favorites (3), 30–44 Miles (9), 45–64 Miles (31), 65+ Miles (8).
 - Per route: name linked to Strava or RideWithGPS, plus its one-line description.
@@ -205,7 +204,14 @@ Yoast previously handled the mechanical parts of this. The README carries an "ad
 
 ### Redirect strategy
 
-New pages sit at the existing URLs, so no page redirect is needed. Dead URLs — 387 news posts at the site root, `/photos/`, `/news/`, and WordPress artifacts like `/category/`, `/tag/`, `/author/`, `/feed/` — are handled by one rule:
+One URL changes: the Route Library moves to `/ride/routes/`. It gets an explicit 301 that must be
+evaluated **before** the catch-all, or the catch-all would send it to the homepage instead:
+
+```apache
+RewriteRule ^team/ride-library/?$ /ride/routes/ [R=301,L]
+```
+
+Every other page sits at its existing URL, so no further page redirect is needed. Dead URLs — 387 news posts at the site root, `/photos/`, `/news/`, and WordPress artifacts like `/category/`, `/tag/`, `/author/`, `/feed/` — are handled by one rule:
 
 ```apache
 RewriteEngine On

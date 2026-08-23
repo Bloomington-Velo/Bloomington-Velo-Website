@@ -16,7 +16,7 @@ Every task's requirements implicitly include this section.
 
 - **No runtime or build dependencies.** The deployed site must contain zero `node_modules`, zero bundlers, zero preprocessors. Dev-time tooling invoked through `npx --yes` is permitted; nothing it produces may be required to serve the site.
 - **No build step.** The repository contents are byte-for-byte what Apache serves from `public_html`.
-- **URL parity.** These eight URLs must exist exactly, each as a directory containing `index.html`: `/`, `/team/`, `/team/ride-library/`, `/ride/`, `/ride/calendar/`, `/sponsors/`, `/contact/`, `/privacy-policy/`. Plus `/404.html`.
+- **URL parity.** These eight URLs must exist exactly, each as a directory containing `index.html`: `/`, `/team/`, `/ride/routes/`, `/ride/`, `/ride/calendar/`, `/sponsors/`, `/contact/`, `/privacy-policy/`. Plus `/404.html`.
 - **Brand:** navy `#132856`. Existing BV square logo, unchanged.
 - **Calendar ID:** `r5lf3al9blontcsjnedbr2f2u0@group.calendar.google.com` (public).
 - **Time zone:** `America/Indiana/Indianapolis`.
@@ -962,7 +962,7 @@ The stylesheet must collapse `.site-nav` only under `.js-nav`, so a no-JS visito
         <li><a href="/team/">Team</a></li>
         <li><a href="/ride/">Ride</a></li>
         <li><a href="/ride/calendar/">Calendar</a></li>
-        <li><a href="/team/ride-library/">Routes</a></li>
+        <li><a href="/ride/routes/">Routes</a></li>
         <li><a href="/sponsors/">Sponsors</a></li>
         <li><a href="/contact/">Contact</a></li>
       </ul>
@@ -1187,7 +1187,7 @@ Main content:
 4. What to expect: pace, group etiquette, what to bring, who the rides suit.
 5. The same `#next-rides` section as Task 7, copied verbatim including the static fallback.
 6. Strava recent rides — identical to Task 7's iframe but with `show_rides=true` and `height="454"`.
-7. Links to `/ride/calendar/` and `/team/ride-library/`.
+7. Links to `/ride/calendar/` and `/ride/routes/`.
 8. `<script type="module" src="/assets/js/rides-init.js"></script>` before `</body>`.
 
 - [ ] **Step 2: Write `ride/calendar/index.html`**
@@ -1350,11 +1350,11 @@ git commit -m "feat: add team roster page with bios carried over verbatim"
 
 **Files:**
 - Create: `tools/generate-routes-html.mjs`
-- Create: `team/ride-library/index.html`
+- Create: `ride/routes/index.html`
 
 **Interfaces:**
 - Consumes: `_source/routes.json` (Task 2), `docs/page-template.html` (Task 6).
-- Produces: `/team/ride-library/` containing 4 `<section class="route-group">` elements and 51 route links.
+- Produces: `/ride/routes/` containing 4 `<section class="route-group">` elements and 51 route links.
 
 - [ ] **Step 1: Write `tools/generate-routes-html.mjs`**
 
@@ -1394,12 +1394,12 @@ grep -c '<li class="route">' /tmp/routes.html
 
 Expected: `4` and `51`.
 
-- [ ] **Step 3: Write `team/ride-library/index.html`**
+- [ ] **Step 3: Write `ride/routes/index.html`**
 
 Copy the template. Slots:
 - `title`: `Route Library | Bloomington Velo`
 - `description`: `51 cycling routes around Bloomington, Indiana, grouped by distance, with Strava and RideWithGPS links for every ride.`
-- `canonical`: `/team/ride-library/`
+- `canonical`: `/ride/routes/`
 
 Main content: `<h1>Route library</h1>`, a short intro noting every route links out to Strava or RideWithGPS, then the generated sections.
 
@@ -1428,7 +1428,7 @@ Expected: `5 file(s) checked, 0 failing`.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add tools/generate-routes-html.mjs team/ride-library/index.html
+git add tools/generate-routes-html.mjs ride/routes/index.html
 git commit -m "feat: add route library with all 51 routes"
 ```
 
@@ -1625,7 +1625,7 @@ Expected: FAIL — `sitemap.xml` does not exist.
   <url><loc>https://bloomingtonvelo.org/ride/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://bloomingtonvelo.org/ride/calendar/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bloomingtonvelo.org/team/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://bloomingtonvelo.org/team/ride-library/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://bloomingtonvelo.org/ride/routes/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
   <url><loc>https://bloomingtonvelo.org/sponsors/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
   <url><loc>https://bloomingtonvelo.org/contact/</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://bloomingtonvelo.org/privacy-policy/</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
@@ -1690,6 +1690,10 @@ DirectoryIndex index.html
   RewriteCond %{HTTP_HOST} ^www\.bloomingtonvelo\.org$ [NC]
   RewriteCond %{HTTP_HOST} !^dev\.bloomingtonvelo\.org$ [NC]
   RewriteRule ^ https://bloomingtonvelo.org%{REQUEST_URI} [R=301,L]
+
+  # The Route Library moved from /team/ride-library/ to /ride/routes/. This MUST come
+  # before the catch-all below, which would otherwise send it to the homepage.
+  RewriteRule ^team/ride-library/?$ /ride/routes/ [R=301,L]
 
   # Retire the WordPress content that was deliberately removed: 387 news posts
   # at the site root, /photos/, /news/, and WP taxonomy and feed artifacts.
@@ -1792,7 +1796,7 @@ git commit -m "feat: add Apache config for redirects, CSP, caching and staging n
 ```bash
 node -e '
 const fs=require("fs"),path=require("path");
-const pages=["index.html","team/index.html","team/ride-library/index.html","ride/index.html","ride/calendar/index.html","sponsors/index.html","contact/index.html","privacy-policy/index.html"];
+const pages=["index.html","team/index.html","ride/routes/index.html","ride/index.html","ride/calendar/index.html","sponsors/index.html","contact/index.html","privacy-policy/index.html"];
 const size=f=>{try{return fs.statSync(f).size}catch{return 0}};
 const shared=size("assets/css/site.css")+size("assets/js/nav.js");
 for(const p of pages){
@@ -1811,7 +1815,7 @@ Record the numbers in the audit. `/team/` will be the heaviest because of 13 ros
 
 ```bash
 npx --yes serve . &
-for p in "" team/ team/ride-library/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
+for p in "" team/ ride/routes/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
   npx --yes lighthouse "http://localhost:3000/$p" \
     --preset=desktop --quiet --chrome-flags="--headless" \
     --output=json --output-path="/tmp/lh-$(echo "${p:-home}" | tr '/' '-').json"
@@ -1832,7 +1836,7 @@ Likely findings and their fixes:
 - [ ] **Step 4: Validate every page against the W3C Nu validator**
 
 ```bash
-for f in index.html team/index.html team/ride-library/index.html ride/index.html \
+for f in index.html team/index.html ride/routes/index.html ride/index.html \
          ride/calendar/index.html sponsors/index.html contact/index.html \
          privacy-policy/index.html 404.html; do
   echo "== $f"
@@ -1947,11 +1951,14 @@ hPanel → Websites → Advanced → Git:
 - [ ] **Step 8: Verify staging end to end**
 
 ```bash
-for p in "" team/ team/ride-library/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
+for p in "" team/ ride/routes/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
   printf "%-24s %s\n" "/$p" "$(curl -s -o /dev/null -w '%{http_code}' "https://dev.bloomingtonvelo.org/$p")"
 done
 echo "--- headers ---"
 curl -sI "https://dev.bloomingtonvelo.org/" | grep -iE 'x-robots-tag|content-security-policy|x-content-type-options|cache-control'
+echo "--- moved route library ---"
+curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}
+' "https://dev.bloomingtonvelo.org/team/ride-library/"
 echo "--- dead url redirect ---"
 curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}\n' "https://dev.bloomingtonvelo.org/off-season-recovery/"
 echo "--- 404 ---"
@@ -2011,7 +2018,7 @@ The WordPress files must be removed from `public_html` so that a stale `wp-confi
 Run the same block as Task 15 Step 8 against `https://bloomingtonvelo.org/`, with one difference: `X-Robots-Tag` must now be **absent**.
 
 ```bash
-for p in "" team/ team/ride-library/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
+for p in "" team/ ride/routes/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
   printf "%-24s %s\n" "/$p" "$(curl -s -o /dev/null -w '%{http_code}' "https://bloomingtonvelo.org/$p")"
 done
 curl -sI "https://bloomingtonvelo.org/" | grep -i 'x-robots-tag' && echo "PROBLEM: production is noindexed" || echo "ok: not noindexed"
