@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup C — Minimal utilitarian | Bloomington Velo</title>
+<meta name="description" content="Design mockup C for bloomingtonvelo.org: a minimal utilitarian direction — system fonts, a single column, no imagery, maximum legibility and speed.">
+<style>
+/* ============================================================
+   MOCKUP C — MINIMAL UTILITARIAN
+   One column, system fonts, no imagery, no shadows, no gradients.
+   Designed like a well-set document rather than a marketing page:
+   the schedule is above the fold on a phone and the whole page is
+   a couple of screens long. Honours the reader's colour scheme.
+   ============================================================ */
+
+:root{
+  color-scheme:light dark;
+
+  --navy:#132856;
+  --link:#132856;
+  --link-visited:#4B3A78;
+  --fg:#16181D;
+  --fg-soft:#4C525E;
+  --bg:#FCFCFB;
+  --bg-inset:#F3F4F1;
+  --rule:#D8D9D4;
+  --rule-strong:#16181D;
+  --focus:#132856;
+
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Segoe UI Mono","SF Mono",Menlo,Consolas,monospace;
+
+  --measure:38rem;
+}
+
+@media (prefers-color-scheme:dark){
+  :root{
+    --navy:#9DB6E8;
+    --link:#9DC0FF;
+    --link-visited:#C4AEF5;
+    --fg:#E8E9EC;
+    --fg-soft:#A6ACB8;
+    --bg:#14161A;
+    --bg-inset:#1C1F25;
+    --rule:#333740;
+    --rule-strong:#E8E9EC;
+    --focus:#9DC0FF;
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--ui);font-size:1.0625rem;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.012em;line-height:1.2;text-wrap:balance}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+a{color:var(--link);text-underline-offset:.16em;text-decoration-thickness:from-font}
+a:visited{color:var(--link-visited)}
+a:hover{text-decoration-thickness:2px}
+abbr{text-decoration:none}
+
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.skip{
+  position:absolute;left:.75rem;top:-3rem;background:var(--fg);color:var(--bg);
+  padding:.6rem 1rem;text-decoration:none;font-weight:600;transition:top .15s ease;z-index:9;
+}
+.skip:focus{top:.75rem}
+
+.wrap{width:min(var(--measure), 100% - 2.5rem);margin-inline:auto}
+
+/* ---- header ------------------------------------------------ */
+.site-header{border-top:3px solid var(--navy);border-bottom:1px solid var(--rule);padding-block:1.1rem}
+.masthead{display:flex;align-items:center;gap:.7rem;margin-bottom:.85rem}
+.masthead img{width:30px;height:30px;flex:none}
+@media (prefers-color-scheme:dark){
+  /* the logo is dark artwork on transparency: invert it for dark mode */
+  .masthead img,.foot-mark img{filter:invert(1)}
+}
+.masthead a{color:inherit;text-decoration:none;font-weight:650;font-size:1.05rem;letter-spacing:-.01em}
+.masthead a:hover{text-decoration:underline}
+.masthead .loc{margin-left:auto;font-size:.8rem;color:var(--fg-soft);font-variant-numeric:tabular-nums}
+
+nav ul{display:flex;flex-wrap:wrap;gap:.15rem 0}
+nav li{white-space:nowrap}
+/* separators trail their item so a wrapped line never starts with a dot */
+nav li:not(:last-child)::after{content:"·";color:var(--rule);padding-inline:.6rem;font-weight:600}
+nav a{font-size:.94rem;color:var(--link);text-decoration:none}
+nav a:hover,nav a:focus-visible{text-decoration:underline}
+nav a[aria-current="page"]{color:var(--fg);font-weight:650;text-decoration:underline;text-decoration-thickness:2px}
+
+/* ---- lede -------------------------------------------------- */
+main{padding-block:2.5rem 3rem}
+h1{font-size:clamp(1.85rem,1.5rem + 1.6vw,2.45rem);margin-bottom:.85rem}
+.lede{font-size:1.1rem;color:var(--fg-soft);max-width:34rem}
+.actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.btn{
+  display:inline-block;font:inherit;font-size:.95rem;font-weight:600;
+  padding:.55rem 1rem;text-decoration:none;border:1px solid var(--rule-strong);
+  color:var(--fg);background:transparent;
+}
+.btn:hover{background:var(--fg);color:var(--bg)}
+.btn-solid{background:var(--fg);color:var(--bg)}
+.btn-solid:hover{background:transparent;color:var(--fg)}
+
+/* ---- facts, with dotted leaders ---------------------------- */
+.facts{margin-top:2rem;border-top:1px solid var(--rule);font-size:.95rem}
+.facts div{
+  display:flex;align-items:baseline;gap:.5rem;
+  border-bottom:1px solid var(--rule);padding:.55rem 0;
+}
+.facts dt{color:var(--fg-soft);display:flex;align-items:baseline;gap:.5rem;flex:1;min-width:0}
+.facts dt::after{content:"";flex:1;border-bottom:1px dotted var(--rule);transform:translateY(-.24em);min-width:1.5rem}
+.facts dd{margin:0;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+
+/* ---- sections ---------------------------------------------- */
+section{margin-top:2.75rem}
+section > h2{
+  font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;
+  color:var(--fg-soft);padding-bottom:.5rem;border-bottom:2px solid var(--rule-strong);margin-bottom:1.25rem;
+}
+.body-copy p + p{margin-top:.9rem}
+.body-copy{max-width:36rem}
+
+/* ---- rides table ------------------------------------------- */
+.rides{border-bottom:1px solid var(--rule)}
+.ride{
+  display:grid;grid-template-columns:5.2rem minmax(0,1fr);gap:.15rem 1rem;
+  padding:.85rem 0;border-top:1px solid var(--rule);
+}
+.rides .ride:first-child{border-top:0}
+.ride:hover{background:var(--bg-inset)}
+.ride .when{font-family:var(--mono);font-size:.86rem;line-height:1.45;color:var(--fg)}
+.ride .when b{display:block;font-weight:700}
+.ride .what{font-weight:650}
+.ride .where{grid-column:2;color:var(--fg-soft);font-size:.92rem}
+.note{font-size:.88rem;color:var(--fg-soft);margin-top:.9rem}
+.note a{white-space:nowrap}
+
+/* ---- inset blocks ------------------------------------------ */
+.inset{background:var(--bg-inset);border:1px solid var(--rule);padding:1rem 1.1rem}
+.inset .label{
+  font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--fg-soft);display:block;margin-bottom:.5rem;
+}
+.inset p{font-size:.93rem;color:var(--fg-soft)}
+.inset .frame{
+  border:1px dashed var(--rule);padding:.9rem;margin-bottom:.75rem;
+  display:grid;gap:.5rem;min-height:5.5rem;align-content:center;
+}
+.bar{height:.55rem;background:var(--rule)}
+.bar.w70{width:70%}.bar.w45{width:45%}.bar.w88{width:88%}
+
+/* ---- steps -------------------------------------------------- */
+.steps{counter-reset:s;display:grid;gap:.7rem}
+.steps li{counter-increment:s;display:flex;gap:.7rem;align-items:baseline}
+.steps li::before{
+  content:counter(s) ".";font-family:var(--mono);font-size:.85rem;color:var(--fg-soft);flex:none;min-width:1.2rem;
+}
+
+/* ---- footer -------------------------------------------------- */
+.site-footer{border-top:1px solid var(--rule);padding-block:1.75rem 2.5rem;font-size:.92rem}
+.foot-mark{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+.foot-mark img{width:24px;height:24px}
+.foot-mark span{font-weight:650}
+.foot-links{display:flex;flex-wrap:wrap;gap:.15rem 0;margin-bottom:1rem}
+.foot-links li{white-space:nowrap}
+.foot-links li:not(:last-child)::after{content:"·";color:var(--rule);padding-inline:.55rem}
+.foot-links a{color:var(--link);text-decoration:none}
+.foot-links a:hover{text-decoration:underline}
+.colophon{color:var(--fg-soft);font-size:.82rem;line-height:1.55;border-top:1px solid var(--rule);padding-top:1rem;margin-top:.25rem}
+.colophon code{font-family:var(--mono);font-size:.95em}
+
+/* ---- mockup chip -------------------------------------------- */
+.mockup-chip{
+  position:fixed;left:.75rem;bottom:.75rem;z-index:80;display:inline-flex;align-items:center;gap:0;
+  background:var(--fg);color:var(--bg);text-decoration:none;font-size:.76rem;font-weight:600;
+  padding:.5rem;opacity:.5;transition:opacity .15s ease;border:1px solid var(--fg);
+}
+.mockup-chip:hover,.mockup-chip:focus-visible{opacity:1}
+.mockup-chip .chip-label{max-width:0;overflow:hidden;white-space:nowrap;opacity:0;
+  transition:max-width .28s ease,opacity .2s ease,margin-left .28s ease}
+.mockup-chip:hover .chip-label,.mockup-chip:focus-visible .chip-label{max-width:20rem;opacity:1;margin-left:.55rem}
+.mockup-chip b{background:var(--bg);color:var(--fg);width:1.05rem;height:1.05rem;display:grid;place-items:center;font-size:.7rem}
+
+@media (max-width:420px){
+  body{font-size:1rem}
+  .masthead .loc{display:none}
+  .ride{grid-template-columns:1fr;gap:.1rem}
+  .ride .where{grid-column:1}
+  .facts div{flex-wrap:wrap}
+}
+@media print{
+  .mockup-chip,.actions,.skip{display:none}
+  body{font-size:11pt}
+  a{text-decoration:none;color:#000}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="masthead">
+      <img src="../assets/img/logo.png" alt="" width="30" height="30">
+      <a href="#">Bloomington Velo</a>
+      <span class="loc">Bloomington, Indiana</span>
+    </div>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#">Team</a></li>
+        <li><a href="#">Ride</a></li>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="#">Routes</a></li>
+        <li><a href="#">Sponsors</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <h1>Ride hard. Bring people with you.</h1>
+    <p class="lede">Bloomington Velo is a performance-oriented cycling club built on racing, training, and getting new riders up to speed on the best roads in the Midwest.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="#join">Ride with us</a>
+      <a class="btn" href="#next-rides">See the schedule</a>
+    </div>
+
+    <dl class="facts">
+      <div><dt>Members</dt><dd>34</dd></div>
+      <div><dt>Documented routes</dt><dd>51</dd></div>
+      <div><dt>Weekday rides</dt><dd>Tue &amp; Thu, 5:45 PM</dd></div>
+      <div><dt>Weekend rides</dt><dd>40–100+ mi at 18–20 mph</dd></div>
+    </dl>
+
+    <section id="who" aria-labelledby="who-h">
+      <h2 id="who-h">Who we are</h2>
+      <div class="body-copy">
+        <p>Bloomington Velo is a performance-oriented cycling club with an emphasis on racing and training. We ride out of Bloomington, Indiana, on the limestone-country roads that make this one of the best places to ride in the state.</p>
+        <p>We also mentor. The roster runs to 34 members from a wide range of backgrounds and abilities, and the club keeps a library of 51 documented routes so nobody has to guess where the good roads are. If you can hold a wheel and you want to get faster, there is a group here for you.</p>
+      </div>
+    </section>
+
+    <section id="next-rides" aria-labelledby="rides-h">
+      <h2 id="rides-h">Next rides</h2>
+      <ul class="rides">
+        <li class="ride">
+          <p class="when"><b>Tue 25</b>5:45 PM</p>
+          <p class="what">Weekday group ride</p>
+          <p class="where">Bryan Park pool parking lot · rolling, regroups at the top</p>
+        </li>
+        <li class="ride">
+          <p class="when"><b>Thu 27</b>5:45 PM</p>
+          <p class="what">Weekday group ride</p>
+          <p class="where">Bryan Park pool parking lot · harder pace</p>
+        </li>
+        <li class="ride">
+          <p class="when"><b>Sat 29</b>8:00 AM</p>
+          <p class="what">Weekend long ride</p>
+          <p class="where">Sample Gates · 40–100+ mi at 18–20 mph</p>
+        </li>
+      </ul>
+      <p class="note">Pulled live from the club calendar; the standing schedule shows when the calendar is quiet. <a href="#">Full calendar →</a></p>
+    </section>
+
+    <section id="strava" aria-labelledby="strava-h">
+      <h2 id="strava-h">On Strava</h2>
+      <div class="inset">
+        <span class="label">Strava club widget · iframe · club 329602</span>
+        <div class="frame" aria-hidden="true">
+          <div class="bar w70"></div>
+          <div class="bar w45"></div>
+          <div class="bar w88"></div>
+        </div>
+        <p>The official Strava club embed renders here, roughly 300&nbsp;px tall. It is a third-party iframe and brings its own styling, so it is the one element on the page this design does not control.</p>
+      </div>
+    </section>
+
+    <section id="join" aria-labelledby="join-h">
+      <h2 id="join-h">Come ride with us</h2>
+      <ol class="steps">
+        <li>Come to a Tuesday or Thursday ride — 5:45 PM at the Bryan Park pool parking lot.</li>
+        <li>Say hello. Tell us what you ride and we will point you at the right group.</li>
+        <li>Join the club GroupMe so you hear about pace changes and weekend plans.</li>
+      </ol>
+      <div class="actions">
+        <a class="btn btn-solid" href="mailto:bloomingtonvelocycling@gmail.com">Email the club</a>
+        <a class="btn" href="#">Join the GroupMe</a>
+        <a class="btn" href="#">Instagram</a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-mark">
+      <img src="../assets/img/logo.png" alt="" width="24" height="24">
+      <span>Bloomington Velo</span>
+    </div>
+    <ul class="foot-links">
+      <li><a href="#">Team</a></li>
+      <li><a href="#">Ride</a></li>
+      <li><a href="#">Calendar</a></li>
+      <li><a href="#">Routes</a></li>
+      <li><a href="#">Sponsors</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Strava</a></li>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="mailto:bloomingtonvelocycling@gmail.com">Email</a></li>
+    </ul>
+    <p class="colophon">
+      © 2026 Bloomington Velo · A performance-oriented cycling club in Bloomington, Indiana.<br>
+      Design mockup C — not the live site. No photographs, no web fonts, no third-party scripts:
+      this page is one <code>.html</code> file and one logo, and it renders before a slow phone
+      finishes its first network round trip. Follows your system light or dark setting.
+    </p>
+  </div>
+</footer>
+
+<a class="mockup-chip" href="index.html" title="Back to all three mockups"><b>C</b><span class="chip-label">Minimal utilitarian — compare all three</span></a>
+</body>
+</html>

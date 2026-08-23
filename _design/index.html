@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homepage design directions | Bloomington Velo</title>
+<meta name="description" content="Three homepage design directions for bloomingtonvelo.org, side by side: modern refresh, bold athletic, and minimal utilitarian.">
+<script>
+/* `npx serve` strips the .html extension, which can leave this page at
+   /_design with no trailing slash — relative links would then resolve
+   against the site root. Re-anchor them when that has happened. */
+(function () {
+  var path = location.pathname;
+  var dir = path.replace(/[^/]*$/, '');
+  var want = /\/_design$/.test(path) ? path + '/'
+           : (dir.indexOf('/_design/') >= 0 ? dir.slice(0, dir.indexOf('/_design/') + 9) : dir);
+  if (want !== dir) {
+    var base = document.createElement('base');
+    base.href = want;
+    document.head.appendChild(base);
+  }
+})();
+</script>
+<style>
+:root{
+  --navy:#132856;
+  --ink:#14161B;
+  --soft:#5A6270;
+  --bg:#EEF0F3;
+  --card:#FFFFFF;
+  --rule:#D9DDE4;
+  --ui:"Segoe UI",-apple-system,BlinkMacSystemFont,system-ui,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Segoe UI Mono","SF Mono",Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);
+  font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;line-height:1.15;letter-spacing:-.015em}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+a{color:var(--navy)}
+:focus-visible{outline:3px solid var(--navy);outline-offset:3px;border-radius:2px}
+
+.wrap{width:min(1400px,100% - 3rem);margin-inline:auto}
+
+header.page{padding:3.5rem 0 2rem;border-bottom:1px solid var(--rule)}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
+header.page h1{font-size:clamp(1.9rem,1.4rem + 2vw,3rem);margin:.9rem 0 1rem}
+header.page p{max-width:62ch;color:var(--soft)}
+
+.toolbar{
+  display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;
+  padding:1.25rem 0;position:sticky;top:0;background:var(--bg);z-index:5;border-bottom:1px solid var(--rule);
+}
+.seg{display:inline-flex;border:1px solid var(--rule);background:var(--card);border-radius:999px;padding:.25rem}
+.seg button{
+  font:inherit;font-size:.86rem;font-weight:600;border:0;background:transparent;color:var(--soft);
+  padding:.45rem 1.1rem;border-radius:999px;cursor:pointer;
+}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.toolbar .hint{font-size:.84rem;color:var(--soft)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;padding:2rem 0 1rem}
+.card{
+  background:var(--card);border:1px solid var(--rule);border-radius:6px;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.card-head{padding:1.25rem 1.35rem 1.1rem;border-bottom:1px solid var(--rule)}
+.card-head .letter{
+  display:inline-grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:50%;
+  background:var(--navy);color:#fff;font-size:.82rem;font-weight:700;margin-bottom:.7rem;
+}
+.card-head h2{font-size:1.22rem}
+.card-head p{color:var(--soft);font-size:.92rem;margin-top:.45rem}
+
+.frame{position:relative;overflow:hidden;background:#C9CED6;border-bottom:1px solid var(--rule);aspect-ratio:4/3}
+.frame .stage{position:absolute;inset:0;overflow:hidden}
+.frame.is-mobile .stage{
+  inset:16px auto 0 50%;transform:translateX(-50%);width:222px;height:calc(100% - 16px);
+  border:6px solid #2A2F38;border-bottom:0;border-radius:20px 20px 0 0;background:#fff;
+}
+.frame iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;background:#fff}
+.frame .shade{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 -40px 40px -40px rgba(0,0,0,.25)}
+
+.card-foot{padding:1rem 1.35rem 1.35rem;margin-top:auto;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.btn{
+  font-size:.9rem;font-weight:600;text-decoration:none;padding:.6rem 1.1rem;border-radius:4px;
+  border:1px solid var(--navy);color:var(--navy);display:inline-block;
+}
+.btn:hover{background:var(--navy);color:#fff}
+.btn-solid{background:var(--navy);color:#fff}
+.btn-solid:hover{background:#1D3A73;border-color:#1D3A73}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;padding:0 1.35rem 1.1rem}
+.tag{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--soft);
+  border:1px solid var(--rule);border-radius:999px;padding:.24rem .6rem}
+
+.notes{padding:2.5rem 0 4rem;border-top:1px solid var(--rule);margin-top:2rem}
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:2rem}
+.notes h3{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin-bottom:.9rem}
+.notes li{display:flex;gap:.6rem;font-size:.94rem;color:var(--soft);margin-bottom:.5rem}
+.notes li::before{content:"—";color:#AEB5C0;flex:none}
+.notes code{font-family:var(--mono);font-size:.88em;background:#E3E7EC;padding:.1rem .35rem;border-radius:3px}
+
+@media (max-width:1080px){
+  .grid{grid-template-columns:1fr;gap:1.25rem}
+  .frame{aspect-ratio:16/10}
+}
+@media (max-width:560px){
+  .wrap{width:min(1400px,100% - 1.75rem)}
+  .toolbar{position:static}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <p class="eyebrow">Bloomington Velo · Static rebuild · Task 5</p>
+    <h1>Three homepage directions</h1>
+    <p>Same club, same words, same facts — three different ways of presenting them. Every mockup carries identical content (header and nav, hero, who we are, next rides, the Strava widget slot, a join call-to-action, footer) so the comparison is about design, not copy. Pick one and the rest of the site gets built on it.</p>
+  </header>
+
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Preview width">
+      <button type="button" data-mode="desktop" aria-pressed="true">Desktop 1280px</button>
+      <button type="button" data-mode="mobile" aria-pressed="false">Phone 390px</button>
+    </div>
+    <p class="hint">Previews are live pages, scaled down. Open one full size to click around.</p>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="card-head">
+        <span class="letter" aria-hidden="true">A</span>
+        <h2>Modern refresh</h2>
+        <p>Navy and white, generous whitespace, editorial serif headings, content in quiet cards — the club you already know, printed properly.</p>
+      </div>
+      <div class="frame" data-src="mockup-a.html">
+        <div class="stage"><iframe title="Preview of mockup A, modern refresh" loading="lazy" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="shade"></div>
+      </div>
+      <div class="tags">
+        <span class="tag">Lowest risk</span><span class="tag">Editorial</span>
+      </div>
+      <div class="card-foot">
+        <a class="btn btn-solid" href="mockup-a.html">Open mockup A</a>
+        <a class="btn" href="mockup-a.html" target="_blank" rel="noopener">New tab</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head">
+        <span class="letter" aria-hidden="true">B</span>
+        <h2>Bold athletic</h2>
+        <p>A visual relaunch: full-bleed artwork, oversized condensed type, high-visibility gold against the navy, edge-to-edge bands. Built to recruit.</p>
+      </div>
+      <div class="frame" data-src="mockup-b.html">
+        <div class="stage"><iframe title="Preview of mockup B, bold athletic" loading="lazy" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="shade"></div>
+      </div>
+      <div class="tags">
+        <span class="tag">Highest impact</span><span class="tag">Gold accent</span>
+      </div>
+      <div class="card-foot">
+        <a class="btn btn-solid" href="mockup-b.html">Open mockup B</a>
+        <a class="btn" href="mockup-b.html" target="_blank" rel="noopener">New tab</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-head">
+        <span class="letter" aria-hidden="true">C</span>
+        <h2>Minimal utilitarian</h2>
+        <p>System fonts, one column, no imagery at all. The schedule is above the fold on a phone and the page weighs almost nothing.</p>
+      </div>
+      <div class="frame" data-src="mockup-c.html">
+        <div class="stage"><iframe title="Preview of mockup C, minimal utilitarian" loading="lazy" scrolling="no" tabindex="-1"></iframe></div>
+        <div class="shade"></div>
+      </div>
+      <div class="tags">
+        <span class="tag">Fastest</span><span class="tag">Dark mode</span>
+      </div>
+      <div class="card-foot">
+        <a class="btn btn-solid" href="mockup-c.html">Open mockup C</a>
+        <a class="btn" href="mockup-c.html" target="_blank" rel="noopener">New tab</a>
+      </div>
+    </article>
+
+  </div>
+
+  <section class="notes">
+    <div class="notes-grid">
+      <div>
+        <h3>What is identical in all three</h3>
+        <ul>
+          <li>Nav: Team, Ride, Calendar, Routes, Sponsors, Contact</li>
+          <li>The same headline, the same "who we are" paragraphs, the same three sample rides</li>
+          <li>Tue &amp; Thu 5:45 PM from Bryan Park; weekends 40–100+ mi at 18–20 mph from the Sample Gates</li>
+          <li>34 members, 51 routes, Strava club 329602, @bloomingtonvelo</li>
+        </ul>
+      </div>
+      <div>
+        <h3>About the missing photographs</h3>
+        <ul>
+          <li>No stock photos and no external images — everything is drawn in CSS or inline SVG</li>
+          <li>A: an abstract contour field, the hills south of town</li>
+          <li>B: a chevron "paceline" taken from the club seal, with halftone and grain</li>
+          <li>C: deliberately none, which is the whole argument for C</li>
+          <li>Each stand-in is labelled on the page so nobody mistakes it for a finished hero</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Worth weighing before you choose</h3>
+        <ul>
+          <li>B is the only one that gets noticeably worse if real club photography never arrives</li>
+          <li>C is the only one that gets no better if it does</li>
+          <li>A sits in the middle: good with the placeholder, better with a photo</li>
+          <li>Check each on your phone, not just here — the previews are scaled</li>
+          <li>Nothing here ships. Whichever wins becomes <code>assets/css/site.css</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var MODES = {
+    desktop: { w: 1280, h: 960 },
+    mobile:  { w: 390,  h: 800 }
+  };
+  var frames = Array.prototype.slice.call(document.querySelectorAll('.frame'));
+  var mode = 'desktop';
+
+  frames.forEach(function (f) {
+    f.querySelector('iframe').src = f.getAttribute('data-src');
+  });
+
+  function layout() {
+    var m = MODES[mode];
+    frames.forEach(function (f) {
+      var stage = f.querySelector('.stage');
+      var iframe = f.querySelector('iframe');
+      f.classList.toggle('is-mobile', mode === 'mobile');
+      var box = stage.getBoundingClientRect();
+      if (!box.width) return;
+      var scale = box.width / m.w;
+      iframe.style.width = m.w + 'px';
+      iframe.style.height = Math.max(m.h, box.height / scale) + 'px';
+      iframe.style.transform = 'scale(' + scale + ')';
+    });
+  }
+
+  document.querySelectorAll('.seg button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      mode = btn.getAttribute('data-mode');
+      document.querySelectorAll('.seg button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      layout();
+    });
+  });
+
+  window.addEventListener('resize', layout);
+  window.addEventListener('load', layout);
+  layout();
+})();
+</script>
+</body>
+</html>
