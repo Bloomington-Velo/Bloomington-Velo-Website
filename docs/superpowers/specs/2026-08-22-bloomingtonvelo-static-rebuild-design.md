@@ -137,7 +137,7 @@ The Route Library moves from its current `/team/ride-library/` to `/ride/routes/
 
 ### 5.7 Contact (`/contact/`)
 
-- Five officers with roles and mailto links: President Aaron Prange, Vice-President Dave Harstad, C.F.O. Matt Ellenwood, C.T.O. Tyler Stambaugh, Group Ride Coordinator Kevin Hays. All currently resolve to `bloomingtonvelocycling@gmail.com`. **Verify this list is current before launch.**
+- Five officers with roles and mailto links: President Aaron Prange, Vice-President Dave Harstad, C.F.O. Matt Ellenwood, C.T.O. Tyler Stambaugh, Group Ride Coordinator Kevin Hays. All resolve to `bloomingtonvelocycling@gmail.com`. Confirmed by the site owner as current; carried over unchanged.
 - Club email, GroupMe, Strava club, Instagram, Facebook.
 - No form.
 
@@ -335,6 +335,6 @@ There is no unit-test framework for a static site. Verification is explicit and 
 2. Create the Google Calendar API key with API and referrer restrictions.
 3. Confirm the club calendar's sharing is set to public.
 4. **Supply photography.** The hero image is the difference between a site that recruits and one that merely informs, and the current site has very little usable imagery. This is the largest content risk in the project.
-5. Confirm the five officers and their roles are current, and confirm the ride schedule wording. The current site says weekday rides run "until daylight savings time," which is ambiguous — the new copy should state the actual start and end of the weekday ride season.
+5. ~~Confirm officers and ride schedule wording.~~ **Resolved:** the site owner has confirmed both carry over verbatim, including the existing "until daylight savings time" phrasing.
 6. Create the `dev.bloomingtonvelo.org` subdomain in hPanel before Phase 10.
 7. Take a full WordPress backup before Phase 11.

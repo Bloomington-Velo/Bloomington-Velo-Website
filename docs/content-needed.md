@@ -9,8 +9,11 @@ Placeholders are marked in the source with `<!-- TODO(tyler): ... -->` so they c
 grep -rn "TODO(tyler)" --include=*.html --include=*.mjs .
 ```
 
-Status legend: **BLOCKS LAUNCH** — should not go live unanswered · **DEGRADED** — ships and works, but
-noticeably worse · **COSMETIC** — minor.
+Status legend: **RESOLVED** — decided, no action · **DEGRADED** — ships and works, but noticeably
+worse · **COSMETIC** — minor.
+
+Nothing on this list blocks launch. The two items that did have been decided: the ride-season wording
+and the officer roster both carry over from the live site verbatim.
 
 ---
 
@@ -26,25 +29,23 @@ Instagram, Slack or iMessage previews as a logo on a navy rectangle rather than 
 **Note:** swapping in a photo background requires a small edit to the SVG template inside
 `tools/make-og-image.mjs` — there is no `--photo` flag yet.
 
-## 2. Weekday ride season wording — BLOCKS LAUNCH
+## 2. Weekday ride season wording — RESOLVED, keep as-is
 
+**Decision (site owner):** carry the live site's wording over verbatim. No change, no placeholder.
 **Where:** `/ride/`, and the static fallback schedule inside the `#next-rides` block on `/` and `/ride/`.
-**Current placeholder:** the live site's own sentence, carried over verbatim — Tuesday and Thursday
-rides leave Bryan Park pool parking lot at 5:45 PM "until daylight savings time".
-**What's needed:** that phrase is ambiguous — it could mean until DST begins or until it ends. State the
-real start and end of the weekday ride season (e.g. "early March through the end of October").
-**If unanswered:** riders show up on the wrong dates. This is the most consequential factual error the
-site could carry, because it is operational rather than cosmetic.
+**Text:** Tuesday and Thursday rides leave Bryan Park pool parking lot at 5:45 PM "until daylight
+savings time"; weekend rides 40–100+ miles at 18–20 mph from Sample Gates.
+**Noted for the record:** "until daylight savings time" can be read as either the start or the end of
+DST. The club is keeping the phrasing it has always used, and members evidently understand it. Nothing
+to action — recorded only so a future maintainer does not re-raise it as a defect.
 
-## 3. Officers and their contact addresses — BLOCKS LAUNCH
+## 3. Officers and their contact addresses — RESOLVED, keep as-is
 
+**Decision (site owner):** the roster and the shared mailbox both carry over unchanged.
 **Where:** `/contact/`.
-**Current placeholder:** the five officers listed on the live site — President Aaron Prange,
-Vice-President Dave Harstad, C.F.O. Matt Ellenwood, C.T.O. Tyler Stambaugh, Group Ride Coordinator
-Kevin Hays — every one of them linking to the shared `bloomingtonvelocycling@gmail.com`.
-**What's needed:** confirm the roster of officers and their titles is current. Decide whether each should
-get an individual address or whether everything continues to route to the club Gmail.
-**If unanswered:** the site may publicly name people who no longer hold those roles.
+**Final content:** President Aaron Prange, Vice-President Dave Harstad, C.F.O. Matt Ellenwood,
+C.T.O. Tyler Stambaugh, Group Ride Coordinator Kevin Hays — every one linking to
+`bloomingtonvelocycling@gmail.com`. No individual addresses.
 
 ## 4. Roster currency — DEGRADED
 

@@ -1182,7 +1182,7 @@ Copy the template. Slots:
 
 Main content:
 1. `<h1>Group rides</h1>` and an intro.
-2. Weekday rides: Tuesday and Thursday, 5:45 PM, Bryan Park pool parking lot. State the season start and end plainly — use the wording Tyler supplies for open item 5 in the spec; **do not invent dates**. If the wording has not yet been supplied, carry the current site's sentence verbatim and add an HTML comment `<!-- TODO(tyler): confirm ride season wording -->`.
+2. Weekday rides: Tuesday and Thursday, 5:45 PM, Bryan Park pool parking lot. Carry the live site's season wording over **verbatim**, including the phrase "until daylight savings time". The site owner has decided to keep it. Do not rephrase it, do not invent dates, and do not add a TODO comment.
 3. Weekend rides: Saturday and Sunday, 40–100+ miles at 18–20 mph, from Sample Gates.
 4. What to expect: pace, group etiquette, what to bring, who the rides suit.
 5. The same `#next-rides` section as Task 7, copied verbatim including the static fallback.
@@ -1478,8 +1478,6 @@ End with a line inviting sponsorship enquiries at the club email. Add an HTML co
 Slots: title `Contact | Bloomington Velo`; description `Get in touch with Bloomington Velo. Contact our officers about joining the club, group rides, or sponsorship in Bloomington, Indiana.`; canonical `/contact/`.
 
 Main content: `<h1>Contact</h1>`, a line inviting prospective members, then a definition list of the five officers — President Aaron Prange, Vice-President Dave Harstad, C.F.O. Matt Ellenwood, C.T.O. Tyler Stambaugh, Group Ride Coordinator Kevin Hays — each name a `mailto:bloomingtonvelocycling@gmail.com` link. Then GroupMe, Strava club, Instagram, and Facebook links.
-
-Add an HTML comment: `<!-- TODO(tyler): confirm officers and roles before launch (spec open item 5) -->`
 
 Include the JSON-LD block:
 
