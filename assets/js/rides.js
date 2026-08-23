@@ -15,6 +15,8 @@ export function buildEventsUrl({ apiKey, now = new Date(), maxResults = 8 }) {
   return `${API_BASE}/${encodeURIComponent(CALENDAR_ID)}/events?${params}`;
 }
 
+// Items with no dateTime/date, or with an unparseable start, are dropped —
+// a null start would crash renderAgenda's `.toISOString()` / formatting calls.
 export function parseEvents(payload) {
   const items = Array.isArray(payload?.items) ? payload.items : [];
   return items
@@ -57,8 +59,11 @@ export function renderAgenda(events, { timeZone = TIME_ZONE } = {}) {
     const time = event.allDay ? '' : `<span class="ride__time">${escapeHtml(timeFmt.format(event.start))}</span>`;
     const place = event.location
       ? `<span class="ride__place">${escapeHtml(event.location)}</span>` : '';
+    const datetimeAttr = event.allDay
+      ? event.start.toISOString().slice(0, 10)
+      : event.start.toISOString();
     return `<li class="ride">` +
-      `<time class="ride__when" datetime="${event.start.toISOString()}">${escapeHtml(when)}</time>` +
+      `<time class="ride__when" datetime="${datetimeAttr}">${escapeHtml(when)}</time>` +
       time +
       `<span class="ride__title">${escapeHtml(event.title)}</span>` +
       place +

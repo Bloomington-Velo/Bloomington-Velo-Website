@@ -62,23 +62,42 @@ test('renderAgenda returns an empty string for no events', () => {
 
 test('renderAgenda escapes event titles and locations', () => {
   const html = renderAgenda(parseEvents({
-    items: [{ id: 'x', summary: '<script>bad</script>', location: '"Park"', status: 'confirmed',
+    items: [{ id: 'x', summary: '<script>bad</script>', location: '"><svg/onload=alert(1)>', status: 'confirmed',
               start: { dateTime: '2026-04-07T17:45:00-04:00' } }],
   }));
   assert.ok(!html.includes('<script>'));
   assert.ok(html.includes('&lt;script&gt;'));
+  assert.ok(!html.includes('<svg'));
+  assert.ok(html.includes('&quot;&gt;&lt;svg/onload=alert(1)&gt;'));
 });
 
 test('renderAgenda shows a time for timed events in Indiana time', () => {
   const html = renderAgenda(parseEvents(PAYLOAD).filter((e) => e.id === 'a'));
   assert.match(html, /5:45\s?PM/i);
   assert.ok(html.includes('Tuesday Night Ride'));
+  assert.ok(html.includes('datetime="2026-04-07T21:45:00.000Z"'));
 });
 
-test('renderAgenda omits the time for all-day events', () => {
+test('renderAgenda shows the correct local time in January (EST, not DST)', () => {
+  const html = renderAgenda(parseEvents({
+    items: [{ id: 'j', summary: 'Winter Ride', location: 'Bryan Park', status: 'confirmed',
+              start: { dateTime: '2026-01-06T17:45:00-05:00' } }],
+  }));
+  assert.match(html, /5:45\s?PM/i);
+  assert.ok(html.includes('Tuesday, Jan 6'));
+});
+
+test('renderAgenda omits the time for all-day events and renders the un-shifted date', () => {
   const html = renderAgenda(parseEvents(PAYLOAD).filter((e) => e.id === 'b'));
   assert.ok(html.includes('Candy Stripe Classic'));
   assert.ok(!/\d:\d\d\s?(AM|PM)/i.test(html));
+  assert.ok(html.includes('Saturday, Apr 11'));
+});
+
+test('renderAgenda emits a date-only datetime attribute for all-day events', () => {
+  const html = renderAgenda(parseEvents(PAYLOAD).filter((e) => e.id === 'b'));
+  assert.ok(html.includes('datetime="2026-04-11"'));
+  assert.ok(!html.includes('2026-04-11T'));
 });
 
 test('renderAgenda emits one list item per event', () => {
