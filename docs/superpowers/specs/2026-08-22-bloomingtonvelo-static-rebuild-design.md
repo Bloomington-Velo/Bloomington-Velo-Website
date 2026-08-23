@@ -241,7 +241,7 @@ Production and staging share one `.htaccess`, so staging is protected by host:
 
 ### Budget
 
-- Under **100 KB** of first-party assets per page (HTML + CSS + JS + images), excluding third-party iframes.
+- Keep first-party assets per page (HTML + CSS + JS + images) as small as is reasonable. This is a guideline to design against, not a hard gate: report page weight in the audit, flag anything that looks bloated, but do not contort the markup or degrade image quality to hit a number.
 - Google Calendar and Strava iframes are `loading="lazy"` and never block first paint. This is the largest single improvement over the current site, which loads Jetpack, jQuery, and four plugins on every page.
 - One self-hosted variable font with `font-display: swap`. No Google Fonts request.
 - Responsive images with `srcset` and `sizes`; WebP with JPEG fallback; explicit `width` and `height` on every image to prevent layout shift.
