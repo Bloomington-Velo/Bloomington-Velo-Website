@@ -2063,6 +2063,36 @@ Set a reminder for four weeks out to review Search Console coverage, the 404 and
 
 ---
 
+## Design decision
+
+**Chosen 2026-08-29: Mockup A — Modern refresh.** `_design/mockup-a.html` is the reference
+implementation for Task 6's design system.
+
+What carries over into `assets/css/site.css`:
+
+- Navy `#132856` and white as the primary pair, with the existing BV logo unchanged. No rebrand, no
+  new accent colour — this is why A was chosen over B.
+- Editorial serif for display headings over a humanist sans for body copy, both from system font
+  stacks. No web font is loaded from a third party.
+- The stat strip (34 members / 51 documented routes / 18–20 mph / 40–100+ miles) as a reusable
+  component.
+- Hairline-bordered cards for rides and roster entries; numbered section eyebrows ("01 — THE CLUB").
+- Generous vertical rhythm; content constrained to a readable measure.
+
+Carried forward from the spike's verification:
+
+- A's only two AA contrast misses (4.34 against a 4.5 requirement) are both captions inside the
+  Strava **placeholder** box. The real page embeds Strava's third-party iframe there instead, so
+  those elements never ship. Nothing to fix, but do not reintroduce that muted grey on white
+  elsewhere in the stylesheet.
+- The hero's placeholder artwork is a CSS contour/road-line field standing in for a photograph.
+  Task 7 keeps it until club photography arrives (see `docs/content-needed.md`).
+
+Rejected: **B — Bold athletic** (strongest recruiting design, but it depends on photography that does
+not exist yet and its gold accent amounts to a brand extension, which the spec lists as a non-goal).
+**C — Minimal utilitarian** (fastest and most maintainable, but does the least to convince a
+prospective member to turn up).
+
 ## Post-launch notes
 
 - WordPress can be uninstalled from Hostinger once the site has been stable for a few weeks and the backup is safely stored. Do not rush this.

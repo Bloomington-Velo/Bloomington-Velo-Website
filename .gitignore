@@ -3,3 +3,5 @@ node_modules/
 Thumbs.db
 *.log
 _source/raw/
+Photos.zip
+*.zip
