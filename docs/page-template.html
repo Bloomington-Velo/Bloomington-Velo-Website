@@ -1,16 +1,52 @@
+<!--
+  ============================================================================
+  BLOOMINGTON VELO — CANONICAL PAGE TEMPLATE
+  ============================================================================
+
+  Every page on the site is a COPY of this file. There is no include
+  mechanism, no partial, and no build step: the duplication is deliberate,
+  and this file is the single source the duplicates come from.
+
+  To make a page:
+    1. Copy this file to its location, e.g. team/index.html.
+    2. DELETE this comment block. It sits above the doctype on purpose:
+       leaving it in place makes tools/verify.mjs fail the page immediately,
+       so a copy can never ship with it by accident.
+    3. Replace the four markers:
+         <!-- SLOT: title -->        page title, 5-70 characters
+                                     (appears twice: <title> and og:title)
+         <!-- SLOT: description -->  meta description, 50-160 characters
+                                     (appears twice: description and og:description)
+         <!-- SLOT: canonical -->    root-relative path with a trailing slash,
+                                     e.g. /ride/routes/  — "/" for the home page
+                                     (appears twice: canonical and og:url)
+         <!-- SLOT: main -->         the page content, holding exactly one h1
+    4. Add aria-current="page" to this page's own link in the nav.
+    5. Run `node tools/verify.mjs`.
+
+  When the header, the nav, or the footer changes, change it HERE first and
+  then propagate the same edit to all eight pages.
+
+  KNOWN GAP: the rel="manifest" link to /site.webmanifest is deliberately
+  absent. tools/verify.mjs treats any path whose extension is longer than
+  five characters as a directory and demands a trailing slash, so linking
+  site.webmanifest fails every page. Widen that regex (\.[a-zA-Z0-9]{2,12}$)
+  and then add the link back here and to all eight pages.
+  ============================================================================
+-->
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bloomington Velo | Cycling Club in Bloomington, Indiana</title>
-<meta name="description" content="Bloomington Velo is a performance-oriented cycling club in Bloomington, Indiana. Racing, training, and rider development. Join our group rides.">
-<link rel="canonical" href="https://bloomingtonvelo.org/">
+<title><!-- SLOT: title --></title>
+<meta name="description" content="<!-- SLOT: description -->">
+<link rel="canonical" href="https://bloomingtonvelo.org<!-- SLOT: canonical -->">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bloomington Velo">
-<meta property="og:title" content="Bloomington Velo | Cycling Club in Bloomington, Indiana">
-<meta property="og:description" content="Bloomington Velo is a performance-oriented cycling club in Bloomington, Indiana. Racing, training, and rider development. Join our group rides.">
-<meta property="og:url" content="https://bloomingtonvelo.org/">
+<meta property="og:title" content="<!-- SLOT: title -->">
+<meta property="og:description" content="<!-- SLOT: description -->">
+<meta property="og:url" content="https://bloomingtonvelo.org<!-- SLOT: canonical -->">
 <meta property="og:image" content="https://bloomingtonvelo.org/assets/img/og-default.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#132856">
@@ -48,40 +84,7 @@
 </header>
 
 <main id="main">
-
-<section class="hero hero--tall" aria-labelledby="hero-title">
-  <div class="hero__art" role="img" aria-label="Placeholder artwork: an abstract contour map of the hills south of Bloomington, standing in for a club photograph.">
-    <span class="hero__roads" aria-hidden="true"></span>
-  </div>
-  <div class="wrap">
-    <p class="eyebrow">Bloomington, Indiana</p>
-    <h1 id="hero-title">Bloomington Velo</h1>
-    <p class="lede">A performance-oriented cycling club built on racing, training, and getting new riders up to speed on the best roads in the Midwest.</p>
-    <p class="actions"><a class="btn btn--primary" href="/ride/">Ride with us</a></p>
-  </div>
-</section>
-
-<div class="stats">
-  <ul class="wrap">
-    <li class="stat"><span class="stat__n">34</span><span class="stat__label">Members</span></li>
-    <li class="stat"><span class="stat__n">51</span><span class="stat__label">Documented routes</span></li>
-    <li class="stat"><span class="stat__n">18&ndash;20</span><span class="stat__label">Weekend pace, mph</span></li>
-    <li class="stat"><span class="stat__n">40&ndash;100+</span><span class="stat__label">Weekend miles</span></li>
-  </ul>
-</div>
-
-<section class="section" aria-labelledby="who-title">
-  <div class="wrap split">
-    <div class="split__head"><p class="eyebrow">01 &mdash; The club</p></div>
-    <div>
-      <h2 id="who-title">Who we are</h2>
-      <div class="prose">
-        <p>Bloomington Velo is a performance-oriented cycling club with an emphasis on racing and training. Full home page content lands in Task 7.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- SLOT: main -->
 </main>
 
 <footer class="site-footer">

@@ -1,1 +1,1058 @@
-/* Bloomington Velo — see Task 5 */
+/* ==========================================================================
+   BLOOMINGTON VELO — SITE STYLESHEET
+   Hand-written, no build step, no third-party requests. One file.
+
+   The design language is extracted from _design/mockup-a.html ("Modern
+   refresh"), the direction the club chose: navy and white, generous
+   whitespace, an editorial serif for display type over a humanist sans for
+   body copy, and content held in quiet hairline-ruled cards.
+
+   Section order:
+     custom properties -> reset -> base typography -> layout utilities ->
+     buttons -> skip link -> header and nav -> hero -> sections -> cards ->
+     rides -> embeds -> footer -> reduced motion
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. CUSTOM PROPERTIES
+   Every colour and every spacing step lives here. Nothing below this block
+   hard-codes a hex value.
+   ========================================================================== */
+
+:root {
+  /* --- brand and ink ---------------------------------------------------- */
+  --navy: #132856;          /* the club brand navy — 14.3:1 on white */
+  --navy-dark: #0B1A3A;     /* hero ground, deepest navy */
+  --accent: #1D3A73;        /* lifted navy: hover, focus rings — 11.0:1 on white */
+  --ink: #101828;           /* body text on white — 16.6:1 */
+  --muted: #4A5568;         /* secondary text — 7.5:1 on white, 7.0:1 on surface */
+
+  /* --- surfaces --------------------------------------------------------- */
+  --paper: #FFFFFF;
+  --surface: #F5F7FA;       /* alternating section ground */
+  --surface-sunk: #F7F9FC;  /* footer ground */
+  --rule: #E1E6EF;          /* hairline borders */
+  --rule-soft: #EEF1F6;     /* interior dividers */
+  --rule-strong: #C7D2E6;   /* card hover border, link underline */
+  --tint: #E8EDF7;          /* pale navy wash: tags, reversed button hover */
+
+  /* --- text on navy ----------------------------------------------------- */
+  --on-navy: #FFFFFF;             /* 14.3:1 on --navy, 12.8:1 on --navy-dark */
+  --on-navy-muted: #D8DFEC;       /* 10.7:1 on --navy,  9.6:1 on --navy-dark */
+  --on-navy-rule: rgba(255, 255, 255, 0.45);
+  --on-navy-wash: rgba(255, 255, 255, 0.14);
+
+  /* --- shadow ----------------------------------------------------------- */
+  --shadow-card: 0 14px 34px -22px rgba(19, 40, 86, 0.45);
+  --shadow-menu: 0 22px 50px -26px rgba(16, 24, 40, 0.5);
+
+  /* --- type -------------------------------------------------------------
+     System stacks only. There is deliberately no @font-face rule: no font
+     file ships with the site and nothing is fetched from a third party. */
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+                  Palatino, "Hoefler Text", Georgia, "Times New Roman", serif;
+  --font-body: "Segoe UI", -apple-system, BlinkMacSystemFont,
+               "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* --- spacing scale ---------------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+
+  /* --- measure and shape ------------------------------------------------ */
+  --measure: 68ch;                          /* readable line length */
+  --measure-tight: 54ch;                    /* lede and pull quote */
+  --wrap: min(1180px, 100% - 2.25rem);      /* page gutter, widened at 48rem */
+  --radius: 4px;
+  --radius-pill: 999px;
+
+  /* --- embeds ----------------------------------------------------------- */
+  --embed-ratio: 4 / 3;   /* default reserved shape for a responsive iframe */
+  --embed-height: 300px;  /* default reserved height for a fixed-size widget */
+}
+
+
+/* ==========================================================================
+   2. RESET
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg { max-width: 100%; display: block; }
+
+img { height: auto; }
+
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+
+ul, ol { margin: 0; padding: 0; }
+
+button,
+input,
+select,
+textarea { font: inherit; color: inherit; }
+
+
+/* ==========================================================================
+   3. BASE TYPOGRAPHY
+   Fluid sizes via clamp(). Display type is the serif; everything else the
+   sans. Body copy is held to --measure.
+   ========================================================================== */
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+h1 { font-size: clamp(2.1rem, 1.55rem + 2.6vw, 3.5rem); letter-spacing: -0.025em; }
+h2 { font-size: clamp(1.7rem, 1.4rem + 1.4vw, 2.6rem); }
+h3 { font-size: clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem); letter-spacing: -0.01em; }
+
+h4 {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+p { max-width: var(--measure); }
+
+a {
+  color: var(--navy);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover { color: var(--accent); }
+
+strong { font-weight: 600; color: var(--ink); }
+
+/* Numbered section label — "01 — THE CLUB". */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  margin-bottom: var(--space-3);
+}
+
+/* Opening paragraph of a page or section. */
+.lede {
+  font-size: clamp(1.08rem, 1rem + 0.5vw, 1.35rem);
+  line-height: 1.55;
+  max-width: var(--measure-tight);
+}
+
+/* A run of body copy. */
+.prose > * + * { margin-top: var(--space-3); }
+.prose p { color: var(--muted); }
+.prose h2,
+.prose h3 { margin-top: var(--space-5); }
+
+/* Editorial pull quote. */
+.pull {
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--navy);
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.05rem + 0.6vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 34ch;
+}
+
+
+/* ==========================================================================
+   4. LAYOUT UTILITIES
+   ========================================================================== */
+
+.wrap {
+  width: var(--wrap);
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Editorial split: sticky numbered label, body copy, optional pull quote.
+   Markup:  <div class="wrap split">
+              <div class="split__head"><p class="eyebrow">01 — The club</p></div>
+              <div> ...heading and .prose... </div>
+              <p class="pull"> ... </p>
+            </div>                                                            */
+.split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.split__head { align-self: start; }
+
+.stack > * + * { margin-top: var(--space-3); }
+
+@media (min-width: 48rem) {
+  :root { --wrap: min(1180px, 100% - 3rem); }
+
+  .split {
+    grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+  .split__head { position: sticky; top: 6.5rem; }
+  .split .pull { grid-column: 2; margin-top: var(--space-5); }
+}
+
+@media (min-width: 72rem) {
+  .split {
+    grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr) minmax(0, 17rem);
+    align-items: start;
+  }
+  .split .pull { grid-column: 3; margin-top: var(--space-1); }
+}
+
+
+/* ==========================================================================
+   5. BUTTONS
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid var(--navy);
+  border-radius: var(--radius);
+  color: var(--navy);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--navy);
+  color: var(--on-navy);
+}
+
+.btn--primary {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--on-navy);
+}
+
+.btn--primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-navy);
+}
+
+.btn--small { padding: 0.6rem 1.15rem; font-size: 0.88rem; }
+
+/* On a navy ground the pair reverses: white fill for primary, white hairline
+   outline for secondary. */
+.hero .btn,
+.section--navy .btn,
+.on-navy .btn {
+  border-color: var(--on-navy-rule);
+  color: var(--on-navy);
+  background: transparent;
+}
+
+.hero .btn:hover,
+.section--navy .btn:hover,
+.on-navy .btn:hover {
+  background: var(--on-navy-wash);
+  border-color: var(--on-navy);
+  color: var(--on-navy);
+}
+
+.hero .btn--primary,
+.section--navy .btn--primary,
+.on-navy .btn--primary {
+  background: var(--on-navy);
+  border-color: var(--on-navy);
+  color: var(--navy);
+}
+
+.hero .btn--primary:hover,
+.section--navy .btn--primary:hover,
+.on-navy .btn--primary:hover {
+  background: var(--tint);
+  border-color: var(--tint);
+  color: var(--navy);
+}
+
+/* A row of calls to action. */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+/* Quiet inline "more" link. */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.94rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--navy);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.link-arrow:hover { border-bottom-color: var(--navy); }
+
+
+/* ==========================================================================
+   6. SKIP LINK AND FOCUS
+   Every interactive element gets a 3px visible ring.
+   ========================================================================== */
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* On navy the ring flips to white so it stays visible. */
+.hero :focus-visible,
+.section--navy :focus-visible,
+.on-navy :focus-visible { outline-color: var(--on-navy); }
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: -6rem;
+  z-index: 99;
+  background: var(--navy);
+  color: var(--on-navy);
+  padding: 0.75rem 1.1rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus { top: var(--space-3); color: var(--on-navy); }
+
+
+/* ==========================================================================
+   7. HEADER AND NAV
+   Mobile first. The nav collapses into a dropdown ONLY under .js-nav, the
+   class assets/js/nav.js puts on <html>. With JavaScript off the class never
+   lands: the toggle stays hidden and the full nav renders inline.
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-header__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding-block: var(--space-2);
+}
+
+.site-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-right: auto;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-header__logo { width: 38px; height: 38px; }
+
+.site-header__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.28rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.site-header__tag {
+  display: block;
+  margin-top: 0.28rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* --- the toggle ---------------------------------------------------------- */
+
+.nav-toggle {
+  display: none;                 /* no JS: the button does nothing, so hide it */
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.js-nav .nav-toggle { display: inline-flex; }
+
+.nav-toggle:hover { border-color: var(--rule-strong); }
+
+.nav-toggle__bars,
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+  display: block;
+  width: 1.1rem;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.nav-toggle__bars { position: relative; }
+
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.nav-toggle__bars::before { top: -6px; }
+.nav-toggle__bars::after { top: 6px; }
+
+/* --- the nav ------------------------------------------------------------- */
+
+.site-nav { flex-basis: 100%; }   /* no JS: full-width row under the brand */
+
+.site-nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-nav li + li { border-top: 1px solid var(--rule-soft); }
+
+.site-nav a {
+  display: block;
+  position: relative;
+  padding: 0.72rem 0.8rem;
+  font-size: 0.94rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] { color: var(--navy); }
+
+/* Collapsed dropdown — only with the script running. */
+.js-nav .site-nav {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  z-index: 50;
+  flex-basis: auto;
+  min-width: 13rem;
+  padding: var(--space-1);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-menu);
+}
+
+.js-nav .site-nav[data-open="false"] { display: none; }
+
+@media (min-width: 48rem) {
+  .site-header__inner { min-height: 78px; flex-wrap: nowrap; gap: var(--space-4); }
+  .site-header__logo { width: 44px; height: 44px; }
+
+  .js-nav .nav-toggle { display: none; }
+
+  .site-nav,
+  .js-nav .site-nav,
+  .js-nav .site-nav[data-open="false"] {
+    display: block;
+    position: static;
+    flex-basis: auto;
+    min-width: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .site-nav ul {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(1rem, 2.2vw, 1.9rem);
+  }
+
+  .site-nav li + li { border-top: 0; }
+  .site-nav a { padding: 0.4rem 0; }
+
+  /* The mockup's underline that draws in from the left. */
+  .site-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--navy);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .site-nav a:hover::after,
+  .site-nav a:focus-visible::after,
+  .site-nav a[aria-current="page"]::after { transform: scaleX(1); }
+}
+
+
+/* ==========================================================================
+   8. HERO
+   A navy band. On the home page .hero__art adds the placeholder contour
+   artwork carried over from the mockup — an abstract map of the ridge-and-
+   valley country south of Bloomington, standing in for a club photograph
+   until one exists. See docs/content-needed.md.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--navy-dark);
+  color: var(--on-navy);
+  padding-block: clamp(3rem, 2rem + 5vw, 8rem) clamp(2.5rem, 2rem + 3vw, 3.25rem);
+}
+
+.hero h1 { color: var(--on-navy); max-width: 14ch; }
+.hero p { color: var(--on-navy-muted); }
+.hero .eyebrow { color: var(--on-navy-muted); }
+.hero .lede { margin-top: var(--space-4); }
+.hero a { color: var(--on-navy); }
+
+/* Full-bleed variant used on the home page. */
+.hero--tall {
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(420px, 60vh, 640px);
+}
+
+/* The placeholder artwork. The rgba() values here are alpha washes of pure
+   white and of --navy-dark rather than palette colours of their own, which
+   is why they are not tokens. */
+.hero__art {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--navy-dark);
+}
+
+.hero__art::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    repeating-radial-gradient(ellipse 40% 30% at 31% 46%,
+      transparent 0 36px, rgba(255, 255, 255, 0.22) 36px 37.6px),
+    repeating-radial-gradient(ellipse 34% 46% at 78% 60%,
+      transparent 0 44px, rgba(255, 255, 255, 0.155) 44px 45.6px);
+  transform: rotate(-7deg);
+  -webkit-mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+          mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+}
+
+.hero__roads {
+  position: absolute;
+  inset: -20%;
+  background:
+    linear-gradient(101deg, transparent calc(41% - 1px), rgba(255, 255, 255, 0.34) 41%, transparent calc(41% + 1.6px)),
+    linear-gradient(69deg,  transparent calc(66% - 1px), rgba(255, 255, 255, 0.24) 66%, transparent calc(66% + 1.6px)),
+    linear-gradient(158deg, transparent calc(58% - 1px), rgba(255, 255, 255, 0.13) 58%, transparent calc(58% + 1.6px));
+  -webkit-mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+          mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+}
+
+.hero__art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(105% 80% at 6% 96%, rgba(29, 58, 115, 0.8), transparent 58%),
+    linear-gradient(90deg, rgba(11, 26, 58, 0.88) 0%, rgba(11, 26, 58, 0.55) 44%, rgba(11, 26, 58, 0.2) 72%, rgba(11, 26, 58, 0.45) 100%),
+    linear-gradient(180deg, rgba(11, 26, 58, 0.5) 0%, rgba(11, 26, 58, 0.28) 34%, rgba(11, 26, 58, 0.88) 100%);
+}
+
+
+/* ==========================================================================
+   9. SECTIONS AND THE STAT STRIP
+   ========================================================================== */
+
+.section { padding-block: clamp(2.75rem, 2rem + 4vw, 7rem); }
+
+.section--surface {
+  background: var(--surface);
+  border-block: 1px solid var(--rule);
+}
+
+.section--navy {
+  background: var(--navy);
+  color: var(--on-navy);
+  text-align: center;
+}
+
+.section--navy h2 { color: var(--on-navy); }
+.section--navy p { color: var(--on-navy-muted); margin-inline: auto; }
+.section--navy .actions { justify-content: center; }
+
+/* Heading block with an optional link pushed to the right. */
+.section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.section__head p {
+  margin-top: 0.7rem;
+  max-width: 46ch;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* --- stat strip -----------------------------------------------------------
+   Markup:  <div class="stats">
+              <ul class="wrap">
+                <li class="stat"><span class="stat__n">34</span>
+                    <span class="stat__label">Members</span></li>
+                <li class="stat"><span class="stat__n">51</span>
+                    <span class="stat__label">Documented routes</span></li>
+                <li class="stat"><span class="stat__n">18–20</span>
+                    <span class="stat__label">Weekend pace, mph</span></li>
+                <li class="stat"><span class="stat__n">40–100+</span>
+                    <span class="stat__label">Weekend miles</span></li>
+              </ul>
+            </div>
+   Two columns on a phone, four from 48rem.                                   */
+.stats {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+
+.stats ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.stat {
+  padding: 1.4rem 1rem 1.4rem 0;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.stat:nth-child(-n + 2) { border-top: 0; }
+.stat:nth-child(even) { padding-left: 1.4rem; border-left: 1px solid var(--rule-soft); }
+
+.stat__n {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 1.4rem + 1.2vw, 2.5rem);
+  line-height: 1;
+  color: var(--navy);
+}
+
+.stat__label {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--muted);
+}
+
+@media (min-width: 48rem) {
+  .stats ul { grid-template-columns: repeat(4, 1fr); }
+
+  .stat {
+    padding: 2.1rem 1.5rem 2.1rem 0;
+    border-top: 0;
+    border-left: 1px solid var(--rule-soft);
+  }
+  .stat:first-child { border-left: 0; }
+  .stat:not(:first-child) { padding-left: 1.6rem; }
+}
+
+
+/* ==========================================================================
+   10. CARDS — grid, panels, roster, routes, sponsors
+   One shape throughout: white ground, hairline border, 4px radius.
+   ========================================================================== */
+
+.card-grid {
+  list-style: none;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+.panel,
+.roster-card,
+.sponsor {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.panel { padding: var(--space-4); }
+.panel > h2 { font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.6rem); margin-bottom: var(--space-2); }
+.panel > p { color: var(--muted); font-size: 0.94rem; }
+
+/* --- roster ---------------------------------------------------------------
+   Markup:  <article class="roster-card">
+              <img class="roster-card__photo" ...>            (optional)
+              <h2 class="roster-card__name">Name</h2>
+              <p class="roster-card__role">President</p>      (optional)
+              <div class="roster-card__bio"> ... </div>       (optional)
+            </article>
+   Photo and bio are both optional, so the card is a plain flex column: a
+   card with neither sits happily beside a card with both.                    */
+.roster-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.roster-card picture { display: block; }
+
+.roster-card__photo {
+  width: 100%;
+  max-width: 8.5rem;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: var(--space-2);
+}
+
+.roster-card__name { font-size: 1.15rem; letter-spacing: -0.01em; }
+
+.roster-card__role {
+  align-self: flex-start;
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--tint);
+  color: var(--navy);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.roster-card__bio { color: var(--muted); font-size: 0.94rem; }
+.roster-card__bio p + p { margin-top: var(--space-2); }
+.roster-card__bio img { display: inline; }
+
+/* --- routes ---------------------------------------------------------------
+   Markup:  <section class="route-group">
+              <h2>30 – 44 Miles</h2>
+              <ul class="route-list">
+                <li class="route"><a href="...">Name</a>
+                    <span class="route__desc">...</span></li>
+              </ul>
+            </section>                                                        */
+.route-group + .route-group { margin-top: var(--space-5); }
+
+.route-group > h2 {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--rule);
+  font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.7rem);
+}
+
+.route-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  column-gap: var(--space-5);
+}
+
+.route {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.route > a {
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.route > a:hover { border-bottom-color: var(--navy); }
+
+.route__desc {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+/* --- sponsors ------------------------------------------------------------ */
+.sponsor {
+  display: grid;
+  place-items: center;
+  min-height: 9rem;
+  padding: var(--space-4);
+}
+
+.sponsor a { display: block; }
+.sponsor img { max-height: 7rem; width: auto; object-fit: contain; }
+
+
+/* ==========================================================================
+   11. RIDES
+   Exactly the shape assets/js/rides.js emits, which the static fallback
+   copies verbatim:
+
+     <ul class="rides">
+       <li class="ride">
+         <time class="ride__when" datetime="...">Tuesday, Aug 25</time>
+         <span class="ride__time">5:45 PM</span>       (absent for all-day)
+         <span class="ride__title">Weekday group ride</span>
+         <span class="ride__place">Bryan Park</span>   (absent if no location)
+       </li>
+     </ul>
+
+   The four children are flat siblings and two of them are optional, so the
+   card is a flex column — a missing time or place just collapses out.
+   ========================================================================== */
+
+.rides {
+  list-style: none;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.ride {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) 1.75rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.ride__when {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.ride__time {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.ride__title {
+  font-family: var(--font-display);
+  font-size: 1.22rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.ride__place {
+  margin-top: auto;
+  padding-top: var(--space-2);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+
+/* ==========================================================================
+   12. EMBEDS
+   Third-party iframes. The container reserves its height up front so a
+   lazily-loaded embed shifts nothing when it arrives.
+   ========================================================================== */
+
+.embed {
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+  aspect-ratio: var(--embed-ratio);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.embed > iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Widgets that come at a fixed pixel height rather than a ratio. */
+.embed--fixed,
+.embed--strava,
+.embed--strava-rides,
+.embed--calendar {
+  aspect-ratio: auto;
+  height: var(--embed-height);
+}
+
+.embed--strava { --embed-height: 180px; max-width: 22rem; }
+.embed--strava-rides { --embed-height: 474px; max-width: 22rem; }
+.embed--calendar { --embed-height: 620px; }
+
+
+/* ==========================================================================
+   13. FOOTER
+   ========================================================================== */
+
+.site-footer {
+  background: var(--surface-sunk);
+  border-top: 1px solid var(--rule);
+  padding-block: var(--space-6) var(--space-5);
+  font-size: 0.92rem;
+}
+
+.site-footer__inner {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.site-footer__tagline { color: var(--muted); max-width: 44ch; }
+
+.site-footer__links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.site-footer__links a {
+  color: var(--ink);
+  text-decoration: none;
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.site-footer__links a:hover { color: var(--navy); border-bottom-color: var(--navy); }
+
+.site-footer__legal {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+@media (min-width: 48rem) {
+  .site-footer__inner {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    column-gap: var(--space-5);
+  }
+  .site-footer__links { justify-content: flex-end; }
+  .site-footer__legal { grid-column: 1 / -1; }
+}
+
+
+/* ==========================================================================
+   14. MOTION
+   Every transition and animation on the site lives in this block, so a
+   visitor who asks for reduced motion gets none of it.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+
+  .skip-link { transition: top 0.18s ease; }
+
+  .btn {
+    transition: background-color 0.18s ease, color 0.18s ease,
+                border-color 0.18s ease, transform 0.18s ease;
+  }
+  .btn--primary:hover { transform: translateY(-1px); }
+
+  .nav-toggle { transition: border-color 0.18s ease; }
+  .site-nav a::after { transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1); }
+  .link-arrow,
+  .route > a,
+  .site-footer__links a { transition: color 0.18s ease, border-color 0.2s ease; }
+
+  .ride,
+  .roster-card,
+  .sponsor {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .ride:hover,
+  .roster-card:hover,
+  .sponsor:hover {
+    border-color: var(--rule-strong);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-2px);
+  }
+}
