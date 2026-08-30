@@ -5,7 +5,7 @@
     { "src": "/assets/img/logo-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/assets/img/logo.png", "sizes": "270x270", "type": "image/png" }
   ],
-  "theme_color": "#132856",
+  "theme_color": "#17233B",
   "background_color": "#ffffff",
   "display": "browser",
   "start_url": "/"
