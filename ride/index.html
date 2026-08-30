@@ -53,9 +53,108 @@
   <div class="wrap">
     <h1>Group rides</h1>
     <p class="lede">Weekday and weekend group rides: times, meeting points, and what to expect.</p>
-    <!-- TODO(Task 8): replace this page body with the real content. -->
   </div>
 </section>
+
+<section class="section" aria-labelledby="weekday-heading">
+  <div class="wrap split">
+    <div class="split__head"><p class="eyebrow">01 &mdash; Weeknights</p></div>
+    <div>
+      <h2 id="weekday-heading">Weekday rides</h2>
+      <div class="prose">
+        <p>Tuesday and Thursday rides leave the Bryan Park pool parking lot at 5:45 PM, running until daylight savings time. The pace is rolling, and we regroup at the top of every climb and at every turn, so a strong rider can push the pace and a newer rider can dig in without getting dropped for good.</p>
+      </div>
+    </div>
+    <p class="pull">5:45 PM, Tuesday &amp; Thursday, Bryan Park pool lot.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="weekend-heading">
+  <div class="wrap split">
+    <div class="split__head"><p class="eyebrow">02 &mdash; Weekends</p></div>
+    <div>
+      <h2 id="weekend-heading">Weekend rides</h2>
+      <div class="prose">
+        <p>Saturday and Sunday rides leave from the Sample Gates and cover 40&ndash;100+ miles at 18&ndash;20 mph. These are training rides: the pace is fast from the start, regroups are shorter and less frequent than on a weeknight, and the distance depends on who shows up and how the legs feel.</p>
+      </div>
+    </div>
+    <p class="pull">40&ndash;100+ miles at 18&ndash;20 mph, from the Sample Gates.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="expect-heading">
+  <div class="wrap split">
+    <div class="split__head"><p class="eyebrow">03 &mdash; Etiquette</p></div>
+    <div>
+      <h2 id="expect-heading">What to expect</h2>
+      <div class="prose">
+        <p>Nobody rides off the front and leaves you behind for good. On weeknights we regroup at the top of every climb and every turn; weekend regroups are looser, so if you are new to group riding, start on a Tuesday or Thursday before you jump into a weekend ride.</p>
+        <p>Bring a helmet, a spare tube or two, a pump or CO2, and something to eat and drink &mdash; there is no support vehicle. Lights front and back are worth having if you might still be out near dusk.</p>
+        <p>The weeknight rides suit anyone with a road or gravel bike in good working order and the fitness to hold a moderate pace for an hour or two &mdash; that is the easiest way in. The weekend rides suit riders who are already training and want the miles and the speed.</p>
+      </div>
+    </div>
+    <p class="pull">Ride within yourself &mdash; we will wait for you at the top.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="rides-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <div>
+        <p class="eyebrow">04 &mdash; This week</p>
+        <h2 id="rides-heading">Next rides</h2>
+      </div>
+      <a class="link-arrow" href="/ride/calendar/">See the full calendar</a>
+    </div>
+    <div id="next-rides" data-source="static">
+      <!-- ride__when is a <span>, not a <time>: "Tuesday & Thursday" is a
+           recurring description with no single calendar date, so there is no
+           valid datetime value to attach. renderAgenda() emits
+           <time datetime="..."> only for real, dated calendar events; this
+           static fallback intentionally does not. -->
+      <ul class="rides">
+        <li class="ride"><span class="ride__when">Tuesday &amp; Thursday</span><span class="ride__time">5:45 PM</span><span class="ride__title">Weekday group ride</span><span class="ride__place">Bryan Park pool parking lot</span></li>
+        <li class="ride"><span class="ride__when">Saturday &amp; Sunday</span><span class="ride__title">Weekend training ride, 40&ndash;100+ miles at 18&ndash;20 mph</span><span class="ride__place">Sample Gates</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="strava-heading">
+  <div class="wrap split">
+    <div class="split__head"><p class="eyebrow">05 &mdash; Strava</p></div>
+    <div>
+      <h2 id="strava-heading">Recent club rides</h2>
+      <div class="card-grid">
+        <div class="prose">
+          <p>Every logged ride from club 329602 on Strava &mdash; who rode, how far, and how fast. It is the same club feed as the homepage, just showing individual rides instead of the weekly total.</p>
+        </div>
+        <div class="embed embed--strava-rides">
+          <iframe title="Bloomington Velo recent club rides on Strava" loading="lazy" allowtransparency frameborder="0" height="454" width="300" scrolling="no"
+            src="https://www.strava.com/clubs/329602/latest-rides/ae47281f0af190641e17e6240c59a40c124d670c?show_rides=true"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="onward-heading">
+  <div class="wrap split">
+    <div class="split__head"><p class="eyebrow">06 &mdash; More</p></div>
+    <div>
+      <h2 id="onward-heading">Where to next</h2>
+      <div class="prose">
+        <p>Check the full calendar for exact dates and any one-off rides, or browse the route library to see where these rides actually go.</p>
+      </div>
+      <p class="actions">
+        <a class="btn btn--primary" href="/ride/calendar/">See the full calendar</a>
+        <a class="btn" href="/ride/routes/">Browse the routes</a>
+      </p>
+    </div>
+    <p class="pull">Turn up on a Tuesday. That is the whole process.</p>
+  </div>
+</section>
+
 </main>
 
 <footer class="site-footer">
@@ -72,5 +171,6 @@
 </footer>
 
 <script src="/assets/js/nav.js" defer></script>
+<script type="module" src="/assets/js/rides-init.js"></script>
 </body>
 </html>
