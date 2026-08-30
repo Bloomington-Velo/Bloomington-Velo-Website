@@ -821,9 +821,16 @@ strong { font-weight: 600; color: var(--ink); }
    One shape throughout: white ground, hairline border, 4px radius.
    ========================================================================== */
 
+/* align-items: start — without it, grid's default stretch makes every card
+   in a row as tall as the row's tallest neighbour. The roster page pairs
+   name-only cards against a ~1600-character bio with an embedded photo, so
+   stretch would leave short cards as mostly-empty bordered boxes. Starting
+   each card at its own content height keeps a bare card looking like a
+   deliberately compact card instead of a broken tall one. */
 .card-grid {
   list-style: none;
   display: grid;
+  align-items: start;
   gap: var(--space-3);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
@@ -885,6 +892,22 @@ strong { font-weight: 600; color: var(--ink); }
 .roster-card__bio { color: var(--muted); font-size: 0.94rem; }
 .roster-card__bio p + p { margin-top: var(--space-2); }
 .roster-card__bio img { display: inline; }
+
+/* Carried-over WordPress bios can embed the platform's inline emoji <img>
+   replacements (class="emoji"); verbatim per the no-editing rule on bio
+   content, so they arrive with no width/height and no size rule of their
+   own. Unstyled, a browser renders their intrinsic SVG size, which without
+   an explicit viewBox default can be hundreds of pixels — a text-sized flag
+   emoji rendering as a wall-sized one. This mirrors WordPress's own default
+   emoji stylesheet (core-block/style.css, .wp-smiley/.emoji) so the icon
+   sits inline at roughly text size instead. */
+.roster-card__bio img.emoji {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin: 0 0.07em;
+  vertical-align: -0.1em;
+}
 
 /* --- routes ---------------------------------------------------------------
    Markup:  <section class="route-group">

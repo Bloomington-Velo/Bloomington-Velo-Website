@@ -27,6 +27,36 @@ export function expectedCanonical(path) {
   return '/' + p;
 }
 
+// Team member bios (roster-card__bio) are carried over byte-for-byte from
+// old WordPress content and must never be edited to satisfy a lint rule —
+// see _source/roster.json and team/index.html. Some of that verbatim markup
+// (WordPress's auto-inserted emoji <img> tags, in particular) has no
+// width/height attributes and never will. Find the balanced extent of each
+// bio block with a depth counter — a naive `[\s\S]*?</div>` regex stops at
+// the FIRST nested </div> and would both mis-scope this exemption and risk
+// the exact silent-truncation bug this project has already shipped once.
+function bioBlockRanges(html) {
+  const ranges = [];
+  const openRe = /<div class="roster-card__bio">/g;
+  const tagRe = /<(\/?)div\b[^>]*>/gi;
+  let om;
+  while ((om = openRe.exec(html))) {
+    let depth = 1;
+    tagRe.lastIndex = om.index + om[0].length;
+    let end = html.length;
+    let tm;
+    while ((tm = tagRe.exec(html))) {
+      depth += tm[1] === '' ? 1 : -1;
+      if (depth === 0) { end = tm.index + tm[0].length; break; }
+    }
+    ranges.push([om.index, end]);
+    openRe.lastIndex = end;
+  }
+  return ranges;
+}
+
+const insideAny = (ranges, index) => ranges.some(([start, end]) => index >= start && index < end);
+
 export function checkDocument(html, { path }) {
   const errors = [];
   const need = (cond, msg) => { if (!cond) errors.push(msg); };
@@ -60,10 +90,15 @@ export function checkDocument(html, { path }) {
     need(/title="[^"]+"/i.test(tag), `iframe missing title attribute: ${tag.slice(0, 70)}`);
   }
 
-  for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
+  const bioRanges = bioBlockRanges(html);
+  for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
+    const tag = m[0];
     need(/alt="/i.test(tag), `img missing alt: ${tag.slice(0, 70)}`);
-    need(/width="\d+"/i.test(tag) && /height="\d+"/i.test(tag),
-         `img missing width/height: ${tag.slice(0, 70)}`);
+    // Verbatim bio content is exempt from width/height — see bioBlockRanges.
+    if (!insideAny(bioRanges, m.index)) {
+      need(/width="\d+"/i.test(tag) && /height="\d+"/i.test(tag),
+           `img missing width/height: ${tag.slice(0, 70)}`);
+    }
   }
 
   for (const tag of html.match(/<a\b[^>]*target="_blank"[^>]*>/gi) || []) {
