@@ -186,19 +186,34 @@ for (const { rel, html } of pages) {
 // asserts the absolute property instead.
 // ---------------------------------------------------------------------------
 
-const shippedFiles = [
+// Everything that ships, PLUS the generators that produce things that ship.
+// tools/ does not ship itself, but tools/make-og-image.mjs held #132856 in a
+// colour constant for a round after the recolour, and the social card it
+// produces is an image — so no text scan of the shipped files could ever have
+// found the stale brand. Scanning the generator is the only cheap way to catch
+// a retired colour that reaches users as pixels.
+//
+// Directories are read rather than listed, so a generator or stylesheet added
+// later is covered without editing this file. tests/ is deliberately excluded:
+// RETIRED_COLOURS above necessarily contains the very strings being searched for.
+const dirFiles = (parts, ext) =>
+  readdirSync(join(ROOT, ...parts))
+    .filter((f) => f.endsWith(ext))
+    .map((f) => [...parts, f].join('/'));
+
+const scannedFiles = [
   ...pages.map((p) => p.rel),
   'docs/page-template.html',
   'site.webmanifest',
-  ...readdirSync(join(ROOT, 'assets', 'css'))
-    .filter((f) => f.endsWith('.css'))
-    .map((f) => `assets/css/${f}`),
+  ...dirFiles(['assets', 'css'], '.css'),
+  ...dirFiles(['assets', 'js'], '.js'),
+  ...dirFiles(['tools'], '.mjs'),
 ];
 
 for (const { value, note } of RETIRED_COLOURS) {
-  test(`retired colour ${value} appears in no shipped file`, () => {
+  test(`retired colour ${value} appears in no shipped file or generator`, () => {
     const found = [];
-    for (const rel of shippedFiles) {
+    for (const rel of scannedFiles) {
       read(join(ROOT, rel)).split(NL).forEach((line, i) => {
         if (line.toLowerCase().includes(value.toLowerCase())) {
           found.push(`    ${rel}:${i + 1}  ${line.trim()}`);
@@ -209,7 +224,7 @@ for (const { value, note } of RETIRED_COLOURS) {
       found,
       [],
       [
-        `${value} is retired (${note}) but still ships in ${found.length} place(s):`,
+        `${value} is retired (${note}) but still appears in ${found.length} place(s):`,
         ...found,
         '  This is not only a CSS concern: <meta name="theme-color"> and the',
         '  manifest\'s "theme_color" paint browser and PWA chrome, and grepping',
