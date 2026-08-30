@@ -707,6 +707,11 @@ strong { font-weight: 600; color: var(--ink); }
 
 .section { padding-block: clamp(2.75rem, 2rem + 4vw, 7rem); }
 
+/* Adjacent sections would otherwise each pay their own top AND bottom
+   padding at the shared boundary, doubling the gap (up to ~224px at the
+   clamp ceiling). Collapse it to one section's worth of space. */
+.section + .section { padding-top: 0; }
+
 .section--surface {
   background: var(--surface);
   border-block: 1px solid var(--rule);

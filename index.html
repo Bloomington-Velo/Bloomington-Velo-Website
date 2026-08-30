@@ -89,30 +89,48 @@
 
 <section class="section" aria-labelledby="rides-heading">
   <div class="wrap">
-    <h2 id="rides-heading">Next rides</h2>
+    <div class="section__head">
+      <div>
+        <p class="eyebrow">02 &mdash; This week</p>
+        <h2 id="rides-heading">Next rides</h2>
+      </div>
+      <a class="link-arrow" href="/ride/calendar/">See the full calendar</a>
+    </div>
     <div id="next-rides" data-source="static">
+      <!-- ride__when is a <span>, not a <time>: "Tuesday & Thursday" is a
+           recurring description with no single calendar date, so there is no
+           valid datetime value to attach. renderAgenda() emits
+           <time datetime="..."> only for real, dated calendar events; this
+           static fallback intentionally does not. -->
       <ul class="rides">
         <li class="ride"><span class="ride__when">Tuesday &amp; Thursday</span><span class="ride__time">5:45 PM</span><span class="ride__title">Weekday group ride</span><span class="ride__place">Bryan Park pool parking lot</span></li>
         <li class="ride"><span class="ride__when">Saturday &amp; Sunday</span><span class="ride__title">Weekend training ride, 40&ndash;100+ miles at 18&ndash;20 mph</span><span class="ride__place">Sample Gates</span></li>
       </ul>
     </div>
-    <p><a class="btn" href="/ride/calendar/">See the full calendar</a></p>
   </div>
 </section>
 
 <section class="section" aria-labelledby="strava-heading">
-  <div class="wrap">
-    <h2 id="strava-heading">On Strava</h2>
-    <div class="embed embed--strava">
-      <iframe title="Bloomington Velo club on Strava" loading="lazy" allowtransparency frameborder="0" height="160" width="300" scrolling="no"
-        src="https://www.strava.com/clubs/329602/latest-rides/ae47281f0af190641e17e6240c59a40c124d670c?show_rides=false"></iframe>
+  <div class="wrap split">
+    <div class="split__head"><p class="eyebrow">03 &mdash; On Strava</p></div>
+    <div>
+      <h2 id="strava-heading">On Strava</h2>
+      <div class="card-grid">
+        <div class="prose">
+          <p>Club 329602 on Strava. Follow the mileage, and see who has been out riding this week.</p>
+        </div>
+        <div class="embed embed--strava">
+          <iframe title="Bloomington Velo club on Strava" loading="lazy" allowtransparency frameborder="0" height="160" width="300" scrolling="no"
+            src="https://www.strava.com/clubs/329602/latest-rides/ae47281f0af190641e17e6240c59a40c124d670c?show_rides=false"></iframe>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="section" aria-labelledby="join-heading">
   <div class="wrap split">
-    <div class="split__head"><p class="eyebrow">02 &mdash; Get started</p></div>
+    <div class="split__head"><p class="eyebrow">04 &mdash; Get started</p></div>
     <div>
       <h2 id="join-heading">Join us</h2>
       <div class="prose">
