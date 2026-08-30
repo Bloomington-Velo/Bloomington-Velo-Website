@@ -52,7 +52,14 @@
      it on any tinted ground — 4.25:1 on --surface. So the pure brand red is
      used for FILLS, borders and focus rings, where the requirement is 3:1,
      and --accent-ink (the same hue at 88% luminance, visually the same red)
-     carries red TEXT so links and eyebrows stay AA on every surface here. */
+     carries red TEXT so links and eyebrows stay AA on every surface here.
+
+     DO NOT collapse these two back into one token. It is not duplication.
+     #E4291A needs a background luminance of 0.9931 to reach 4.5:1, and only
+     pure white qualifies — even #FCFDFD manages just 4.44:1. A single red
+     therefore cannot serve both fills and text without failing AA somewhere.
+     --accent is for FILLS, RULES and the FOCUS RING (3:1 bar).
+     --accent-ink is for TEXT (4.5:1 bar). --accent-dark is the hover fill. */
   --accent: #E4291A;        /* banner red: button fills, rules, focus ring */
   --accent-ink: #C92417;    /* red text — 5.60:1 white, 5.25:1 surface, 4.56:1 tint */
   --accent-dark: #B81F13;   /* pressed/hover fill — white on it is 6.47:1 */
