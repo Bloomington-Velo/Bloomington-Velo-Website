@@ -1065,6 +1065,11 @@ strong { font-weight: 600; color: var(--ink); }
 
 .site-footer__tagline { color: var(--muted); max-width: 44ch; }
 
+/* .link-list is the general-purpose form; .site-footer__links is retained
+   because the footer markup is duplicated across eight pages and guarded by
+   the chrome-drift tests, so the class name stays even though the rule now
+   serves both. */
+.link-list,
 .site-footer__links {
   list-style: none;
   display: flex;
@@ -1072,6 +1077,7 @@ strong { font-weight: 600; color: var(--ink); }
   gap: var(--space-2) var(--space-4);
 }
 
+.link-list a,
 .site-footer__links a {
   color: var(--ink);
   text-decoration: none;
@@ -1079,6 +1085,7 @@ strong { font-weight: 600; color: var(--ink); }
   border-bottom: 1px solid var(--rule-strong);
 }
 
+.link-list a:hover,
 .site-footer__links a:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
 
 .site-footer__legal {
