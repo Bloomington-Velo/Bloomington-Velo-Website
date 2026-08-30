@@ -16,6 +16,7 @@
 <meta name="theme-color" content="#132856">
 <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>
@@ -50,8 +51,11 @@
 <main id="main">
 
 <section class="hero hero--tall" aria-labelledby="hero-title">
-  <div class="hero__art" role="img" aria-label="Placeholder artwork: an abstract contour map of the hills south of Bloomington, standing in for a club photograph.">
-    <span class="hero__roads" aria-hidden="true"></span>
+  <div class="hero__media">
+    <picture>
+      <source type="image/webp" sizes="100vw" srcset="/assets/img/hero-800.webp 800w, /assets/img/hero-1200.webp 1200w, /assets/img/hero-1600.webp 1600w, /assets/img/hero-2400.webp 2400w">
+      <img src="/assets/img/hero-1600.jpg" sizes="100vw" srcset="/assets/img/hero-800.jpg 800w, /assets/img/hero-1200.jpg 1200w, /assets/img/hero-1600.jpg 1600w, /assets/img/hero-2400.jpg 2400w" width="2400" height="1050" fetchpriority="high" decoding="async" alt="Bloomington Velo riders gathered at the Indiana University Sample Gates">
+    </picture>
   </div>
   <div class="wrap">
     <p class="eyebrow">Bloomington, Indiana</p>

@@ -77,7 +77,7 @@ export function checkInternalLinks(html, { path, rootDir }) {
   const errors = [];
   const hrefs = [...html.matchAll(/(?:href|src)="(\/[^"#?]*)"/g)].map((m) => m[1]);
   for (const href of new Set(hrefs)) {
-    if (!/\.[a-zA-Z0-9]{2,5}$/.test(href) && !href.endsWith('/')) {
+    if (!/\.[a-zA-Z0-9]{2,12}$/.test(href) && !href.endsWith('/')) {
       errors.push(`internal link ${href} must end with a trailing slash`);
       continue;
     }

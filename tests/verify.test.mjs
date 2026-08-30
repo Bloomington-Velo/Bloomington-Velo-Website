@@ -91,3 +91,17 @@ test('an internal link without a trailing slash is an error', () => {
   const errors = checkInternalLinks('<a href="/team">Team</a>', { path: 'x.html', rootDir: '.' });
   assert.ok(errors.some((e) => e.includes('trailing slash')));
 });
+
+test('a root-relative link to a long-extension file is not treated as a directory', () => {
+  // .webmanifest is 11 characters. An extension test capped at 5 misreads the
+  // path as a directory and demands a trailing slash, which would fail every
+  // page carrying <link rel="manifest" href="/site.webmanifest">.
+  const errors = checkInternalLinks('<link rel="manifest" href="/site.webmanifest">', {
+    path: 'x.html',
+    rootDir: '.',
+  });
+  assert.ok(
+    !errors.some((e) => e.includes('trailing slash')),
+    `/site.webmanifest must not be reported as needing a trailing slash, got: ${JSON.stringify(errors)}`,
+  );
+});

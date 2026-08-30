@@ -27,11 +27,6 @@
   When the header, the nav, or the footer changes, change it HERE first and
   then propagate the same edit to all eight pages.
 
-  KNOWN GAP: the rel="manifest" link to /site.webmanifest is deliberately
-  absent. tools/verify.mjs treats any path whose extension is longer than
-  five characters as a directory and demands a trailing slash, so linking
-  site.webmanifest fails every page. Widen that regex (\.[a-zA-Z0-9]{2,12}$)
-  and then add the link back here and to all eight pages.
   ============================================================================
 -->
 <!doctype html>
@@ -52,6 +47,7 @@
 <meta name="theme-color" content="#132856">
 <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/css/site.css">
 </head>
 <body>

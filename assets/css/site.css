@@ -18,34 +18,88 @@
    1. CUSTOM PROPERTIES
    Every colour and every spacing step lives here. Nothing below this block
    hard-codes a hex value.
+
+   The palette is measured from the club's own brand marks by canvas
+   quantisation, not invented:
+     bloomington-velo-logo.jpg    (the round seal)
+       #17233B navy  71.1% of the mark   -> --navy
+       #5282AA steel 19.4%               -> --steel
+     bloomington-velo-banner.jpeg (the striped wordmark)
+       #231F20 charcoal                  -> --ink
+       #E4291A red                       -> --accent
+       #0294D3 azure                     -> --azure
+
+   USAGE RULES, enforced throughout this file:
+     * RED carries calls to action, links and the numbered section eyebrows.
+       Red only ever sits on white or a near-white surface, never on navy
+       and never on a mid-tone.
+     * STEEL and AZURE are for rules, borders, large display text and
+       decorative fills ONLY. Neither may carry body copy: steel is 4.09:1
+       on white and azure 3.40:1, so both fail AA for text under 24px.
    ========================================================================== */
 
 :root {
-  /* --- brand and ink ---------------------------------------------------- */
-  --navy: #132856;          /* the club brand navy — 14.3:1 on white */
-  --navy-dark: #0B1A3A;     /* hero ground, deepest navy */
-  --accent: #1D3A73;        /* lifted navy: hover, focus rings — 11.0:1 on white */
-  --ink: #101828;           /* body text on white — 16.6:1 */
-  --muted: #4A5568;         /* secondary text — 7.5:1 on white, 7.0:1 on surface */
+  /* --- brand and ink ----------------------------------------------------
+     Ratios below are measured, not estimated. See the report for the full
+     29-pair table. */
+  --navy: #17233B;          /* seal navy, 71% of the mark — 15.67:1 on white */
+  --navy-dark: #0E1523;     /* navy x0.6: hero scrim — white on it is 18.26:1 */
+  --ink: #231F20;           /* banner charcoal, body text — 16.30:1 on white */
+  --muted: #4F586A;         /* navy lightened 76% — 7.15:1 on white, 6.71:1 on surface */
 
-  /* --- surfaces --------------------------------------------------------- */
+  /* --- accent -----------------------------------------------------------
+     The banner red is exactly AA for text on white (4.53:1) and drops below
+     it on any tinted ground — 4.25:1 on --surface. So the pure brand red is
+     used for FILLS, borders and focus rings, where the requirement is 3:1,
+     and --accent-ink (the same hue at 88% luminance, visually the same red)
+     carries red TEXT so links and eyebrows stay AA on every surface here. */
+  --accent: #E4291A;        /* banner red: button fills, rules, focus ring */
+  --accent-ink: #C92417;    /* red text — 5.60:1 white, 5.25:1 surface, 4.56:1 tint */
+  --accent-dark: #B81F13;   /* pressed/hover fill — white on it is 6.47:1 */
+
+  /* --- secondaries: decorative and large display only ------------------- */
+  --steel: #5282AA;         /* seal steel — 4.09:1 on white: NOT for body copy */
+  --azure: #0294D3;         /* banner azure — 3.40:1 on white: decorative only */
+
+  /* --- surfaces (tints of --steel, so the greys stay in the brand's key) - */
   --paper: #FFFFFF;
-  --surface: #F5F7FA;       /* alternating section ground */
-  --surface-sunk: #F7F9FC;  /* footer ground */
-  --rule: #E1E6EF;          /* hairline borders */
-  --rule-soft: #EEF1F6;     /* interior dividers */
-  --rule-strong: #C7D2E6;   /* card hover border, link underline */
-  --tint: #E8EDF7;          /* pale navy wash: tags, reversed button hover */
+  --surface: #F5F8FA;       /* steel at 6% — alternating section ground */
+  --surface-sunk: #F8FAFC;  /* steel at 4% — footer ground */
+  --rule: #E3EBF1;          /* steel at 16% — hairline borders */
+  --rule-soft: #F1F5F8;     /* steel at 8%  — interior dividers */
+  --rule-strong: #C2D3E1;   /* steel at 35% — card hover border, link underline */
+  --tint: #E0E9F0;          /* steel at 18% — officer tags, reversed button hover */
 
   /* --- text on navy ----------------------------------------------------- */
-  --on-navy: #FFFFFF;             /* 14.3:1 on --navy, 12.8:1 on --navy-dark */
-  --on-navy-muted: #D8DFEC;       /* 10.7:1 on --navy,  9.6:1 on --navy-dark */
+  --on-navy: #FFFFFF;             /* 15.67:1 on --navy, 18.26:1 on --navy-dark */
+  --on-navy-muted: #D6E0EA;       /* 11.72:1 on --navy, 13.66:1 on --navy-dark */
   --on-navy-rule: rgba(255, 255, 255, 0.45);
   --on-navy-wash: rgba(255, 255, 255, 0.14);
 
+  /* --- hero scrim -------------------------------------------------------
+     Layered over the Sample Gates photograph so the headline keeps AA. It
+     lives here rather than in the .hero rule so that every colour literal
+     in this file stays inside :root. Weighted to the left, where the
+     headline sits, and carrying a trace of --azure for a cool cast that
+     ties the photograph to the banner. Measured worst-case contrast for
+     white text over the result is reported alongside the stylesheet. */
+  --hero-scrim:
+    linear-gradient(90deg,
+      rgba(14, 21, 35, 0.92) 0%,
+      rgba(14, 21, 35, 0.84) 34%,
+      rgba(14, 21, 35, 0.56) 66%,
+      rgba(14, 21, 35, 0.62) 100%),
+    linear-gradient(180deg,
+      rgba(14, 21, 35, 0.58) 0%,
+      rgba(14, 21, 35, 0.36) 42%,
+      rgba(14, 21, 35, 0.82) 100%),
+    linear-gradient(120deg,
+      rgba(2, 148, 211, 0.10) 0%,
+      rgba(2, 148, 211, 0) 60%);
+
   /* --- shadow ----------------------------------------------------------- */
-  --shadow-card: 0 14px 34px -22px rgba(19, 40, 86, 0.45);
-  --shadow-menu: 0 22px 50px -26px rgba(16, 24, 40, 0.5);
+  --shadow-card: 0 14px 34px -22px rgba(23, 35, 59, 0.45);
+  --shadow-menu: 0 22px 50px -26px rgba(35, 31, 32, 0.5);
 
   /* --- type -------------------------------------------------------------
      System stacks only. There is deliberately no @font-face rule: no font
@@ -110,6 +164,11 @@ input,
 select,
 textarea { font: inherit; color: inherit; }
 
+/* Selected text is filled with the banner azure — a decorative fill, which is
+   all azure is allowed to do. --ink on it measures 4.80:1, so the selection
+   stays AA. */
+::selection { background: var(--azure); color: var(--ink); }
+
 
 /* ==========================================================================
    3. BASE TYPOGRAPHY
@@ -141,23 +200,24 @@ h4 {
 p { max-width: var(--measure); }
 
 a {
-  color: var(--navy);
+  color: var(--accent-ink);
   text-underline-offset: 0.18em;
   text-decoration-thickness: 1px;
 }
 
-a:hover { color: var(--accent); }
+a:hover { color: var(--accent-dark); }
 
 strong { font-weight: 600; color: var(--ink); }
 
-/* Numbered section label — "01 — THE CLUB". */
+/* Numbered section label — "01 — THE CLUB". Red, per the brand rules: this
+   is one of the three places the accent is allowed to carry text. */
 .eyebrow {
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--muted);
+  color: var(--accent-ink);
   margin-bottom: var(--space-3);
 }
 
@@ -177,7 +237,7 @@ strong { font-weight: 600; color: var(--ink); }
 /* Editorial pull quote. */
 .pull {
   padding-left: var(--space-4);
-  border-left: 2px solid var(--navy);
+  border-left: 2px solid var(--steel);
   font-family: var(--font-display);
   font-size: clamp(1.15rem, 1.05rem + 0.6vw, 1.5rem);
   line-height: 1.4;
@@ -222,8 +282,6 @@ strong { font-weight: 600; color: var(--ink); }
 
 .split__head { align-self: start; }
 
-.stack > * + * { margin-top: var(--space-3); }
-
 @media (min-width: 48rem) {
   :root { --wrap: min(1180px, 100% - 3rem); }
 
@@ -258,28 +316,28 @@ strong { font-weight: 600; color: var(--ink); }
   font-weight: 600;
   line-height: 1.2;
   padding: 0.8rem 1.5rem;
-  border: 1px solid var(--navy);
+  border: 1px solid var(--accent);
   border-radius: var(--radius);
-  color: var(--navy);
+  color: var(--accent-ink);
   background: transparent;
   text-decoration: none;
   cursor: pointer;
 }
 
 .btn:hover {
-  background: var(--navy);
+  background: var(--accent);
   color: var(--on-navy);
 }
 
 .btn--primary {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: var(--accent);
+  border-color: var(--accent);
   color: var(--on-navy);
 }
 
 .btn--primary:hover {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
   color: var(--on-navy);
 }
 
@@ -303,20 +361,22 @@ strong { font-weight: 600; color: var(--ink); }
   color: var(--on-navy);
 }
 
+/* The primary CTA keeps the brand red even over the hero photograph: the
+   red-to-navy boundary is 3.46:1 and white on red is 4.53:1, both AA. */
 .hero .btn--primary,
 .section--navy .btn--primary,
 .on-navy .btn--primary {
-  background: var(--on-navy);
-  border-color: var(--on-navy);
-  color: var(--navy);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-navy);
 }
 
 .hero .btn--primary:hover,
 .section--navy .btn--primary:hover,
 .on-navy .btn--primary:hover {
-  background: var(--tint);
-  border-color: var(--tint);
-  color: var(--navy);
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: var(--on-navy);
 }
 
 /* A row of calls to action. */
@@ -327,7 +387,10 @@ strong { font-weight: 600; color: var(--ink); }
   margin-top: var(--space-5);
 }
 
-/* Quiet inline "more" link. */
+/* Quiet inline "more" link, used in .section__head to point at a fuller
+   page. Markup:  <a class="link-arrow" href="/ride/calendar/">Full calendar</a>
+   An inline SVG chevron after the text is optional; mark it aria-hidden.
+   Consumed by Tasks 7 and 8. */
 .link-arrow {
   display: inline-flex;
   align-items: center;
@@ -335,12 +398,12 @@ strong { font-weight: 600; color: var(--ink); }
   font-size: 0.94rem;
   font-weight: 600;
   text-decoration: none;
-  color: var(--navy);
+  color: var(--accent-ink);
   padding-bottom: 2px;
   border-bottom: 1px solid var(--rule-strong);
 }
 
-.link-arrow:hover { border-bottom-color: var(--navy); }
+.link-arrow:hover { border-bottom-color: var(--accent); }
 
 
 /* ==========================================================================
@@ -493,7 +556,7 @@ strong { font-weight: 600; color: var(--ink); }
 }
 
 .site-nav a:hover,
-.site-nav a[aria-current="page"] { color: var(--navy); }
+.site-nav a[aria-current="page"] { color: var(--accent-ink); }
 
 /* Collapsed dropdown — only with the script running. */
 .js-nav .site-nav {
@@ -549,7 +612,7 @@ strong { font-weight: 600; color: var(--ink); }
     right: 0;
     bottom: 0;
     height: 2px;
-    background: var(--navy);
+    background: var(--accent);
     transform: scaleX(0);
     transform-origin: left;
   }
@@ -562,10 +625,23 @@ strong { font-weight: 600; color: var(--ink); }
 
 /* ==========================================================================
    8. HERO
-   A navy band. On the home page .hero__art adds the placeholder contour
-   artwork carried over from the mockup — an abstract map of the ridge-and-
-   valley country south of Bloomington, standing in for a club photograph
-   until one exists. See docs/content-needed.md.
+   A navy band. On the home page .hero__media carries the club photograph —
+   the riders gathered at the IU Sample Gates — with --hero-scrim laid over
+   it so the headline and lede keep AA contrast against the picture.
+
+   Markup:  <section class="hero hero--tall">
+              <div class="hero__media">
+                <picture>
+                  <source type="image/webp" srcset="..." sizes="100vw">
+                  <img src="/assets/img/hero-1600.jpg" srcset="..." sizes="100vw"
+                       width="2400" height="1050" alt="..." fetchpriority="high">
+                </picture>
+              </div>
+              <div class="wrap"> ...eyebrow, h1, lede, actions... </div>
+            </section>
+
+   The image is above the fold, so it is eager and fetchpriority="high" —
+   never loading="lazy".
    ========================================================================== */
 
 .hero {
@@ -583,56 +659,38 @@ strong { font-weight: 600; color: var(--ink); }
 .hero .lede { margin-top: var(--space-4); }
 .hero a { color: var(--on-navy); }
 
-/* Full-bleed variant used on the home page. */
+/* Full-bleed variant used on the home page. Heights are mockup A's. */
 .hero--tall {
   display: flex;
   align-items: flex-end;
-  min-height: clamp(420px, 60vh, 640px);
+  min-height: clamp(520px, 74vh, 720px);
 }
 
-/* The placeholder artwork. The rgba() values here are alpha washes of pure
-   white and of --navy-dark rather than palette colours of their own, which
-   is why they are not tokens. */
-.hero__art {
+/* --- the photograph and its scrim ---------------------------------------- */
+
+.hero__media {
   position: absolute;
   inset: 0;
   z-index: -2;
   background: var(--navy-dark);
 }
 
-.hero__art::before {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  background:
-    repeating-radial-gradient(ellipse 40% 30% at 31% 46%,
-      transparent 0 36px, rgba(255, 255, 255, 0.22) 36px 37.6px),
-    repeating-radial-gradient(ellipse 34% 46% at 78% 60%,
-      transparent 0 44px, rgba(255, 255, 255, 0.155) 44px 45.6px);
-  transform: rotate(-7deg);
-  -webkit-mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
-          mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+.hero__media picture { display: block; height: 100%; }
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 50%;   /* hold the arch and the group as it narrows */
 }
 
-.hero__roads {
-  position: absolute;
-  inset: -20%;
-  background:
-    linear-gradient(101deg, transparent calc(41% - 1px), rgba(255, 255, 255, 0.34) 41%, transparent calc(41% + 1.6px)),
-    linear-gradient(69deg,  transparent calc(66% - 1px), rgba(255, 255, 255, 0.24) 66%, transparent calc(66% + 1.6px)),
-    linear-gradient(158deg, transparent calc(58% - 1px), rgba(255, 255, 255, 0.13) 58%, transparent calc(58% + 1.6px));
-  -webkit-mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
-          mask-image: radial-gradient(115% 95% at 72% 42%, rgba(0, 0, 0, 1) 22%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
-}
-
-.hero__art::after {
+/* Laid over the photograph, under the text. --hero-scrim is defined in
+   :root so no colour literal escapes that block. */
+.hero__media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(105% 80% at 6% 96%, rgba(29, 58, 115, 0.8), transparent 58%),
-    linear-gradient(90deg, rgba(11, 26, 58, 0.88) 0%, rgba(11, 26, 58, 0.55) 44%, rgba(11, 26, 58, 0.2) 72%, rgba(11, 26, 58, 0.45) 100%),
-    linear-gradient(180deg, rgba(11, 26, 58, 0.5) 0%, rgba(11, 26, 58, 0.28) 34%, rgba(11, 26, 58, 0.88) 100%);
+  background: var(--hero-scrim);
 }
 
 
@@ -654,10 +712,19 @@ strong { font-weight: 600; color: var(--ink); }
 }
 
 .section--navy h2 { color: var(--on-navy); }
+.section--navy a,
+.on-navy a { color: var(--on-navy); }   /* red never sits on navy */
 .section--navy p { color: var(--on-navy-muted); margin-inline: auto; }
 .section--navy .actions { justify-content: center; }
 
-/* Heading block with an optional link pushed to the right. */
+/* Heading block with an optional .link-arrow pushed to the right.
+   Markup:  <div class="section__head">
+              <div><p class="eyebrow">02 — This week</p>
+                   <h2 id="...">Next rides</h2>
+                   <p>One line of context.</p></div>
+              <a class="link-arrow" href="...">Full calendar</a>
+            </div>
+   Consumed by Tasks 7 and 8. */
 .section__head {
   display: flex;
   flex-wrap: wrap;
@@ -819,7 +886,7 @@ strong { font-weight: 600; color: var(--ink); }
 
 .route-group > h2 {
   padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--steel);
   font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.7rem);
 }
 
@@ -841,7 +908,7 @@ strong { font-weight: 600; color: var(--ink); }
   border-bottom: 1px solid var(--rule-strong);
 }
 
-.route > a:hover { border-bottom-color: var(--navy); }
+.route > a:hover { border-bottom-color: var(--accent); }
 
 .route__desc {
   display: block;
@@ -1000,7 +1067,7 @@ strong { font-weight: 600; color: var(--ink); }
   border-bottom: 1px solid var(--rule-strong);
 }
 
-.site-footer__links a:hover { color: var(--navy); border-bottom-color: var(--navy); }
+.site-footer__links a:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
 
 .site-footer__legal {
   padding-top: var(--space-4);
