@@ -119,7 +119,7 @@ publish to the world or are hard to reverse.
 | | |
 |---|---|
 | GitHub organization | Create `bloomingtonvelo` at github.com/organizations/plan (free tier). `gh` cannot create orgs. |
-| Google Calendar API key | Google Cloud project → enable Calendar API → create an API key → restrict it to the Calendar API and to referrers `bloomingtonvelo.org/*` and `dev.bloomingtonvelo.org/*`. Goes in `assets/js/config.js`. |
-| Calendar visibility | Confirm the club calendar's sharing is set to "Make available to public". |
+| Google Calendar API key | **Not in Hostinger** — console.cloud.google.com, signed in as the calendar owner. New project → APIs & Services → Library → enable **Google Calendar API** → Credentials → Create credentials → API key. Then Edit the key and restrict it twice: Application restrictions → Websites → `https://bloomingtonvelo.org/*` and `https://dev.bloomingtonvelo.org/*`; API restrictions → Google Calendar API only. Goes in `assets/js/config.js`, committed. Public by design — the restrictions are what make it safe, and it can only read an already-public calendar. |
+| ~~Calendar visibility~~ | **DONE** — verified 2026-08-30: the public ICS feed returns 200 with 562 events, so the calendar is already public. No action needed. |
 | Staging subdomain | Create `dev.bloomingtonvelo.org` in Hostinger hPanel. |
 | WordPress backup | A full, **downloaded** files-and-database backup before `public_html` is swapped. |
