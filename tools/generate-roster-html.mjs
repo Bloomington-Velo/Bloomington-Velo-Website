@@ -76,4 +76,4 @@ const cards = roster.map((m) => {
   );
 });
 
-process.stdout.write(`<div class="card-grid">\n${cards.join('\n')}\n</div>\n`);
+process.stdout.write(`<div class="roster-grid">\n${cards.join('\n')}\n</div>\n`);

@@ -835,6 +835,34 @@ strong { font-weight: 600; color: var(--ink); }
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 }
 
+/* --- roster grid ------------------------------------------------------
+   The roster's card heights range from ~70px (name only) to 1200px+ (photo
+   plus a long bio). A CSS Grid row — including the auto-fit .card-grid
+   above with align-items: start — still sizes each ROW by its tallest
+   card, so a short card next to a tall one in the same row leaves a large
+   gap where the row simply continues past it. CSS multi-column masonry
+   instead fills each column top-to-bottom independently, so a short card
+   is immediately followed by the next card in that column rather than by
+   empty space. Tradeoff: reading order runs down each column then across,
+   not left-to-right — acceptable, and typical, for a people directory in
+   source order.
+   column-width (not a fixed column-count) lets the browser decide how many
+   columns fit: 1 on a phone, more as the viewport widens, without hardcoded
+   breakpoints of its own.
+   Markup: <div class="roster-grid"> <article class="roster-card">...      */
+.roster-grid {
+  column-width: 16rem;
+  column-gap: var(--space-3);
+}
+
+.roster-grid .roster-card {
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  margin-bottom: var(--space-3);
+}
+
 .panel,
 .roster-card,
 .sponsor {

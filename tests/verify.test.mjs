@@ -65,6 +65,68 @@ test('an img without alt is an error', () => {
   assert.ok(errors.some((e) => e.includes('alt')));
 });
 
+// Verbatim team bios (roster-card__bio) can carry <img> tags with no
+// width/height that must never be edited to add them — see
+// tools/generate-roster-html.mjs and team/index.html. checkDocument exempts
+// only images inside a balanced roster-card__bio block from that one rule.
+// These four tests pin both the exemption and its boundary: too narrow and
+// a legitimate verbatim image fails the build; too wide (a naive
+// `[\s\S]*?</div>` stopping at the first nested </div>, the exact class of
+// bug that once silently truncated a member's bio) and the check stops
+// gating real, fixable pages.
+
+test('a dimensionless img inside a roster-card__bio block is exempt from width/height', () => {
+  const bad = GOOD.replace('</main>',
+    '<div class="roster-card__bio"><img src="a.svg" alt=""></div></main>');
+  const { errors } = checkDocument(bad, { path: 'team/index.html' });
+  assert.ok(
+    !errors.some((e) => e.includes('width/height')),
+    `expected no width/height error for a bio image, got: ${JSON.stringify(errors)}`,
+  );
+});
+
+test('a dimensionless img outside any bio block is still rejected', () => {
+  const bad = GOOD.replace('</main>', '<img src="a.svg" alt=""></main>');
+  const { errors } = checkDocument(bad, { path: 'x.html' });
+  assert.ok(
+    errors.some((e) => e.includes('width/height')),
+    `expected a width/height error outside a bio block, got: ${JSON.stringify(errors)}`,
+  );
+});
+
+test('alt is still required on an img inside a roster-card__bio block', () => {
+  const bad = GOOD.replace('</main>',
+    '<div class="roster-card__bio"><img src="a.svg"></div></main>');
+  const { errors } = checkDocument(bad, { path: 'x.html' });
+  assert.ok(
+    errors.some((e) => e.includes('alt')),
+    `the width/height exemption must not also exempt alt, got: ${JSON.stringify(errors)}`,
+  );
+  assert.ok(
+    !errors.some((e) => e.includes('width/height')),
+    `width/height should still be exempt for this same image, got: ${JSON.stringify(errors)}`,
+  );
+});
+
+test('the bio exemption covers exactly the balanced bio block, not everything after it', () => {
+  // Nested <div>s inside the bio (as in a real multi-paragraph bio) must not
+  // fool the range-finder into closing early or staying open too long.
+  const bad = GOOD.replace('</main>',
+    '<div class="roster-card__bio"><div><div>nested</div></div>' +
+    '<img src="inside-after-nesting.svg" alt=""></div>' +
+    '<img src="outside-the-bio.svg" alt=""></main>');
+  const { errors } = checkDocument(bad, { path: 'x.html' });
+  const flagged = errors.filter((e) => e.includes('width/height'));
+  assert.ok(
+    !flagged.some((e) => e.includes('inside-after-nesting.svg')),
+    `an image after the nested divs close but still inside the bio must be exempt, got: ${JSON.stringify(errors)}`,
+  );
+  assert.ok(
+    flagged.some((e) => e.includes('outside-the-bio.svg')),
+    `an image after the bio block actually ends must still be rejected, got: ${JSON.stringify(errors)}`,
+  );
+});
+
 test('an external link without rel=noopener is an error', () => {
   const bad = GOOD.replace('</main>', '<a href="https://www.strava.com/clubs/329602" target="_blank">Strava</a></main>');
   const { errors } = checkDocument(bad, { path: 'x.html' });
