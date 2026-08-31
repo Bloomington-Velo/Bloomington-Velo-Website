@@ -35,8 +35,19 @@ const PHOTO_DIMENSIONS = {
   'blayne-roeder-profile-compressed': [1600, 1741],
 };
 
+// Escapes for use inside a double-quoted HTML attribute value: & first (so
+// it doesn't double-escape the entities this function itself introduces),
+// then the characters that would break out of the attribute or the tag.
 const escapeAttr = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+// Escapes for use as HTML text content (e.g. inside <h3>...</h3>). A literal
+// `"` is not special in text content, so it must NOT be escaped here — doing
+// so would render a future member's name with a `"` as a visible `&quot;`
+// instead of the character itself. Only & and < (and, for symmetry/safety, >)
+// need escaping in text.
+const escapeText = (s) =>
+  String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const roster = JSON.parse(readFileSync(new URL('../_source/roster.json', import.meta.url), 'utf8'));
 
@@ -64,7 +75,7 @@ const cards = roster.map((m) => {
 
   const roleLine = role ? `    <p class="roster-card__role">${role}</p>\n` : '';
   const bio = m.bioHtml ? `    <div class="roster-card__bio">${m.bioHtml}</div>\n` : '';
-  const nameHtml = escapeAttr(name);
+  const nameHtml = escapeText(name);
 
   return (
     `  <article class="roster-card">\n` +

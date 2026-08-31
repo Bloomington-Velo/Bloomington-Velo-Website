@@ -849,9 +849,19 @@ strong { font-weight: 600; color: var(--ink); }
    column-width (not a fixed column-count) lets the browser decide how many
    columns fit: 1 on a phone, more as the viewport widens, without hardcoded
    breakpoints of its own.
+   column-count: 3 caps that at 3 regardless of viewport width. column-fill
+   defaults to balance, and the balancer estimates each column's height
+   BEFORE accounting for break-inside: avoid, so one unbreakable outlier
+   card gets pushed whole into a column and desyncs the estimate — measured
+   at 1280px with 4 columns, the four column bottoms ranged from 2477px to
+   3470px (~1000px spread). Narrower column-count with wider columns makes
+   the tallest card proportionally less dominant relative to each column's
+   total height, which the balancer needs to land close. The cap only bites
+   above ~48rem — column-width already keeps 1/2/3 columns at 390/768/1000px.
    Markup: <div class="roster-grid"> <article class="roster-card">...      */
 .roster-grid {
   column-width: 16rem;
+  column-count: 3;
   column-gap: var(--space-3);
 }
 

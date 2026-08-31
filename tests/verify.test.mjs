@@ -127,6 +127,42 @@ test('the bio exemption covers exactly the balanced bio block, not everything af
   );
 });
 
+// The exemption above must fail CLOSED, not open: an unbalanced bio block
+// (unclosed <div>, or a <div>-shaped comment/attribute throwing the depth
+// counter off by one) must never fall back to "exempt everything to the end
+// of the document." It must be reported as its own defect, and it must not
+// swallow the width/height check for images that come after it.
+
+test('an unclosed div inside a roster-card__bio block fails closed and is reported', () => {
+  const bad = GOOD.replace('</main>',
+    '<div class="roster-card__bio"><div>never closed</div>' +
+    '<img src="after-unbalanced-bio.svg" alt=""></main>');
+  const { errors } = checkDocument(bad, { path: 'team/index.html' });
+  assert.ok(
+    errors.some((e) => e.includes('unbalanced') && e.includes('roster-card__bio')),
+    `expected an unbalanced-bio error, got: ${JSON.stringify(errors)}`,
+  );
+  assert.ok(
+    errors.some((e) => e.includes('width/height') && e.includes('after-unbalanced-bio.svg')),
+    `an image after an unclosed bio must still be rejected, not silently exempted, got: ${JSON.stringify(errors)}`,
+  );
+});
+
+test('a <div>-shaped comment inside a roster-card__bio block fails closed and is reported', () => {
+  const bad = GOOD.replace('</main>',
+    '<div class="roster-card__bio"><!-- looks like <div> but is a comment -->real bio text</div>' +
+    '<img src="after-comment-bio.svg" alt=""></main>');
+  const { errors } = checkDocument(bad, { path: 'team/index.html' });
+  assert.ok(
+    errors.some((e) => e.includes('unbalanced') && e.includes('roster-card__bio')),
+    `expected an unbalanced-bio error from the comment desyncing the depth counter, got: ${JSON.stringify(errors)}`,
+  );
+  assert.ok(
+    errors.some((e) => e.includes('width/height') && e.includes('after-comment-bio.svg')),
+    `an image after a comment-desynced bio must still be rejected, not silently exempted, got: ${JSON.stringify(errors)}`,
+  );
+});
+
 test('an external link without rel=noopener is an error', () => {
   const bad = GOOD.replace('</main>', '<a href="https://www.strava.com/clubs/329602" target="_blank">Strava</a></main>');
   const { errors } = checkDocument(bad, { path: 'x.html' });

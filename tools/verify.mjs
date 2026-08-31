@@ -35,24 +35,40 @@ export function expectedCanonical(path) {
 // bio block with a depth counter — a naive `[\s\S]*?</div>` regex stops at
 // the FIRST nested </div> and would both mis-scope this exemption and risk
 // the exact silent-truncation bug this project has already shipped once.
+//
+// FAILS CLOSED: if a bio's <div>s never balance back to depth 0 — an
+// unclosed <div> in hand-pasted bio content, or a `<div`-shaped substring
+// inside a comment or attribute value throwing the depth counter off by
+// one — the old code let `end` default to html.length, silently exempting
+// every <img> for the rest of the document from the width/height rule with
+// no warning. That is strictly worse than the greedy-regex bug this
+// exemption replaced, which at least failed loudly. Instead: treat any
+// unbalanced bio as a reported defect and exempt NOTHING in the file, so a
+// dimensionless <img> anywhere else still gets caught.
 function bioBlockRanges(html) {
   const ranges = [];
+  let unbalanced = false;
   const openRe = /<div class="roster-card__bio">/g;
   const tagRe = /<(\/?)div\b[^>]*>/gi;
   let om;
   while ((om = openRe.exec(html))) {
     let depth = 1;
     tagRe.lastIndex = om.index + om[0].length;
-    let end = html.length;
+    let end = null;
     let tm;
     while ((tm = tagRe.exec(html))) {
       depth += tm[1] === '' ? 1 : -1;
       if (depth === 0) { end = tm.index + tm[0].length; break; }
     }
+    if (end === null) {
+      // Never balanced back to 0 before the document ran out. Don't guess.
+      unbalanced = true;
+      break;
+    }
     ranges.push([om.index, end]);
     openRe.lastIndex = end;
   }
-  return ranges;
+  return { ranges: unbalanced ? [] : ranges, unbalanced };
 }
 
 const insideAny = (ranges, index) => ranges.some(([start, end]) => index >= start && index < end);
@@ -90,7 +106,14 @@ export function checkDocument(html, { path }) {
     need(/title="[^"]+"/i.test(tag), `iframe missing title attribute: ${tag.slice(0, 70)}`);
   }
 
-  const bioRanges = bioBlockRanges(html);
+  const { ranges: bioRanges, unbalanced: bioUnbalanced } = bioBlockRanges(html);
+  if (bioUnbalanced) {
+    errors.push(
+      `unbalanced roster-card__bio block in ${path} — its <div>s never close ` +
+      `(directly, or a <div>-shaped comment/attribute threw off the counter); ` +
+      `exempting no images in this file from the width/height rule until it's fixed`,
+    );
+  }
   for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
     const tag = m[0];
     need(/alt="/i.test(tag), `img missing alt: ${tag.slice(0, 70)}`);
