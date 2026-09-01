@@ -18,6 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/css/site.css">
+<script>document.documentElement.classList.add('js-nav');</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -35,7 +36,7 @@
       <span class="visually-hidden">Menu</span>
       <span class="nav-toggle__bars" aria-hidden="true"></span>
     </button>
-    <nav class="site-nav" id="site-nav" aria-label="Main">
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-open="false">
       <ul>
         <li><a href="/team/">Team</a></li>
         <li><a href="/ride/">Ride</a></li>
@@ -48,7 +49,7 @@
   </div>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 <section class="section">
   <div class="wrap">
     <h1>Privacy policy</h1>
@@ -66,6 +67,9 @@
       <p><strong>Google Calendar.</strong> The <a href="/ride/calendar/">ride calendar</a> embeds a Google Calendar iframe, and a small script on the homepage and the ride page calls the Google Calendar API to list upcoming rides. Google may set its own cookies and log your visit according to its own privacy policy.</p>
       <p><strong>Strava.</strong> The homepage and the ride page embed Strava's own club-activity widget in an iframe. That widget is Strava's page, not ours, and we have confirmed it loads Google's advertising and tag-manager scripts &mdash; including DoubleClick and AdWords tags &mdash; as part of Strava's own page, not anything we add. An iframe is a separate browsing context, so nothing this site does can govern what loads inside it: embedding the widget means Strava, and its advertising partners, may set cookies and collect data on their own terms, entirely outside our control.</p>
       <p>If you would rather avoid that, a browser extension that blocks third-party trackers will stop it without affecting the rest of the page, or you can visit <a href="https://www.strava.com/clubs/329602" target="_blank" rel="noopener noreferrer">the club's Strava page</a> directly instead of viewing the embedded widget.</p>
+
+      <h2>Member biographies</h2>
+      <p>The bios on our <a href="/team/">Team page</a> were carried over word-for-word from the club's old website. A few of them include small flag icons that load as images from <code>s.w.org</code>, WordPress.org's icon service, which can see your IP address the same way any embedded image can. We left these bios exactly as written rather than editing them, so this is a case where an old piece of content, not our current website, is the source of a third-party request.</p>
 
       <h2>Questions</h2>
       <p>Email <a href="mailto:bloomingtonvelocycling@gmail.com">bloomingtonvelocycling@gmail.com</a> with any privacy questions.</p>

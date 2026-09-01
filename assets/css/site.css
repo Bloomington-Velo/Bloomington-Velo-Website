@@ -448,9 +448,11 @@ strong { font-weight: 600; color: var(--ink); }
 
 /* ==========================================================================
    7. HEADER AND NAV
-   Mobile first. The nav collapses into a dropdown ONLY under .js-nav, the
-   class assets/js/nav.js puts on <html>. With JavaScript off the class never
-   lands: the toggle stays hidden and the full nav renders inline.
+   Mobile first. The nav collapses into a dropdown ONLY under .js-nav, a
+   class set by a tiny inline script in <head> (so it lands before first
+   paint, with no flash of the expanded nav) rather than by assets/js/nav.js.
+   With JavaScript off the class never lands: the toggle stays hidden and
+   the full nav renders inline.
    ========================================================================== */
 
 .site-header {
@@ -1083,6 +1085,15 @@ strong { font-weight: 600; color: var(--ink); }
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
+}
+
+/* Browsers don't reliably paint a :focus-visible outline on the <iframe>
+   element itself, especially for cross-origin third-party embeds we don't
+   control. :focus-within on the wrapper fires whenever the iframe holds
+   keyboard focus, so this gives keyboard users a visible indicator anyway. */
+.embed:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .embed > iframe {

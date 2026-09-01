@@ -18,6 +18,7 @@
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/assets/css/site.css">
+<script>document.documentElement.classList.add('js-nav');</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -35,7 +36,7 @@
       <span class="visually-hidden">Menu</span>
       <span class="nav-toggle__bars" aria-hidden="true"></span>
     </button>
-    <nav class="site-nav" id="site-nav" aria-label="Main">
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-open="false">
       <ul>
         <li><a href="/team/">Team</a></li>
         <li><a href="/ride/">Ride</a></li>
@@ -48,7 +49,7 @@
   </div>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 <section class="section">
   <div class="wrap">
     <h1>Sponsors</h1>

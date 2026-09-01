@@ -41,15 +41,21 @@ DirectoryIndex index.html
 <IfModule mod_headers.c>
   # E. Security headers. The CSP is derived from what the nine pages
   # actually load -- see task-13-report.md for the origin-by-origin
-  # breakdown. There is no inline executable script anywhere on the site
-  # (the two <script type="application/ld+json"> blocks are data, not
-  # code, and are not governed by script-src), so script-src carries no
-  # 'unsafe-inline'. Inline style="" attributes are used throughout the
-  # verbatim roster-bio content, so style-src needs 'unsafe-inline'.
+  # breakdown. Every page has exactly one inline executable script: a
+  # single-statement snippet in <head> that adds the .js-nav class before
+  # first paint, so the mobile nav never flashes open then collapsed while
+  # assets/js/nav.js is still loading (see docs/audit-2026-08.md). Its
+  # content is fixed and identical on all nine pages, so script-src allows
+  # it by exact SHA-256 hash rather than 'unsafe-inline' -- any other
+  # inline script (e.g. injected via XSS) still will not execute. The two
+  # <script type="application/ld+json"> blocks are data, not code, and are
+  # not governed by script-src regardless. Inline style="" attributes are
+  # used throughout the verbatim roster-bio content, so style-src needs
+  # 'unsafe-inline'.
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.bloomingtonvelo.org https://s.w.org https://dgalywyr863hv.cloudfront.net; font-src 'self'; connect-src 'self' https://www.googleapis.com; frame-src https://calendar.google.com https://www.strava.com; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-Ytc/Tuu7Z9kufaf65jg9Xr/h/vz2UnvInktzP7BBIgU='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.bloomingtonvelo.org https://s.w.org https://dgalywyr863hv.cloudfront.net; font-src 'self'; connect-src 'self' https://www.googleapis.com; frame-src https://calendar.google.com https://www.strava.com; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
 
   # F. Staging must never be indexed. Production and staging share this
   # file, so this is keyed on the host rather than being a separate file.

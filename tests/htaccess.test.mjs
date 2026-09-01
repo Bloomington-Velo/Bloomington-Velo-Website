@@ -103,7 +103,9 @@ test("script-src does not contain 'unsafe-inline'", () => {
   assert.ok(scriptSrcMatch, 'script-src directive not found');
   assert.ok(
     !scriptSrcMatch[1].includes("'unsafe-inline'"),
-    "script-src must not allow 'unsafe-inline' -- the site has no inline executable script",
+    "script-src must not allow 'unsafe-inline' -- the one inline script every page ships (the .js-nav " +
+      'class-adder in <head>, see docs/audit-2026-08.md) is allowed by exact SHA-256 hash instead, so an ' +
+      'injected inline script still will not execute',
   );
 });
 
