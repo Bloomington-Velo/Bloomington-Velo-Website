@@ -73,17 +73,36 @@ named `Brian-Drummy-Photo.jpg`, so the intended spelling is almost certainly Bri
 **What's needed:** confirmation to correct it.
 **If unanswered:** a member's first name stays misspelled on the team page, as it already is today.
 
-## 6. "Tour Du Frontage" route link — COSMETIC
+## 6. Route library link rot — CHECKED 2026-09-03
 
-**Where:** `/ride/routes/`, the "30 – 44 Miles" group.
-**Current state:** on the live site this route links to
-`https://bloomingtonvelo.org/wp-admin/post.php?post=285&action=edit` — a WordPress admin edit URL that
-already fails for any visitor who is not logged in. It was excluded from the migration, so the new
-Route Library has 51 routes where the old page displays 52.
-**What's needed:** the real Strava or RideWithGPS URL, or confirmation to drop the route.
-**If unanswered:** one route silently disappears — which is still an improvement on a link that 403s.
-**Note:** restoring it changes that group's count from 9 to 10, which the extractor asserts. The
-assertion in `tools/extract-content.mjs` must be updated in the same change.
+**Where:** `/ride/routes/`.
+
+**Four of the 51 route links return 404:**
+
+| Route | Group | URL |
+|---|---|---|
+| (Not Williams) Ride | 45 – 64 Miles | `strava.com/routes/2719230454939750190` |
+| Kerr, Brummetts Creek, 45, South shore, Robinson | 45 – 64 Miles | `strava.com/routes/2711585649669942028` |
+| 45, Tunnel, Shilo, Old 37, Chambers, Bottom | 45 – 64 Miles | `strava.com/routes/2709058117370675384` |
+| Dolan, E'ville, Airport & beyond | 45 – 64 Miles | `strava.com/routes/2714122208184638124` |
+
+**Worth knowing before you delete them:** a Strava route also returns 404 to anonymous visitors when
+its owner has made it **private**. These may not be deleted at all — a member could restore them by
+changing the route's visibility. Ask before removing.
+
+**Two pairs of routes share one URL**, so two names point at the same ride:
+- `strava.com/routes/2769791863478727940` — "Stanford-Hobbieville-" and "Springville"
+- `strava.com/routes/2759630324309341696` — "Buttered" and "Popcorn"
+
+**Also:** "Tour Du Frontage" existed on the old site linking to a WordPress admin edit URL, which
+already failed for any visitor. It was excluded from the migration, so the new library has 51 routes
+where the old page showed 52. Supply a real URL to restore it.
+
+**Everything else resolves:** the other 47 routes, Instagram, the Strava club, Dumonde Tech, and both
+calendar subscribe links all return 200.
+
+**Note:** none of this is a regression — the same links are equally dead on the current site. The
+rebuild just made it visible. Fixing any of it is editing one line in `ride/routes/index.html`.
 
 ## 7. GroupMe join link — DEGRADED
 
