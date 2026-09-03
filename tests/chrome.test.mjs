@@ -54,8 +54,19 @@ const PER_PAGE_HEAD = [
   [/<meta property="og:url" content="[\s\S]*?">/, '<meta property="og:url" content="@@PER-PAGE@@">'],
 ];
 
+// 404.html additionally carries <meta name="robots" content="noindex"> so it
+// stops competing with real pages in search results (it canonicalises to
+// itself, which is exactly what shows up as an indexable soft-404 in Search
+// Console). This isn't a PER_PAGE_HEAD field: those are present on every
+// page with a page-specific value, but this tag is expected on exactly one
+// page and absent from all the others, including the template. So it's
+// stripped from both sides here instead, and the exact-scoping property
+// (only 404.html has it) is asserted separately below, by name, rather than
+// relying on this stripping to enforce it.
+const stripRobotsNoindex = (head) => head.replace(/\n<meta name="robots" content="noindex">/, '');
+
 const normaliseHead = (head) =>
-  PER_PAGE_HEAD.reduce((acc, [re, placeholder]) => acc.replace(re, placeholder), head);
+  stripRobotsNoindex(PER_PAGE_HEAD.reduce((acc, [re, placeholder]) => acc.replace(re, placeholder), head));
 
 // Colours retired from the brand. A palette retirement is a one-way door: the
 // old value must not survive anywhere that ships, including the places CSS
@@ -121,6 +132,24 @@ test('the template exposes the nav hrefs and the pages were discovered', () => {
       template.includes(`"${href}"`),
       `docs/page-template.html no longer links ${href}; update SHARED_LINKS if that is intended`,
     );
+  }
+});
+
+test('the robots noindex meta tag appears on 404.html and no other shipped page', () => {
+  for (const { rel, html } of pages) {
+    const hasNoindex = /<meta name="robots" content="noindex">/.test(html);
+    if (rel === '404.html') {
+      assert.ok(
+        hasNoindex,
+        '404.html must carry <meta name="robots" content="noindex"> -- it canonicalises to ' +
+          'itself and would otherwise be indexable as a soft 404',
+      );
+    } else {
+      assert.ok(
+        !hasNoindex,
+        `${rel}: only 404.html should carry a robots noindex meta tag, but one was found here too`,
+      );
+    }
   }
 });
 

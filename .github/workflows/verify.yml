@@ -1,0 +1,31 @@
+# Runs the same two checks the README asks a human to run before committing
+# (`node tools/verify.mjs` and `node --test`), so a change made anywhere --
+# including in the GitHub web UI, where nobody's machine ever runs them --
+# still gets checked before it can reach Hostinger, which auto-deploys
+# whatever lands on `main`.
+#
+# No dependency install step: this project has zero npm dependencies, so
+# there is nothing for `npm ci` to do.
+name: Verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Structural site checks (doctype, meta, links, etc.)
+        run: node tools/verify.mjs
+
+      - name: Unit tests
+        run: node --test

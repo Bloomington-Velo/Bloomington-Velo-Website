@@ -11,7 +11,16 @@ import { collectHtmlFiles } from '../tools/verify.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const htaccess = readFileSync(resolve(ROOT, '.htaccess'), 'utf8');
+const robotsTxt = readFileSync(resolve(ROOT, 'robots.txt'), 'utf8');
 const verifySrc = readFileSync(resolve(ROOT, 'tools/verify.mjs'), 'utf8');
+
+// Hostinger deploys the whole git repo into the docroot, so every one of
+// these becomes web-reachable unless both .htaccess and robots.txt say
+// otherwise. This is the single source both the .htaccess rule and
+// robots.txt are checked against below, so a directory added to the block
+// list without updating one or the other fails loudly instead of quietly
+// leaking a workshop path to the public web.
+const BLOCKED_PATHS = ['_design', '_source', 'docs', 'tools', 'tests', '.superpowers', '.git'];
 
 function extractOrigin(url) {
   const m = url.match(/^(https?:\/\/[^/]+)/);
@@ -120,4 +129,44 @@ test('the staging noindex block is present and keyed on the dev host', () => {
     /X-Robots-Tag\s+"noindex, nofollow"/,
     'staging noindex block must set X-Robots-Tag: noindex, nofollow',
   );
+});
+
+test('the workshop-path block rule 404s exactly BLOCKED_PATHS, with R=404 and before the rewrite rules', () => {
+  const ruleMatch = htaccess.match(/RewriteRule \^\(([^)]+)\)\/ - \[R=404,L\]/);
+  assert.ok(
+    ruleMatch,
+    'no `RewriteRule ^(...)/ - [R=404,L]` block rule found in .htaccess',
+  );
+
+  const ruledPaths = ruleMatch[1].split('|').map((p) => p.replace(/\\\./g, '.'));
+  assert.deepEqual(
+    [...ruledPaths].sort(),
+    [...BLOCKED_PATHS].sort(),
+    `the .htaccess block rule must 404 exactly BLOCKED_PATHS (${BLOCKED_PATHS.join(', ')}); ` +
+      `found ${ruledPaths.join(', ')} -- update whichever one is missing the new entry`,
+  );
+
+  // 404, not 403: a 404 doesn't confirm the path exists at all.
+  assert.match(ruleMatch[0], /R=404/, 'the block rule must return 404, not 403 or another status');
+
+  // Must sit ahead of the route-library and catch-all rewrites so nothing
+  // upstream of it can turn a blocked path into something servable first.
+  const blockRuleIndex = htaccess.indexOf(ruleMatch[0]);
+  const routeLibraryIndex = htaccess.indexOf('team/ride-library');
+  const catchAllIndex = htaccess.indexOf('RewriteRule ^ / [R=301,L]');
+  assert.ok(
+    blockRuleIndex < routeLibraryIndex && blockRuleIndex < catchAllIndex,
+    'the workshop-path block rule must appear before the other rewrite rules',
+  );
+});
+
+test('robots.txt disallows every one of BLOCKED_PATHS', () => {
+  for (const path of BLOCKED_PATHS) {
+    assert.match(
+      robotsTxt,
+      new RegExp(`^Disallow: /${path.replace(/\./g, '\\.')}/$`, 'm'),
+      `robots.txt is missing "Disallow: /${path}/" -- .htaccess is the real protection, ` +
+        'but robots.txt should still say so as the polite signal',
+    );
+  }
 });

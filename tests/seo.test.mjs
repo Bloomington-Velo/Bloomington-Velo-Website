@@ -6,8 +6,8 @@
 // missing from the sitemap or duplicating another page's title.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { relative, dirname, resolve } from 'node:path';
+import { readFileSync, existsSync } from 'node:fs';
+import { relative, dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { collectHtmlFiles } from '../tools/verify.mjs';
 
@@ -112,5 +112,31 @@ test('no shipped page references old WordPress paths outside a verbatim bio', ()
       !html.includes('team/ride-library'),
       `${relative(ROOT, f)} still references the old team/ride-library path`,
     );
+  }
+});
+
+// tools/verify.mjs's internal-link checker only looks at root-relative
+// href|src="/...", so it is blind to absolute self-references like the six
+// https://(www.)bloomingtonvelo.org/wp-content/uploads/Blayne-Roeder-*.jpeg
+// URLs baked into the verbatim /team/ bio (see wp-content/README.md). Those
+// files have to keep existing at those exact paths after WordPress is gone.
+// This rewrites every absolute bloomingtonvelo.org reference found in any
+// shipped page to a repo-relative path and asserts the file (or directory,
+// for a page URL like https://bloomingtonvelo.org/team/) is actually on
+// disk, so deleting wp-content/ despite its README would fail this test
+// instead of silently shipping a broken photo.
+test('every absolute bloomingtonvelo.org self-reference resolves to a file on disk', () => {
+  const absoluteRe = /https:\/\/(?:www\.)?bloomingtonvelo\.org(\/[^"'\s)>]*)/g;
+  for (const f of collectHtmlFiles(ROOT)) {
+    const html = readFileSync(f, 'utf8');
+    for (const m of html.matchAll(absoluteRe)) {
+      const path = m[1].split('#')[0].split('?')[0];
+      const target = join(ROOT, path);
+      assert.ok(
+        existsSync(target),
+        `${relative(ROOT, f)} references https://bloomingtonvelo.org${path}, ` +
+          `but ${relative(ROOT, target)} does not exist on disk`,
+      );
+    }
   }
 });

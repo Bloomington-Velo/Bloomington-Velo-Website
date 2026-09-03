@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+# Polite signal only -- .htaccess 404s these paths for real. See
+# tests/htaccess.test.mjs for the list these are pinned against.
+Disallow: /_design/
+Disallow: /_source/
+Disallow: /docs/
+Disallow: /tools/
+Disallow: /tests/
+Disallow: /.superpowers/
+Disallow: /.git/
+
 Sitemap: https://bloomingtonvelo.org/sitemap.xml
