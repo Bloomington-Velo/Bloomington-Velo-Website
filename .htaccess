@@ -1,0 +1,122 @@
+# Bloomington Velo -- static site. No build step; files are served as committed.
+#
+# wp-content/uploads/ is NOT a WordPress installation. It holds six legacy
+# image files that a verbatim roster bio on /team/ references by absolute
+# URL. See wp-content/README.md before touching that folder.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # A. Hostinger deploys this entire git repository into the docroot, so
+  # anything in it that isn't a page of the site -- design mockups, source
+  # JSON, docs, build tools, tests, the sdd workshop, and .git itself --
+  # is web-reachable unless blocked here. This sits before every other rule
+  # so nothing below it can rewrite one of these paths into something that
+  # serves. 404, not 403: a 404 doesn't confirm anything exists there.
+  # tests/htaccess.test.mjs pins this list against BLOCKED_PATHS so a new
+  # directory added here can't be forgotten there, or vice versa.
+  RewriteRule ^(_design|_source|docs|tools|tests|\.superpowers|\.git)/ - [R=404,L]
+
+  # B. Force HTTPS and the canonical apex host, redirecting www. to the
+  # bare domain -- but never touching the dev.bloomingtonvelo.org staging
+  # subdomain, which is excluded from every condition below. This runs
+  # before the Route Library and retired-content rules (C, D) so a legacy
+  # http://www.bloomingtonvelo.org/old-post/ URL resolves in a single
+  # redirect hop instead of bouncing through the apex http:// URL first.
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\.bloomingtonvelo\.org$ [NC]
+  RewriteCond %{HTTP_HOST} !^dev\.bloomingtonvelo\.org$ [NC]
+  RewriteRule ^ https://bloomingtonvelo.org%{REQUEST_URI} [R=301,L]
+
+  # C. The Route Library moved from /team/ride-library/ to /ride/routes/.
+  # This MUST come before the catch-all below, which would otherwise send
+  # it to the homepage instead of its new location.
+  RewriteRule ^team/ride-library/?$ /ride/routes/ [R=301,L]
+
+  # D. Retire the WordPress content that was deliberately removed: 387 news
+  # posts that lived at the site root, plus /photos/, /news/, and WP
+  # taxonomy and feed artifacts. Any non-existent extensionless path 301s
+  # to the homepage. Requests that look like assets keep their extension,
+  # fall through, and hit the 404 page. The {2,12} bound matches the
+  # widened extension pattern in tools/verify.mjs -- with {2,5} a missing
+  # .webmanifest would 301 to the homepage instead of 404ing.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{2,12}$
+  RewriteRule ^ / [R=301,L]
+</IfModule>
+
+# E. Basic serving behavior.
+ErrorDocument 404 /404.html
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_headers.c>
+  # F. Security headers. The CSP is derived from what the nine pages
+  # actually load -- see task-13-report.md for the origin-by-origin
+  # breakdown. Every page has exactly one inline executable script: a
+  # single-statement snippet in <head> that adds the .js-nav class before
+  # first paint, so the mobile nav never flashes open then collapsed while
+  # assets/js/nav.js is still loading (see docs/audit-2026-08.md). Its
+  # content is fixed and identical on all nine pages, so script-src allows
+  # it by exact SHA-256 hash rather than 'unsafe-inline' -- any other
+  # inline script (e.g. injected via XSS) still will not execute. The two
+  # <script type="application/ld+json"> blocks are data, not code, and are
+  # not governed by script-src regardless. Inline style="" attributes are
+  # used throughout the verbatim roster-bio content, so style-src needs
+  # 'unsafe-inline'.
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-Ytc/Tuu7Z9kufaf65jg9Xr/h/vz2UnvInktzP7BBIgU='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.bloomingtonvelo.org https://s.w.org https://dgalywyr863hv.cloudfront.net; font-src 'self'; connect-src 'self' https://www.googleapis.com; frame-src https://calendar.google.com https://www.strava.com; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
+
+  # G. Staging must never be indexed. Production and staging share this
+  # file, so this is keyed on the host rather than being a separate file.
+  <If "%{HTTP_HOST} == 'dev.bloomingtonvelo.org'">
+    Header always set X-Robots-Tag "noindex, nofollow"
+  </If>
+</IfModule>
+
+# H. Caching. assets/ and the rescued wp-content/uploads/ images are
+# fingerprint-free but change rarely, so images and fonts are still cached
+# hard by extension. CSS and JS are ALSO fingerprint-free but change often
+# enough, and matter enough when they do (assets/js/config.js holds the
+# Google Calendar API key; the README has volunteers rotate it and delete
+# the old key in Google Cloud), that a long cache is actively dangerous:
+# with `immutable` a browser won't even revalidate on an explicit reload, so
+# a style edit or a rotated key could take up to a year to reach a returning
+# visitor. So CSS/JS get a short max-age and no `immutable`; HTML stays at
+# 0 seconds so edits go live immediately.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 day"
+  ExpiresByType application/javascript "access plus 1 day"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "max-age=0, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+  <FilesMatch "\.(png|jpe?g|webp|woff2|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_mime.c>
+  # I. Without this, a server whose mime.types lacks .webmanifest serves it
+  # as application/octet-stream, which browsers won't read as a manifest.
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json application/manifest+json image/svg+xml text/xml
+</IfModule>

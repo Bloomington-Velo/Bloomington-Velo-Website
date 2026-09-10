@@ -1,0 +1,102 @@
+<!--
+  ============================================================================
+  BLOOMINGTON VELO — CANONICAL PAGE TEMPLATE
+  ============================================================================
+
+  Every page on the site is a COPY of this file. There is no include
+  mechanism, no partial, and no build step: the duplication is deliberate,
+  and this file is the single source the duplicates come from.
+
+  To make a page:
+    1. Copy this file to its location, e.g. team/index.html.
+    2. DELETE this comment block. It sits above the doctype on purpose:
+       leaving it in place makes tools/verify.mjs fail the page immediately,
+       so a copy can never ship with it by accident.
+    3. Replace the four markers:
+         <!-- SLOT: title -->        page title, 5-70 characters
+                                     (appears twice: <title> and og:title)
+         <!-- SLOT: description -->  meta description, 50-160 characters
+                                     (appears twice: description and og:description)
+         <!-- SLOT: canonical -->    root-relative path with a trailing slash,
+                                     e.g. /ride/routes/  — "/" for the home page
+                                     (appears twice: canonical and og:url)
+         <!-- SLOT: main -->         the page content, holding exactly one h1
+    4. Add aria-current="page" to this page's own link in the nav.
+    5. Run `node tools/verify.mjs`.
+
+  When the header, the nav, or the footer changes, change it HERE first and
+  then propagate the same edit to all eight pages.
+
+  ============================================================================
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><!-- SLOT: title --></title>
+<meta name="description" content="<!-- SLOT: description -->">
+<link rel="canonical" href="https://bloomingtonvelo.org<!-- SLOT: canonical -->">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bloomington Velo">
+<meta property="og:title" content="<!-- SLOT: title -->">
+<meta property="og:description" content="<!-- SLOT: description -->">
+<meta property="og:url" content="https://bloomingtonvelo.org<!-- SLOT: canonical -->">
+<meta property="og:image" content="https://bloomingtonvelo.org/assets/img/og-default.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#17233B">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>document.documentElement.classList.add('js-nav');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="site-header__brand" href="/">
+      <img src="/assets/img/logo.png" alt="" width="270" height="270" class="site-header__logo">
+      <span>
+        <span class="site-header__name">Bloomington Velo</span>
+        <span class="site-header__tag">Cycling Club &middot; Indiana</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="visually-hidden">Menu</span>
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main" data-open="false">
+      <ul>
+        <li><a href="/team/">Team</a></li>
+        <li><a href="/ride/">Ride</a></li>
+        <li><a href="/ride/calendar/">Calendar</a></li>
+        <li><a href="/ride/routes/">Routes</a></li>
+        <li><a href="/sponsors/">Sponsors</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+<!-- SLOT: main -->
+</main>
+
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p class="site-footer__tagline">Bloomington Velo &mdash; a performance-oriented cycling club in Bloomington, Indiana.</p>
+    <ul class="site-footer__links">
+      <li><a href="https://www.instagram.com/bloomingtonvelo/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      <li><a href="https://www.strava.com/clubs/329602" target="_blank" rel="noopener noreferrer">Strava</a></li>
+      <li><a href="mailto:bloomingtonvelocycling@gmail.com">bloomingtonvelocycling@gmail.com</a></li>
+      <li><a href="/privacy-policy/">Privacy</a></li>
+    </ul>
+    <p class="site-footer__legal">&copy; Bloomington Velo</p>
+  </div>
+</footer>
+
+<script src="/assets/js/nav.js" defer></script>
+</body>
+</html>

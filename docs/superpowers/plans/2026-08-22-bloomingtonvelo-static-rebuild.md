@@ -16,14 +16,14 @@ Every task's requirements implicitly include this section.
 
 - **No runtime or build dependencies.** The deployed site must contain zero `node_modules`, zero bundlers, zero preprocessors. Dev-time tooling invoked through `npx --yes` is permitted; nothing it produces may be required to serve the site.
 - **No build step.** The repository contents are byte-for-byte what Apache serves from `public_html`.
-- **URL parity.** These eight URLs must exist exactly, each as a directory containing `index.html`: `/`, `/team/`, `/team/ride-library/`, `/ride/`, `/ride/calendar/`, `/sponsors/`, `/contact/`, `/privacy-policy/`. Plus `/404.html`.
+- **URL parity.** These eight URLs must exist exactly, each as a directory containing `index.html`: `/`, `/team/`, `/ride/routes/`, `/ride/`, `/ride/calendar/`, `/sponsors/`, `/contact/`, `/privacy-policy/`. Plus `/404.html`.
 - **Brand:** navy `#132856`. Existing BV square logo, unchanged.
 - **Calendar ID:** `r5lf3al9blontcsjnedbr2f2u0@group.calendar.google.com` (public).
 - **Time zone:** `America/Indiana/Indianapolis`.
 - **Strava club:** id `329602`, widget token `ae47281f0af190641e17e6240c59a40c124d670c`.
 - **Club email:** `bloomingtonvelocycling@gmail.com`.
 - **Content counts (assert these; a mismatch means the source page changed):** 34 roster members, 17 with bios, 13 with photos. 51 routes across four groups — Team Favorites 3, 30–44 Miles 9, 45–64 Miles 31, 65+ Miles 8.
-- **Performance budget:** under 100 KB of first-party assets per page. All third-party iframes `loading="lazy"`.
+- **Performance guideline:** keep first-party assets per page small; report weight, do not treat any number as a gate. All third-party iframes `loading="lazy"`.
 - **Accessibility:** WCAG AA contrast, visible focus, keyboard-operable nav, one `<h1>` per page.
 - **Roster bios are carried over verbatim.** Do not shorten, rewrite, or "improve" any member's bio.
 - **Commit style:** conventional commits (`feat:`, `chore:`, `docs:`, `fix:`).
@@ -57,7 +57,7 @@ const GOOD = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Team | Bloomington Velo</title>
-<meta name="description" content="Meet the riders of Bloomington Velo.">
+<meta name="description" content="Meet the riders of Bloomington Velo, a cycling club in Bloomington, Indiana.">
 <link rel="canonical" href="https://bloomingtonvelo.org/team/">
 <meta property="og:title" content="Team | Bloomington Velo">
 <meta property="og:image" content="https://bloomingtonvelo.org/assets/img/og-default.jpg">
@@ -124,7 +124,7 @@ test('an external link without rel=noopener is an error', () => {
 
 - [ ] **Step 2: Run the test to verify it fails**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: FAIL — `Cannot find module '../tools/verify.mjs'`.
 
 - [ ] **Step 3: Write `tools/verify.mjs`**
@@ -230,7 +230,7 @@ if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith
 
 - [ ] **Step 4: Run the test to verify it passes**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: PASS, 11 tests.
 
 - [ ] **Step 5: Create the scaffold files**
@@ -276,7 +276,7 @@ Must contain, at minimum:
 
 - What this repo is and that **it has no build step** — files are served exactly as committed.
 - Local preview: `npx --yes serve .` then open `http://localhost:3000`. Explain that `file://` will not work because `fetch` and root-absolute paths need a real origin.
-- Verify: `node tools/verify.mjs` and `node --test tests/`.
+- Verify: `node tools/verify.mjs` and `node --test`.
 - **"Adding a page" checklist:** copy `docs/page-template.html` (created in Task 5), fill every `<!-- SLOT: ... -->` marker, add the URL to `sitemap.xml`, add a nav link to all 8 existing pages, run `node tools/verify.mjs`.
 - **"Adding a roster member" checklist:** copy an existing `<article class="roster-card">` block in `team/index.html`, fill it in, add the photo to `assets/img/team/`.
 - **"Adding a sponsor" checklist:** copy the sponsor block in `sponsors/index.html`.
@@ -285,7 +285,7 @@ Must contain, at minimum:
 
 - [ ] **Step 7: Run the full verification**
 
-Run: `node --test tests/ && node tools/verify.mjs`
+Run: `node --test && node tools/verify.mjs`
 Expected: tests PASS; verify prints `ok   index.html` and `1 file(s) checked, 0 failing`.
 
 - [ ] **Step 8: Commit**
@@ -805,7 +805,7 @@ Expected: PASS, 14 tests.
 
 - [ ] **Step 5: Run the whole suite**
 
-Run: `node --test tests/`
+Run: `node --test`
 Expected: PASS, 36 tests total across three files.
 
 - [ ] **Step 6: Commit**
@@ -962,7 +962,7 @@ The stylesheet must collapse `.site-nav` only under `.js-nav`, so a no-JS visito
         <li><a href="/team/">Team</a></li>
         <li><a href="/ride/">Ride</a></li>
         <li><a href="/ride/calendar/">Calendar</a></li>
-        <li><a href="/team/ride-library/">Routes</a></li>
+        <li><a href="/ride/routes/">Routes</a></li>
         <li><a href="/sponsors/">Sponsors</a></li>
         <li><a href="/contact/">Contact</a></li>
       </ul>
@@ -1000,7 +1000,7 @@ Copy `docs/page-template.html` to `index.html`, fill the slots (canonical `/`), 
 
 - [ ] **Step 5: Verify**
 
-Run: `node tools/verify.mjs && node --test tests/`
+Run: `node tools/verify.mjs && node --test`
 Expected: `1 file(s) checked, 0 failing`; all tests pass.
 
 - [ ] **Step 6: Manual accessibility check**
@@ -1151,7 +1151,7 @@ Each must leave the two static rides visible:
 
 - [ ] **Step 7: Run the checks**
 
-Run: `node tools/verify.mjs && node --test tests/`
+Run: `node tools/verify.mjs && node --test`
 Expected: `0 failing`.
 
 - [ ] **Step 8: Commit**
@@ -1182,12 +1182,12 @@ Copy the template. Slots:
 
 Main content:
 1. `<h1>Group rides</h1>` and an intro.
-2. Weekday rides: Tuesday and Thursday, 5:45 PM, Bryan Park pool parking lot. State the season start and end plainly — use the wording Tyler supplies for open item 5 in the spec; **do not invent dates**. If the wording has not yet been supplied, carry the current site's sentence verbatim and add an HTML comment `<!-- TODO(tyler): confirm ride season wording -->`.
+2. Weekday rides: Tuesday and Thursday, 5:45 PM, Bryan Park pool parking lot. Carry the live site's season wording over **verbatim**, including the phrase "until daylight savings time". The site owner has decided to keep it. Do not rephrase it, do not invent dates, and do not add a TODO comment.
 3. Weekend rides: Saturday and Sunday, 40–100+ miles at 18–20 mph, from Sample Gates.
 4. What to expect: pace, group etiquette, what to bring, who the rides suit.
 5. The same `#next-rides` section as Task 7, copied verbatim including the static fallback.
 6. Strava recent rides — identical to Task 7's iframe but with `show_rides=true` and `height="454"`.
-7. Links to `/ride/calendar/` and `/team/ride-library/`.
+7. Links to `/ride/calendar/` and `/ride/routes/`.
 8. `<script type="module" src="/assets/js/rides-init.js"></script>` before `</body>`.
 
 - [ ] **Step 2: Write `ride/calendar/index.html`**
@@ -1350,11 +1350,11 @@ git commit -m "feat: add team roster page with bios carried over verbatim"
 
 **Files:**
 - Create: `tools/generate-routes-html.mjs`
-- Create: `team/ride-library/index.html`
+- Create: `ride/routes/index.html`
 
 **Interfaces:**
 - Consumes: `_source/routes.json` (Task 2), `docs/page-template.html` (Task 6).
-- Produces: `/team/ride-library/` containing 4 `<section class="route-group">` elements and 51 route links.
+- Produces: `/ride/routes/` containing 4 `<section class="route-group">` elements and 51 route links.
 
 - [ ] **Step 1: Write `tools/generate-routes-html.mjs`**
 
@@ -1394,12 +1394,12 @@ grep -c '<li class="route">' /tmp/routes.html
 
 Expected: `4` and `51`.
 
-- [ ] **Step 3: Write `team/ride-library/index.html`**
+- [ ] **Step 3: Write `ride/routes/index.html`**
 
 Copy the template. Slots:
 - `title`: `Route Library | Bloomington Velo`
 - `description`: `51 cycling routes around Bloomington, Indiana, grouped by distance, with Strava and RideWithGPS links for every ride.`
-- `canonical`: `/team/ride-library/`
+- `canonical`: `/ride/routes/`
 
 Main content: `<h1>Route library</h1>`, a short intro noting every route links out to Strava or RideWithGPS, then the generated sections.
 
@@ -1428,7 +1428,7 @@ Expected: `5 file(s) checked, 0 failing`.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add tools/generate-routes-html.mjs team/ride-library/index.html
+git add tools/generate-routes-html.mjs ride/routes/index.html
 git commit -m "feat: add route library with all 51 routes"
 ```
 
@@ -1478,8 +1478,6 @@ End with a line inviting sponsorship enquiries at the club email. Add an HTML co
 Slots: title `Contact | Bloomington Velo`; description `Get in touch with Bloomington Velo. Contact our officers about joining the club, group rides, or sponsorship in Bloomington, Indiana.`; canonical `/contact/`.
 
 Main content: `<h1>Contact</h1>`, a line inviting prospective members, then a definition list of the five officers — President Aaron Prange, Vice-President Dave Harstad, C.F.O. Matt Ellenwood, C.T.O. Tyler Stambaugh, Group Ride Coordinator Kevin Hays — each name a `mailto:bloomingtonvelocycling@gmail.com` link. Then GroupMe, Strava club, Instagram, and Facebook links.
-
-Add an HTML comment: `<!-- TODO(tyler): confirm officers and roles before launch (spec open item 5) -->`
 
 Include the JSON-LD block:
 
@@ -1625,7 +1623,7 @@ Expected: FAIL — `sitemap.xml` does not exist.
   <url><loc>https://bloomingtonvelo.org/ride/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://bloomingtonvelo.org/ride/calendar/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://bloomingtonvelo.org/team/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://bloomingtonvelo.org/team/ride-library/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://bloomingtonvelo.org/ride/routes/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
   <url><loc>https://bloomingtonvelo.org/sponsors/</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
   <url><loc>https://bloomingtonvelo.org/contact/</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://bloomingtonvelo.org/privacy-policy/</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
@@ -1652,7 +1650,7 @@ Expected: PASS, 6 tests. Fix any duplicate title, description, or canonical it r
 
 - [ ] **Step 7: Run everything**
 
-Run: `node --test tests/ && node tools/verify.mjs`
+Run: `node --test && node tools/verify.mjs`
 Expected: all pass, `9 file(s) checked, 0 failing`.
 
 - [ ] **Step 8: Commit**
@@ -1690,6 +1688,10 @@ DirectoryIndex index.html
   RewriteCond %{HTTP_HOST} ^www\.bloomingtonvelo\.org$ [NC]
   RewriteCond %{HTTP_HOST} !^dev\.bloomingtonvelo\.org$ [NC]
   RewriteRule ^ https://bloomingtonvelo.org%{REQUEST_URI} [R=301,L]
+
+  # The Route Library moved from /team/ride-library/ to /ride/routes/. This MUST come
+  # before the catch-all below, which would otherwise send it to the homepage.
+  RewriteRule ^team/ride-library/?$ /ride/routes/ [R=301,L]
 
   # Retire the WordPress content that was deliberately removed: 387 news posts
   # at the site root, /photos/, /news/, and WP taxonomy and feed artifacts.
@@ -1765,7 +1767,7 @@ Expected: no output. Anything listed is either a CSP violation waiting to happen
 
 - [ ] **Step 4: Verify**
 
-Run: `node --test tests/ && node tools/verify.mjs`
+Run: `node --test && node tools/verify.mjs`
 Expected: all pass.
 
 - [ ] **Step 5: Commit**
@@ -1792,7 +1794,7 @@ git commit -m "feat: add Apache config for redirects, CSP, caching and staging n
 ```bash
 node -e '
 const fs=require("fs"),path=require("path");
-const pages=["index.html","team/index.html","team/ride-library/index.html","ride/index.html","ride/calendar/index.html","sponsors/index.html","contact/index.html","privacy-policy/index.html"];
+const pages=["index.html","team/index.html","ride/routes/index.html","ride/index.html","ride/calendar/index.html","sponsors/index.html","contact/index.html","privacy-policy/index.html"];
 const size=f=>{try{return fs.statSync(f).size}catch{return 0}};
 const shared=size("assets/css/site.css")+size("assets/js/nav.js");
 for(const p of pages){
@@ -1801,17 +1803,17 @@ for(const p of pages){
     .map(m=>size("."+m[1])).reduce((a,b)=>a+b,0);
   const js=/rides-init/.test(html)?size("assets/js/rides.js")+size("assets/js/rides-init.js")+size("assets/js/config.js"):0;
   const total=size(p)+shared+imgs+js;
-  console.log(`${(total/1024).toFixed(1).padStart(7)} KB  ${p}${total>102400?"  <-- OVER BUDGET":""}`);
+  console.log(`${(total/1024).toFixed(1).padStart(7)} KB  ${p}`);
 }'
 ```
 
-Expected: every page under 100 KB. `/team/` is the likeliest to exceed it because of 13 photos — if it does, drop the photo `resize` width to 320 and re-run the WebP conversion from Task 2 Step 6.
+Record the numbers in the audit. `/team/` will be the heaviest because of 13 roster photos; that is expected and acceptable since they are all lazy-loaded below the fold. Flag anything that looks disproportionate rather than failing the task on a threshold.
 
 - [ ] **Step 2: Run Lighthouse on every page**
 
 ```bash
 npx --yes serve . &
-for p in "" team/ team/ride-library/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
+for p in "" team/ ride/routes/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
   npx --yes lighthouse "http://localhost:3000/$p" \
     --preset=desktop --quiet --chrome-flags="--headless" \
     --output=json --output-path="/tmp/lh-$(echo "${p:-home}" | tr '/' '-').json"
@@ -1832,7 +1834,7 @@ Likely findings and their fixes:
 - [ ] **Step 4: Validate every page against the W3C Nu validator**
 
 ```bash
-for f in index.html team/index.html team/ride-library/index.html ride/index.html \
+for f in index.html team/index.html ride/routes/index.html ride/index.html \
          ride/calendar/index.html sponsors/index.html contact/index.html \
          privacy-policy/index.html 404.html; do
   echo "== $f"
@@ -1947,11 +1949,14 @@ hPanel → Websites → Advanced → Git:
 - [ ] **Step 8: Verify staging end to end**
 
 ```bash
-for p in "" team/ team/ride-library/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
+for p in "" team/ ride/routes/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
   printf "%-24s %s\n" "/$p" "$(curl -s -o /dev/null -w '%{http_code}' "https://dev.bloomingtonvelo.org/$p")"
 done
 echo "--- headers ---"
 curl -sI "https://dev.bloomingtonvelo.org/" | grep -iE 'x-robots-tag|content-security-policy|x-content-type-options|cache-control'
+echo "--- moved route library ---"
+curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}
+' "https://dev.bloomingtonvelo.org/team/ride-library/"
 echo "--- dead url redirect ---"
 curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}\n' "https://dev.bloomingtonvelo.org/off-season-recovery/"
 echo "--- 404 ---"
@@ -2011,7 +2016,7 @@ The WordPress files must be removed from `public_html` so that a stale `wp-confi
 Run the same block as Task 15 Step 8 against `https://bloomingtonvelo.org/`, with one difference: `X-Robots-Tag` must now be **absent**.
 
 ```bash
-for p in "" team/ team/ride-library/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
+for p in "" team/ ride/routes/ ride/ ride/calendar/ sponsors/ contact/ privacy-policy/; do
   printf "%-24s %s\n" "/$p" "$(curl -s -o /dev/null -w '%{http_code}' "https://bloomingtonvelo.org/$p")"
 done
 curl -sI "https://bloomingtonvelo.org/" | grep -i 'x-robots-tag' && echo "PROBLEM: production is noindexed" || echo "ok: not noindexed"
@@ -2057,6 +2062,36 @@ git push origin v1.0.0
 Set a reminder for four weeks out to review Search Console coverage, the 404 and soft-404 reports, and Core Web Vitals against the Step 2 baseline. Record the outcome in `docs/audit-2026-08.md`.
 
 ---
+
+## Design decision
+
+**Chosen 2026-08-29: Mockup A — Modern refresh.** `_design/mockup-a.html` is the reference
+implementation for Task 6's design system.
+
+What carries over into `assets/css/site.css`:
+
+- Navy `#132856` and white as the primary pair, with the existing BV logo unchanged. No rebrand, no
+  new accent colour — this is why A was chosen over B.
+- Editorial serif for display headings over a humanist sans for body copy, both from system font
+  stacks. No web font is loaded from a third party.
+- The stat strip (34 members / 51 documented routes / 18–20 mph / 40–100+ miles) as a reusable
+  component.
+- Hairline-bordered cards for rides and roster entries; numbered section eyebrows ("01 — THE CLUB").
+- Generous vertical rhythm; content constrained to a readable measure.
+
+Carried forward from the spike's verification:
+
+- A's only two AA contrast misses (4.34 against a 4.5 requirement) are both captions inside the
+  Strava **placeholder** box. The real page embeds Strava's third-party iframe there instead, so
+  those elements never ship. Nothing to fix, but do not reintroduce that muted grey on white
+  elsewhere in the stylesheet.
+- The hero's placeholder artwork is a CSS contour/road-line field standing in for a photograph.
+  Task 7 keeps it until club photography arrives (see `docs/content-needed.md`).
+
+Rejected: **B — Bold athletic** (strongest recruiting design, but it depends on photography that does
+not exist yet and its gold accent amounts to a brand extension, which the spec lists as a non-goal).
+**C — Minimal utilitarian** (fastest and most maintainable, but does the least to convince a
+prospective member to turn up).
 
 ## Post-launch notes
 

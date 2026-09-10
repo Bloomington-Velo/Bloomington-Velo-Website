@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup A — Modern refresh | Bloomington Velo</title>
+<meta name="description" content="Design mockup A for bloomingtonvelo.org: a modern refresh in navy and white with generous whitespace and restrained editorial typography.">
+<style>
+/* ============================================================
+   MOCKUP A — MODERN REFRESH
+   Navy and white. Generous whitespace. Editorial serif headings
+   over a humanist sans. Content in quiet, hairline-ruled cards.
+   The intent: the club a member already knows, printed properly.
+   ============================================================ */
+
+:root{
+  --navy:#132856;
+  --navy-deep:#0B1A3A;
+  --navy-mid:#1D3A73;
+  --ink:#101828;
+  --muted:#4A5568;
+  --line:#E1E6EF;
+  --line-soft:#EEF1F6;
+  --paper:#FFFFFF;
+  --mist:#F5F7FA;
+
+  --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,"Hoefler Text",Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+
+  --shell:min(1180px, 100% - 3rem);
+  --radius:4px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:clamp(1rem,0.97rem + 0.15vw,1.0625rem);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:var(--navy);text-underline-offset:0.18em;text-decoration-thickness:1px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-0.015em;line-height:1.1;margin:0}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+
+/* --- focus ------------------------------------------------- */
+:focus-visible{
+  outline:3px solid var(--navy-mid);
+  outline-offset:3px;
+  border-radius:2px;
+}
+.on-navy :focus-visible,.hero :focus-visible,.join :focus-visible{
+  outline-color:#FFFFFF;
+}
+.skip{
+  position:absolute;left:1rem;top:-4rem;z-index:99;
+  background:var(--navy);color:#fff;padding:0.75rem 1.1rem;border-radius:var(--radius);
+  font-size:0.9rem;font-weight:600;text-decoration:none;transition:top .18s ease;
+}
+.skip:focus{top:1rem}
+
+.shell{width:var(--shell);margin-inline:auto}
+.eyebrow{
+  font-family:var(--sans);
+  font-size:0.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.16em;color:var(--muted);margin:0 0 0.9rem;
+}
+
+/* ============ HEADER ======================================== */
+.site-header{
+  position:sticky;top:0;z-index:40;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  width:var(--shell);margin-inline:auto;
+  display:flex;align-items:center;gap:1.5rem;
+  min-height:78px;
+}
+.brand{display:flex;align-items:center;gap:0.85rem;text-decoration:none;color:inherit}
+.brand img{width:44px;height:44px}
+.brand-name{font-family:var(--serif);font-size:1.28rem;letter-spacing:-0.02em;line-height:1;display:block}
+.brand-sub{
+  display:block;font-size:0.68rem;letter-spacing:0.13em;text-transform:uppercase;
+  color:var(--muted);margin-top:0.28rem;
+}
+.nav{margin-left:auto}
+.nav ul{display:flex;gap:1.9rem;align-items:center}
+.nav a{
+  text-decoration:none;color:var(--ink);font-size:0.94rem;
+  padding:0.4rem 0;position:relative;display:inline-block;
+}
+.nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--navy);transform:scaleX(0);transform-origin:left;
+  transition:transform .22s cubic-bezier(.2,.7,.3,1);
+}
+.nav a:hover::after,.nav a:focus-visible::after{transform:scaleX(1)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
+  font-family:var(--sans);font-size:0.94rem;font-weight:600;
+  padding:0.8rem 1.5rem;border-radius:var(--radius);
+  text-decoration:none;border:1px solid transparent;cursor:pointer;
+  transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
+}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy-mid);transform:translateY(-1px)}
+.btn-ghost{border-color:rgba(255,255,255,0.55);color:#fff}
+.btn-ghost:hover{background:rgba(255,255,255,0.12);border-color:#fff}
+.btn-outline{border-color:var(--navy);color:var(--navy)}
+.btn-outline:hover{background:var(--navy);color:#fff}
+.btn-sm{padding:0.6rem 1.15rem;font-size:0.88rem}
+.header-cta{margin-left:0.4rem}
+.menu-toggle{
+  display:none;align-items:center;gap:0.5rem;cursor:pointer;
+  font-family:var(--sans);font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;
+  border:1px solid var(--line);border-radius:var(--radius);padding:0.6rem 0.9rem;
+  color:var(--navy);background:#fff;
+}
+.menu-toggle::after{
+  content:"";width:0.55rem;height:0.55rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s ease;
+}
+.menu-toggle[aria-expanded="true"]::after{transform:rotate(-135deg) translate(-2px,-2px)}
+
+/* ============ HERO ========================================== */
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:var(--navy-deep);color:#fff;
+  min-height:clamp(520px,74vh,720px);
+  display:flex;align-items:flex-end;
+}
+/* Stand-in for the missing hero photograph: an abstract contour
+   field, the ridge-and-valley country south of Bloomington. */
+.hero-art{position:absolute;inset:0;z-index:-2;background:var(--navy-deep)}
+.hero-art::before{
+  content:"";position:absolute;inset:-20%;
+  background:
+    repeating-radial-gradient(ellipse 40% 30% at 31% 46%,
+      transparent 0 36px, rgba(255,255,255,.22) 36px 37.6px),
+    repeating-radial-gradient(ellipse 34% 46% at 78% 60%,
+      transparent 0 44px, rgba(255,255,255,.155) 44px 45.6px);
+  transform:rotate(-7deg);
+  -webkit-mask-image:radial-gradient(115% 95% at 72% 42%, #000 22%, rgba(0,0,0,.4) 70%, transparent 100%);
+  mask-image:radial-gradient(115% 95% at 72% 42%, #000 22%, rgba(0,0,0,.4) 70%, transparent 100%);
+}
+.hero-roads{
+  content:"";position:absolute;inset:-20%;
+  background:
+    linear-gradient(101deg, transparent calc(41% - 1px), rgba(255,255,255,.34) 41%, transparent calc(41% + 1.6px)),
+    linear-gradient(69deg,  transparent calc(66% - 1px), rgba(255,255,255,.24) 66%, transparent calc(66% + 1.6px)),
+    linear-gradient(158deg, transparent calc(58% - 1px), rgba(255,255,255,.13) 58%, transparent calc(58% + 1.6px));
+  -webkit-mask-image:radial-gradient(115% 95% at 72% 42%, #000 22%, rgba(0,0,0,.4) 70%, transparent 100%);
+  mask-image:radial-gradient(115% 95% at 72% 42%, #000 22%, rgba(0,0,0,.4) 70%, transparent 100%);
+}
+.hero-art::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(105% 80% at 6% 96%, rgba(29,58,115,.8), transparent 58%),
+    linear-gradient(90deg, rgba(11,26,58,.88) 0%, rgba(11,26,58,.55) 44%, rgba(11,26,58,.2) 72%, rgba(11,26,58,.45) 100%),
+    linear-gradient(180deg, rgba(11,26,58,.5) 0%, rgba(11,26,58,.28) 34%, rgba(11,26,58,.88) 100%);
+}
+.hero-inner{
+  width:var(--shell);margin-inline:auto;
+  padding:8rem 0 3.25rem;position:relative;
+}
+.hero .eyebrow{color:rgba(255,255,255,.72)}
+.hero h1{
+  font-size:clamp(2.8rem,1.6rem + 5.4vw,5.25rem);
+  letter-spacing:-0.028em;max-width:12ch;margin-bottom:1.4rem;
+}
+.hero p.lede{
+  font-size:clamp(1.08rem,1rem + 0.5vw,1.35rem);
+  color:rgba(255,255,255,.86);max-width:52ch;line-height:1.55;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:0.85rem;margin-top:2.4rem}
+.hero-actions .btn-primary{background:#fff;color:var(--navy)}
+.hero-actions .btn-primary:hover{background:#E8EDF7}
+
+.placeholder-note{
+  position:absolute;right:0;bottom:1.5rem;
+  display:inline-flex;align-items:center;gap:0.55rem;
+  font-size:0.72rem;letter-spacing:0.04em;color:rgba(255,255,255,.62);
+  border:1px dashed rgba(255,255,255,.32);border-radius:999px;
+  padding:0.4rem 0.85rem;background:rgba(11,26,58,.4);
+}
+.placeholder-note span.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);flex:none}
+
+/* ============ STAT STRIP ==================================== */
+.stats{border-bottom:1px solid var(--line);background:var(--paper)}
+.stats ul{
+  width:var(--shell);margin-inline:auto;
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.stats li{padding:2.1rem 1.5rem 2.1rem 0;border-left:1px solid var(--line-soft)}
+.stats li:first-child{border-left:0}
+.stats li:not(:first-child){padding-left:1.6rem}
+.stat-n{font-family:var(--serif);font-size:clamp(1.85rem,1.4rem + 1.2vw,2.5rem);line-height:1;display:block;color:var(--navy)}
+.stat-l{font-size:0.78rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-top:0.6rem;display:block}
+
+/* ============ SECTIONS ====================================== */
+section{padding-block:clamp(4rem,3rem + 4vw,7rem)}
+.section-mist{background:var(--mist);border-block:1px solid var(--line)}
+.split{display:grid;grid-template-columns:minmax(0,7.5rem) minmax(0,1fr);gap:clamp(2rem,5vw,5rem)}
+@media (min-width:1060px){
+  .split{grid-template-columns:minmax(0,7.5rem) minmax(0,1fr) minmax(0,17rem);align-items:start}
+  .split .pull{margin-top:.5rem;align-self:start}
+  .prose p{max-width:54ch}
+}
+.split-head{align-self:start;position:sticky;top:108px}
+.split h2{font-size:clamp(1.9rem,1.5rem + 1.6vw,2.85rem);margin-bottom:1.4rem;max-width:22ch}
+.prose p{color:var(--muted);max-width:62ch;font-size:1.06rem}
+.prose p + p{margin-top:1.15rem}
+.prose strong{color:var(--ink);font-weight:600}
+.pull{
+  margin-top:2.5rem;padding-left:1.6rem;border-left:2px solid var(--navy);
+  font-family:var(--serif);font-size:clamp(1.15rem,1.05rem + 0.6vw,1.5rem);
+  line-height:1.4;color:var(--ink);max-width:34ch;
+}
+
+/* ============ RIDES ========================================= */
+.rides-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:2.5rem}
+.rides-head h2{font-size:clamp(1.9rem,1.5rem + 1.6vw,2.85rem)}
+.rides-head p{color:var(--muted);font-size:0.95rem;margin-top:0.7rem;max-width:46ch}
+.link-arrow{
+  font-size:0.94rem;font-weight:600;text-decoration:none;color:var(--navy);
+  display:inline-flex;align-items:center;gap:0.45rem;padding-bottom:2px;
+  border-bottom:1px solid rgba(19,40,86,.28);
+}
+.link-arrow svg{transition:transform .2s ease}
+.link-arrow:hover{border-bottom-color:var(--navy)}
+.link-arrow:hover svg{transform:translateX(3px)}
+
+.ride-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:1.25rem}
+.ride-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.6rem 1.6rem 1.75rem;display:flex;flex-direction:column;gap:0.9rem;
+  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+.ride-card:hover{border-color:#C7D2E6;box-shadow:0 14px 34px -22px rgba(19,40,86,.45);transform:translateY(-2px)}
+.ride-date{display:flex;align-items:baseline;gap:0.6rem;color:var(--navy)}
+.ride-day{font-size:0.74rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase}
+.ride-num{font-family:var(--serif);font-size:1.6rem;line-height:1}
+.ride-card h3{font-size:1.22rem;letter-spacing:-0.01em}
+.ride-meta{font-size:0.9rem;color:var(--muted);display:grid;gap:0.3rem;margin-top:auto}
+.ride-meta span{display:flex;gap:0.5rem}
+.ride-meta b{font-weight:600;color:var(--ink);min-width:4.2rem;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;padding-top:0.12rem}
+.ride-tag{
+  align-self:flex-start;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;
+  font-weight:700;color:var(--navy);background:#E8EDF7;border-radius:999px;padding:0.28rem 0.7rem;
+}
+
+/* ============ STRAVA + JOIN ================================= */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:stretch}
+.panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);padding:1.75rem}
+.panel h2{font-size:1.5rem;margin-bottom:0.35rem}
+.panel > p{color:var(--muted);font-size:0.94rem;margin-bottom:1.35rem}
+.widget-slot{
+  border:1px dashed #C3CEE2;border-radius:var(--radius);background:
+    linear-gradient(180deg,#FBFCFE,#F2F5FA);
+  padding:1.4rem;display:grid;gap:0.9rem;
+}
+.widget-slot .slot-label{
+  font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:#6B7A94;font-weight:700;
+}
+.skel{height:0.7rem;border-radius:3px;background:#DDE4EF}
+.skel.w-60{width:60%}.skel.w-40{width:40%}.skel.w-75{width:75%}
+.slot-foot{font-size:0.8rem;color:#6B7A94;line-height:1.5}
+.join-list{display:grid;gap:0.85rem;margin-bottom:1.5rem}
+.join-list li{display:flex;gap:0.8rem;font-size:0.97rem;color:var(--muted);align-items:flex-start}
+.join-list .n{
+  flex:none;width:1.55rem;height:1.55rem;border-radius:50%;background:var(--navy);color:#fff;
+  font-size:0.76rem;font-weight:700;display:grid;place-items:center;margin-top:0.12rem;
+}
+.panel-actions{display:flex;flex-wrap:wrap;gap:0.7rem}
+
+/* ============ CLOSING BAND ================================== */
+.join{background:var(--navy);color:#fff;text-align:center}
+.join h2{font-size:clamp(2rem,1.5rem + 2.2vw,3.25rem);margin-bottom:1.1rem}
+.join p{color:rgba(255,255,255,.82);max-width:48ch;margin-inline:auto;font-size:1.06rem}
+.join .hero-actions{justify-content:center}
+.join-plate{
+  width:96px;height:96px;border-radius:50%;background:#fff;display:grid;place-items:center;
+  margin:0 auto 1.9rem;box-shadow:0 0 0 10px rgba(255,255,255,.07);
+}
+.join-plate img{width:66px;height:66px}
+
+/* ============ FOOTER ======================================== */
+.site-footer{background:#F7F9FC;border-top:1px solid var(--line);padding-block:3.5rem 2.5rem;font-size:0.92rem}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem}
+.foot-grid h3{font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-family:var(--sans);font-weight:700;color:var(--muted);margin-bottom:1rem}
+.foot-grid ul{display:grid;gap:0.6rem}
+.foot-grid a{color:var(--ink);text-decoration:none}
+.foot-grid a:hover{text-decoration:underline}
+.foot-brand p{color:var(--muted);max-width:34ch;margin-top:1rem}
+.foot-bottom{
+  border-top:1px solid var(--line);margin-top:2.75rem;padding-top:1.5rem;
+  display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:space-between;color:var(--muted);font-size:0.84rem;
+}
+
+/* ============ MOCKUP CHIP =================================== */
+.mockup-chip{
+  position:fixed;left:1rem;bottom:1rem;z-index:80;
+  display:inline-flex;align-items:center;gap:0;
+  background:#0B1A3A;color:#fff;text-decoration:none;
+  font:600 0.76rem/1 var(--sans);letter-spacing:0.04em;
+  padding:0.62rem 0.9rem;border-radius:999px;opacity:.55;
+  box-shadow:0 8px 24px -12px rgba(0,0,0,.6);transition:opacity .2s ease;
+}
+.mockup-chip:hover,.mockup-chip:focus-visible{opacity:1}
+.mockup-chip .chip-label{max-width:0;overflow:hidden;white-space:nowrap;opacity:0;
+  transition:max-width .28s ease,opacity .2s ease,margin-left .28s ease}
+.mockup-chip:hover .chip-label,.mockup-chip:focus-visible .chip-label{max-width:20rem;opacity:1;margin-left:.55rem}
+.mockup-chip b{background:#fff;color:#0B1A3A;border-radius:50%;width:1.15rem;height:1.15rem;display:grid;place-items:center;font-size:0.7rem}
+
+/* ============ MOTION ======================================== */
+@media (prefers-reduced-motion:no-preference){
+  .reveal{animation:rise .8s cubic-bezier(.2,.7,.3,1) both}
+  .d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.25s}.d4{animation-delay:.35s}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+}
+
+/* ============ RESPONSIVE ==================================== */
+@media (max-width:900px){
+  .duo{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr;gap:1.5rem}
+  .split-head{position:static}
+  .stats ul{grid-template-columns:1fr 1fr}
+  .stats li{padding:1.4rem 1rem 1.4rem 0;border-top:1px solid var(--line-soft)}
+  .stats li:nth-child(-n+2){border-top:0}
+  .stats li:nth-child(odd){border-left:0}
+  .stats li:nth-child(even){padding-left:1.4rem}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .foot-brand{grid-column:1 / -1}
+}
+@media (max-width:760px){
+  :root{--shell:min(1180px, 100% - 2.25rem)}
+  .header-inner{min-height:64px;gap:0.75rem}
+  .brand img{width:38px;height:38px}
+  .header-cta{display:none}
+  .nav{margin-left:auto;position:relative}
+  .menu-toggle{display:inline-flex}
+  .nav ul{
+    position:absolute;right:0;top:calc(100% + 0.75rem);z-index:50;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    min-width:13rem;padding:0.4rem;box-shadow:0 22px 50px -26px rgba(16,24,40,.5);
+  }
+  .nav ul[hidden]{display:none}
+  .nav ul li + li{border-top:1px solid var(--line-soft)}
+  .nav ul a{display:block;padding:0.72rem 0.8rem}
+  .nav a::after{display:none}
+  .hero{min-height:auto}
+  .hero-inner{padding:5.5rem 0 6rem}
+  .placeholder-note{right:auto;left:0;bottom:1.75rem}
+  .hero-actions .btn{flex:1 1 auto}
+  .foot-grid{grid-template-columns:1fr}
+  .pull{margin-top:1.75rem}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#">
+      <img src="../assets/img/logo.png" alt="Bloomington Velo logo" width="44" height="44">
+      <span>
+        <span class="brand-name">Bloomington Velo</span>
+        <span class="brand-sub">Cycling Club · Indiana</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-menu">Menu</button>
+      <ul id="primary-menu">
+        <li><a href="#">Team</a></li>
+        <li><a href="#">Ride</a></li>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="#">Routes</a></li>
+        <li><a href="#">Sponsors</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-primary btn-sm header-cta" href="#join">Ride with us</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-art" role="img" aria-label="Placeholder artwork: an abstract contour map of the hills south of Bloomington, standing in for a club photograph.">
+      <span class="hero-roads" aria-hidden="true"></span>
+    </div>
+    <div class="hero-inner">
+      <p class="eyebrow reveal d1">Bloomington, Indiana</p>
+      <h1 id="hero-title" class="reveal d2">Ride hard.<br>Bring people with you.</h1>
+      <p class="lede reveal d3">Bloomington Velo is a performance-oriented cycling club built on racing, training, and getting new riders up to speed on the best roads in the Midwest.</p>
+      <div class="hero-actions reveal d4">
+        <a class="btn btn-primary" href="#join">Ride with us</a>
+        <a class="btn btn-ghost" href="#next-rides">See the schedule</a>
+      </div>
+      <p class="placeholder-note"><span class="dot"></span> Placeholder artwork — a club photograph goes here</p>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <div class="stats">
+    <ul>
+      <li><span class="stat-n">34</span><span class="stat-l">Members</span></li>
+      <li><span class="stat-n">51</span><span class="stat-l">Documented routes</span></li>
+      <li><span class="stat-n">18–20</span><span class="stat-l">Weekend pace, mph</span></li>
+      <li><span class="stat-n">40–100+</span><span class="stat-l">Weekend miles</span></li>
+    </ul>
+  </div>
+
+  <!-- ===== WHO WE ARE ===== -->
+  <section id="who" aria-labelledby="who-title">
+    <div class="shell split">
+      <div class="split-head"><p class="eyebrow">01 — The club</p></div>
+      <div>
+        <h2 id="who-title">Who we are</h2>
+        <div class="prose">
+          <p><strong>Bloomington Velo is a performance-oriented cycling club with an emphasis on racing and training.</strong> We ride out of Bloomington, Indiana, on the limestone-country roads that make this one of the best places to ride in the state — long climbs, empty pavement, and a town full of people who take it seriously.</p>
+          <p>We also mentor. The roster runs to 34 members from a wide range of backgrounds and abilities, and the club keeps a library of 51 documented routes so nobody has to guess where the good roads are. If you can hold a wheel and you want to get faster, there is a group here for you.</p>
+        </div>
+      </div>
+      <p class="pull">Race-minded, but nobody gets dropped alone.</p>
+    </div>
+  </section>
+
+  <!-- ===== NEXT RIDES ===== -->
+  <section id="next-rides" class="section-mist" aria-labelledby="rides-title">
+    <div class="shell">
+      <div class="rides-head">
+        <div>
+          <p class="eyebrow">02 — This week</p>
+          <h2 id="rides-title">Next rides</h2>
+          <p>Pulled live from the club calendar. When the calendar is quiet, the standing schedule stands.</p>
+        </div>
+        <a class="link-arrow" href="#">Full calendar
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <ul class="ride-grid">
+        <li class="ride-card">
+          <p class="ride-date"><span class="ride-day">Tue</span><span class="ride-num">Aug 25</span></p>
+          <h3>Weekday group ride</h3>
+          <span class="ride-tag">Rolling, no-drop regroups</span>
+          <p class="ride-meta">
+            <span><b>Time</b> 5:45 PM</span>
+            <span><b>Start</b> Bryan Park pool parking lot</span>
+          </p>
+        </li>
+        <li class="ride-card">
+          <p class="ride-date"><span class="ride-day">Thu</span><span class="ride-num">Aug 27</span></p>
+          <h3>Weekday group ride</h3>
+          <span class="ride-tag">Harder pace</span>
+          <p class="ride-meta">
+            <span><b>Time</b> 5:45 PM</span>
+            <span><b>Start</b> Bryan Park pool parking lot</span>
+          </p>
+        </li>
+        <li class="ride-card">
+          <p class="ride-date"><span class="ride-day">Sat</span><span class="ride-num">Aug 29</span></p>
+          <h3>Weekend long ride</h3>
+          <span class="ride-tag">40–100+ mi · 18–20 mph</span>
+          <p class="ride-meta">
+            <span><b>Time</b> 8:00 AM</span>
+            <span><b>Start</b> Sample Gates</span>
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== STRAVA + JOIN PANELS ===== -->
+  <section aria-labelledby="strava-title">
+    <div class="shell duo">
+      <div class="panel">
+        <p class="eyebrow">03 — On Strava</p>
+        <h2 id="strava-title">Bloomington Velo on Strava</h2>
+        <p>Club 329602. Follow the mileage, join the club, and see who has been out this week.</p>
+        <div class="widget-slot">
+          <p class="slot-label">Strava club widget · iframe</p>
+          <div class="skel w-60"></div>
+          <div class="skel w-40"></div>
+          <div class="skel w-75"></div>
+          <p class="slot-foot">The official Strava club embed renders here at roughly 300&nbsp;px tall. Shown as a frame because it is a third-party iframe, not something we style.</p>
+        </div>
+      </div>
+      <div class="panel" id="join-panel">
+        <p class="eyebrow">04 — Getting started</p>
+        <h2>How to join a ride</h2>
+        <p>No sign-up, no waiting list. Turn up, or say hello first.</p>
+        <ul class="join-list">
+          <li><span class="n">1</span><span>Come to a Tuesday or Thursday ride — 5:45 PM at the Bryan Park pool parking lot.</span></li>
+          <li><span class="n">2</span><span>Say hello. Tell us what you ride and we will point you at the right group.</span></li>
+          <li><span class="n">3</span><span>Join the club GroupMe so you hear about pace changes and weekend plans.</span></li>
+        </ul>
+        <div class="panel-actions">
+          <a class="btn btn-outline btn-sm" href="mailto:bloomingtonvelocycling@gmail.com">Email the club</a>
+          <a class="btn btn-outline btn-sm" href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CLOSING CTA ===== -->
+  <section class="join on-navy" id="join" aria-labelledby="join-title">
+    <div class="shell">
+      <div class="join-plate">
+        <img src="../assets/img/logo.png" alt="" width="66" height="66">
+      </div>
+      <h2 id="join-title">Come ride with us</h2>
+      <p>Tuesdays and Thursdays at 5:45 PM from Bryan Park. Saturdays and Sundays from the Sample Gates. Bring a spare tube.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="mailto:bloomingtonvelocycling@gmail.com">Email the club</a>
+        <a class="btn btn-ghost" href="#">Join the GroupMe</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#">
+          <img src="../assets/img/logo.png" alt="" width="40" height="40">
+          <span><span class="brand-name">Bloomington Velo</span></span>
+        </a>
+        <p>A performance-oriented cycling club in Bloomington, Indiana. Racing, training, and rider development since long before this website.</p>
+      </div>
+      <div>
+        <h3>Site</h3>
+        <ul>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Ride</a></li>
+          <li><a href="#">Calendar</a></li>
+          <li><a href="#">Routes</a></li>
+          <li><a href="#">Sponsors</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="#">Strava · club 329602</a></li>
+          <li><a href="#">Instagram · @bloomingtonvelo</a></li>
+          <li><a href="mailto:bloomingtonvelocycling@gmail.com">bloomingtonvelocycling@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Bloomington Velo</span>
+      <span>Design mockup A — not the live site</span>
+    </div>
+  </div>
+</footer>
+
+<a class="mockup-chip" href="index.html" title="Back to all three mockups"><b>A</b><span class="chip-label">Modern refresh — compare all three</span></a>
+
+<script>
+/* Mobile menu. Progressive enhancement: with JS off the list simply stays visible. */
+(function () {
+  var btn = document.querySelector('.menu-toggle');
+  var menu = document.getElementById('primary-menu');
+  var mq = window.matchMedia('(max-width: 760px)');
+  function sync() {
+    if (mq.matches) { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    else { menu.hidden = false; btn.setAttribute('aria-expanded', 'false'); }
+  }
+  btn.addEventListener('click', function () {
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    menu.hidden = open;
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && mq.matches && btn.getAttribute('aria-expanded') === 'true') {
+      btn.setAttribute('aria-expanded', 'false'); menu.hidden = true; btn.focus();
+    }
+  });
+  mq.addEventListener('change', sync);
+  sync();
+})();
+</script>
+</body>
+</html>
