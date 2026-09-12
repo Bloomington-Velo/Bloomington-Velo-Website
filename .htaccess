@@ -70,11 +70,22 @@ DirectoryIndex index.html
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
   Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-Ytc/Tuu7Z9kufaf65jg9Xr/h/vz2UnvInktzP7BBIgU='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.bloomingtonvelo.org https://s.w.org https://dgalywyr863hv.cloudfront.net; font-src 'self'; connect-src 'self' https://www.googleapis.com; frame-src https://calendar.google.com https://www.strava.com; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
 
-  # G. Staging must never be indexed. Production and staging share this
-  # file, so this is keyed on the host rather than being a separate file.
-  <If "%{HTTP_HOST} == 'dev.bloomingtonvelo.org'">
-    Header always set X-Robots-Tag "noindex, nofollow"
-  </If>
+  # G. Staging must never be indexed. Production and staging share this file,
+  # so this is conditional rather than a separate config.
+  #
+  # TWO conditions, because the staging folder is reachable by TWO routes.
+  # Hostinger put the subdomain docroot at public_html/dev, so the same files
+  # answer to BOTH dev.bloomingtonvelo.org AND bloomingtonvelo.org/dev/. A
+  # host-only rule left that second route fully indexable -- a crawlable
+  # duplicate of the whole site under the live domain, competing with the very
+  # pages this rebuild exists to protect. Verified on staging 2026-09-12: the
+  # host route carried the header, the path route did not.
+  #
+  # SetEnvIf rather than <If> so both conditions can set one flag, and because
+  # it is the more portable of the two on LiteSpeed.
+  SetEnvIf Host ^dev\. BV_STAGING
+  SetEnvIf Request_URI ^/dev(/|$) BV_STAGING
+  Header always set X-Robots-Tag "noindex, nofollow" env=BV_STAGING
 </IfModule>
 
 # H. Caching. assets/ and the rescued wp-content/uploads/ images are
