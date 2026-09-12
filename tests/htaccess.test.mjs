@@ -118,16 +118,25 @@ test("script-src does not contain 'unsafe-inline'", () => {
   );
 });
 
-test('the staging noindex block is present and keyed on the dev host', () => {
+test('staging noindex covers BOTH routes into the staging folder', () => {
+  // Hostinger put the staging docroot at public_html/dev, so the same files
+  // answer to dev.bloomingtonvelo.org AND bloomingtonvelo.org/dev/. A
+  // host-only rule left the second route indexable -- confirmed live on
+  // staging before this was fixed. Both conditions must set the same flag.
   assert.match(
     htaccess,
-    /<If "%\{HTTP_HOST\} == 'dev\.bloomingtonvelo\.org'">/,
-    'staging noindex block must be keyed on dev.bloomingtonvelo.org, since production and staging share this file',
+    /SetEnvIf\s+Host\s+\^dev\\\.\s+BV_STAGING/,
+    'staging noindex must fire for the dev.* hostname',
   );
   assert.match(
     htaccess,
-    /X-Robots-Tag\s+"noindex, nofollow"/,
-    'staging noindex block must set X-Robots-Tag: noindex, nofollow',
+    /SetEnvIf\s+Request_URI\s+\^\/dev\(\/\|\$\)\s+BV_STAGING/,
+    'staging noindex must ALSO fire for the /dev/ path, or bloomingtonvelo.org/dev/ is a crawlable duplicate of the whole site',
+  );
+  assert.match(
+    htaccess,
+    /Header always set X-Robots-Tag "noindex, nofollow" env=BV_STAGING/,
+    'the X-Robots-Tag header must be gated on the BV_STAGING flag the two SetEnvIf lines set',
   );
 });
 
