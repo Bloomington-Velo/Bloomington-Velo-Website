@@ -161,10 +161,28 @@
 
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <p class="site-footer__tagline">Bloomington Velo &mdash; a performance-oriented cycling club in Bloomington, Indiana.</p>
+    <div class="site-footer__brand">
+      <p class="site-footer__tagline">Bloomington Velo &mdash; a performance-oriented cycling club in Bloomington, Indiana.</p>
+      <!-- Icons are Font Awesome Free 6 (CC BY 4.0, fontawesome.com/license/free),
+           inlined rather than loaded from the CDN — see the .social block in
+           assets/css/site.css for why. GroupMe has no Font Awesome brand mark,
+           so it uses the solid "comments" glyph with a hidden label. -->
+      <ul class="social">
+        <li><a href="https://www.instagram.com/bloomingtonvelo/" target="_blank" rel="noopener noreferrer">
+          <svg class="social__icon" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+          <span class="visually-hidden">Instagram</span></a></li>
+        <li><a href="https://www.facebook.com/bloomingtonvelo/" target="_blank" rel="noopener noreferrer">
+          <svg class="social__icon" viewBox="0 0 320 512" aria-hidden="true" focusable="false"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
+          <span class="visually-hidden">Facebook</span></a></li>
+        <li><a href="https://www.strava.com/clubs/329602" target="_blank" rel="noopener noreferrer">
+          <svg class="social__icon" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M158.4 0L7 292h89.2l62.2-116.1L220.1 292h88.5zm150.2 292l-43.9 88.2-44.6-88.2h-67.6l112.2 220 111.5-220z"/></svg>
+          <span class="visually-hidden">Strava</span></a></li>
+        <li><a href="https://groupme.com/join_group/40394360/clDtjgCN" target="_blank" rel="noopener noreferrer">
+          <svg class="social__icon" viewBox="0 0 640 512" aria-hidden="true" focusable="false"><path d="M416 176c0 97.2-93.1 176-208 176c-38.2 0-73.9-8.7-104.7-23.9c-7.5 4-16 7.9-25.2 11.4C59.8 348.5 34.6 352 16 352c-6.9 0-13.1-4.5-15.2-11.1s.2-13.8 5.8-17.9c.2-.2 .6-.4 1.1-.8c1-.8 2.5-2 4.3-3.7c3.6-3.3 8.5-8.1 13.3-14.3c5.5-7 10.7-15.4 14.2-24.7C14.7 250.3 0 214.6 0 176C0 78.8 93.1 0 208 0S416 78.8 416 176zM231.5 383C348.9 379.5 448 303.3 448 208c0-9.3-.9-18.4-2.7-27.2C519.8 205.6 576 260.5 576 320c0 38.6-14.7 74.3-39.6 103.4c3.5 9.4 8.7 17.7 14.2 24.7c4.8 6.2 9.7 11 13.3 14.3c1.8 1.6 3.3 2.9 4.3 3.7c.5 .4 .9 .7 1.1 .8c5.6 4.1 7.9 11.3 5.8 17.9c-2.1 6.6-8.3 11.1-15.2 11.1c-18.6 0-43.8-3.5-66.1-12.5c-9.2-3.7-17.8-7.5-25.2-11.4C440.9 487.3 405.2 496 367 496c-97.4 0-179.4-56.7-202.5-133z"/></svg>
+          <span class="visually-hidden">GroupMe</span></a></li>
+      </ul>
+    </div>
     <ul class="site-footer__links">
-      <li><a href="https://www.instagram.com/bloomingtonvelo/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-      <li><a href="https://www.strava.com/clubs/329602" target="_blank" rel="noopener noreferrer">Strava</a></li>
       <li><a href="mailto:bloomingtonvelocycling@gmail.com">bloomingtonvelocycling@gmail.com</a></li>
       <li><a href="/privacy-policy/">Privacy</a></li>
     </ul>

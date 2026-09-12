@@ -1167,6 +1167,61 @@ strong { font-weight: 600; color: var(--ink); }
   font-size: 0.84rem;
 }
 
+/* Tagline and social row share the left column so the footer stays two
+   columns rather than growing a third. */
+.site-footer__brand { display: grid; gap: var(--space-4); align-content: start; }
+
+/* --- social icons ----------------------------------------------------------
+   Font Awesome Free 6 marks, INLINED as SVG rather than loaded from the CDN.
+   The site makes no third-party requests and the CSP is font-src 'self' /
+   style-src 'self', so an icon font or a CDN stylesheet would mean opening
+   the policy, adding a render-blocking request, and handing another host a
+   log of every visitor. Four icons do not justify any of that. Inlined they
+   also inherit currentColor, so hover and focus come free from the palette.
+
+   Font Awesome Free 6 is CC BY 4.0 — https://fontawesome.com/license/free
+   Instagram, Facebook and Strava are the brand marks; GroupMe has no Font
+   Awesome brand mark, so it borrows the solid "comments" glyph and carries a
+   visually-hidden label so it is never ambiguous to a screen reader.
+
+   Markup:  <ul class="social">
+              <li><a href="..." target="_blank" rel="noopener noreferrer">
+                <svg class="social__icon" viewBox="0 0 448 512" aria-hidden="true"
+                     focusable="false"><path d="..."/></svg>
+                <span class="visually-hidden">Instagram</span>
+              </a></li>
+            </ul>                                                             */
+.social {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* 2.75rem is a 44px touch target — the minimum comfortable size on a phone. */
+.social a {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.social a:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+.social__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: currentColor;
+}
+
 @media (min-width: 48rem) {
   .site-footer__inner {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
@@ -1198,6 +1253,7 @@ strong { font-weight: 600; color: var(--ink); }
   .site-nav a::after { transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.3, 1); }
   .link-arrow,
   .route > a,
+  .social a,
   .site-footer__links a { transition: color 0.18s ease, border-color 0.2s ease; }
 
   .ride,
