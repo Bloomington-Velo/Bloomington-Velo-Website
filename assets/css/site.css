@@ -482,7 +482,10 @@ strong { font-weight: 600; color: var(--ink); }
   color: inherit;
 }
 
-.site-header__logo { width: 38px; height: 38px; }
+/* The seal carries ring text ("BLOOMINGTON VELO · INDIANA") around its edge,
+   which needs size to stay legible — below about 44px it reads as texture
+   rather than lettering. */
+.site-header__logo { width: 54px; height: 54px; }
 
 .site-header__name {
   display: block;
@@ -707,7 +710,7 @@ strong { font-weight: 600; color: var(--ink); }
    9. SECTIONS AND THE STAT STRIP
    ========================================================================== */
 
-.section { padding-block: clamp(2.75rem, 2rem + 4vw, 7rem); }
+.section { padding-block: clamp(2.75rem, 1rem + 2vw, 7rem); }
 
 /* Adjacent sections would otherwise each pay their own top AND bottom
    padding at the shared boundary, doubling the gap (up to ~224px at the
@@ -761,7 +764,7 @@ strong { font-weight: 600; color: var(--ink); }
                 <li class="stat"><span class="stat__n">34</span>
                     <span class="stat__label">Members</span></li>
                 <li class="stat"><span class="stat__n">51</span>
-                    <span class="stat__label">Documented routes</span></li>
+                    <span class="stat__label">Saved routes</span></li>
                 <li class="stat"><span class="stat__n">18–20</span>
                     <span class="stat__label">Weekend pace, mph</span></li>
                 <li class="stat"><span class="stat__n">40–100+</span>
@@ -1070,6 +1073,35 @@ strong { font-weight: 600; color: var(--ink); }
   color: var(--muted);
 }
 
+/* A meeting point or resource linked from inside a ride card. Kept quiet —
+   it inherits the card's muted colour and is signalled by the underline and
+   the pin rather than by colour, so a card with two of them does not turn
+   into a wall of red. Font Awesome Free 6 "location-dot" (CC BY 4.0),
+   inlined for the same reason as the footer icons: no CDN, no CSP change.
+   Markup:  <span class="ride__place">
+              <a class="place-link" href="..." target="_blank" rel="noopener noreferrer">
+                <svg class="place-link__pin" viewBox="0 0 384 512" aria-hidden="true"
+                     focusable="false"><path d="..."/></svg>Bryan Park pool parking lot
+              </a>
+            </span>                                                          */
+.place-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.place-link:hover { color: var(--accent-ink); border-bottom-color: var(--accent); }
+
+.place-link__pin {
+  flex: none;
+  width: 0.8em;
+  height: 0.8em;
+  fill: currentColor;
+}
+
 
 /* ==========================================================================
    12. EMBEDS
@@ -1254,6 +1286,7 @@ strong { font-weight: 600; color: var(--ink); }
   .link-arrow,
   .route > a,
   .social a,
+  .place-link,
   .site-footer__links a { transition: color 0.18s ease, border-color 0.2s ease; }
 
   .ride,
