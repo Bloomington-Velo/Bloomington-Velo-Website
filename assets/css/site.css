@@ -1003,8 +1003,30 @@ strong { font-weight: 600; color: var(--ink); }
   padding: var(--space-4);
 }
 
+/* The page is one line of type over the logo wall, so this grid sits in the
+   full .wrap rather than a .split content column. Capping the row keeps three
+   cards from stretching to ~380px each on a wide screen, and the 15rem floor
+   still lets auto-fit fall to two columns and then one as the wrap narrows. */
+.sponsors {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  max-width: 52rem;
+  margin-top: var(--space-5);
+}
+
 .sponsor a { display: block; }
-.sponsor img { max-height: 7rem; width: auto; object-fit: contain; }
+
+/* Logos arrive at whatever size the sponsor supplies, and the wordmarks run
+   wide (roughly 3:1 to 4:1), so a height cap alone would let one overflow a
+   grid cell once the grid goes multi-column. Capping both axes and leaving
+   width/height auto lets the browser honour whichever limit bites first while
+   keeping the file's aspect ratio. */
+.sponsor img {
+  max-width: 100%;
+  max-height: 7rem;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
 
 
 /* ==========================================================================
