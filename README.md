@@ -40,7 +40,8 @@ itself.
    directory as `index.html`.
 2. Fill in every `<!-- SLOT: ... -->` marker in the copy.
 3. Add the new URL to `sitemap.xml`.
-4. Add a nav link to the new page on all 8 existing pages.
+4. Add a nav link to the new page on every existing page, 404.html and
+   `docs/page-template.html`.
 5. Run `node tools/verify.mjs` and fix anything it reports.
 
 ## Adding a roster member
