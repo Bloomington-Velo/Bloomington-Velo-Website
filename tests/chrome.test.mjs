@@ -1,7 +1,7 @@
 // Guards the one risk the copy-not-include architecture carries: silent drift.
 //
 // Every page is a hand-maintained COPY of docs/page-template.html. Nothing at
-// runtime keeps the eight copies in step, so these tests do it instead. The
+// runtime keeps the copies in step, so these tests do it instead. The
 // header, the shared <head>, the footer and the shared asset links must match
 // the template on every page; the only differences any page is allowed are the
 // single aria-current="page" marking its own nav entry and the six per-page

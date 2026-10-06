@@ -19,11 +19,11 @@ const toPosix = (p) => p.split('\\').join('/');
 
 const pages = collectHtmlFiles(ROOT).filter((f) => !f.endsWith('404.html'));
 
-test('there are exactly eight indexable pages', () => {
+test('there are exactly nine indexable pages', () => {
   assert.equal(
     pages.length,
-    8,
-    `expected 8 indexable pages, found ${pages.length}: ${pages.map((f) => relative(ROOT, f)).join(', ')}`,
+    9,
+    `expected 9 indexable pages, found ${pages.length}: ${pages.map((f) => relative(ROOT, f)).join(', ')}`,
   );
 });
 
